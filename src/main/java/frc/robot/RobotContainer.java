@@ -4,10 +4,17 @@
 
 package frc.robot;
 
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
+import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -20,15 +27,36 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private final SendableChooser<Command> autoChooser;
+
+  ShuffleboardTab auto_tab = Shuffleboard.getTab("auto");
+
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandPS4Controller m_driverController =
-      new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+    new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_auxController =
+    new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    boolean isCompetition = true;
+    //TODO: set isCompetition to true for comp
+
+    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
+      (stream) -> isCompetition
+        ? stream.filter(auto -> auto.getName().startsWith("comp"))
+        : stream
+    );
+
+    auto_tab.add("pick auto", autoChooser);
+
+    swerveSubsystem.setDefaultCommand(new DriveFromControllerCommand(swerveSubsystem, null, null, null, false, null, null, null, null, null));
+
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -44,13 +72,34 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    //new Trigger(m_exampleSubsystem::exampleCondition)
+    //    .onTrue(new ExampleCommand(m_exampleSubsystem));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.R1().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //m_driverController.R1().whileTrue(m_exampleSubsystem.exampleMethodCommand());
   }
+
+  boolean getFasterMode() {
+    return m_driverController.getHID().getL2Button();
+  }
+
+  //marcus was here
+
+  boolean getSlowMode() {
+    return !m_driverController.getHID().getR2Button();
+  }
+
+  double getRightX() {return m_driverController.getRightX();}
+  double getLeftX() {return -m_driverController.getLeftX();}
+  double getLeftY() {return -m_driverController.getLeftY();}
+  double getPOV() {return m_driverController.getHID().getPOV();}
+  boolean getRightTrigger() {return m_driverController.getHID().getR2Button();}
+  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
+  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
+  double getAuxPOV() {return m_auxController.getHID().getPOV();}
+  double getAuxLTrig(){return m_auxController.getL2Axis();}
+  double getAuxRTrig(){return m_auxController.getR2Axis();}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -59,6 +108,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return autoChooser.getSelected();
   }
 }
