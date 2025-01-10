@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
@@ -9,45 +8,23 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import java.util.function.Supplier;
 
 public class SwerveDriveCommand extends Command {
 
   public final SwerveSubsystem swerveSubsystem;
-  public final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction, pov, auxLTrig, auxRTrig;
   public Supplier<Boolean> fastModeFunction, fasterModeFunction;
-  public final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
-  public boolean fieldOrientedFunction, isPresetTurnActive;
+  public boolean fieldOrientedFunction;
   private ShuffleboardTab m_tab;
   private GenericEntry shuffleFieldOriented;
 
-  public SwerveDriveCommand(
-    SwerveSubsystem subsystem,
-    Supplier<Double> xSupplier,
-    Supplier<Double> ySupplier,
-    Supplier<Double> turnSupplier,
-    boolean fieldOriented,
-    Supplier<Boolean> fastMode,
-    Supplier<Boolean> fasterMode,
-    Supplier<Double> povSupplier,
-    Supplier<Double> auxLeftTrigger,
-    Supplier<Double> auxRightTrigger
-  ) {
+  private double xSpeed, ySpeed, turningSpeed;
+  private boolean nudge;
+
+  public SwerveDriveCommand(SwerveSubsystem subsystem, boolean fieldOriented) {
     swerveSubsystem = subsystem;
-    xSpdFunction = xSupplier;
-    ySpdFunction = ySupplier;
-    turningSpdFunction = turnSupplier;
-    fieldOrientedFunction = fieldOriented;
-    fastModeFunction = fastMode;
-    fasterModeFunction = fasterMode;
-    pov = povSupplier;
-    auxLTrig = auxLeftTrigger;
-    auxRTrig = auxRightTrigger;
-    xLimiter = new SlewRateLimiter(DriveConstants.kXSlewRateLimit);
-    yLimiter = new SlewRateLimiter(DriveConstants.kYSlewRateLimit);
-    turningLimiter = new SlewRateLimiter(DriveConstants.kTurnSlewRateLimit);
+    
     addRequirements(swerveSubsystem);
 
     m_tab = Shuffleboard.getTab("Swerve Instance");
@@ -57,37 +34,10 @@ public class SwerveDriveCommand extends Command {
   @Override
   public void execute() {
 
-    // Get inputs
-    double xSpeed = 0, ySpeed = 0, turningSpeed = 0;
-    boolean fastMode = false, fasterMode = false;
-    if (pov.get() == -1) {
-      xSpeed = xSpdFunction.get();
-      ySpeed = ySpdFunction.get();
-      turningSpeed = turningSpdFunction.get();
-      fastMode = fastModeFunction.get();
-      fasterMode = fasterModeFunction.get();
-    }
-    else {
-      xSpeed = pov.get() == 90 ? -DriveConstants.kNudgeSpeed : (pov.get() == 270 ? DriveConstants.kNudgeSpeed : 0);
-      ySpeed = pov.get() == 0 ? DriveConstants.kNudgeSpeed : (pov.get() == 180 ? -DriveConstants.kNudgeSpeed : 0);
-    }
-
-    // Death
-    xSpeed = Math.abs(xSpeed) > OIConstants.kDriveDeadband ? xSpeed : 0;
-    ySpeed = Math.abs(ySpeed) > OIConstants.kDriveDeadband ? ySpeed : 0;
-    turningSpeed = Math.abs(turningSpeed) > OIConstants.kDriveDeadband ? turningSpeed : 0;
-
-    // Slew soup
-    double maxDriveSpeed = fasterMode ? DriveConstants.kFasterTeleMaxMetersPerSec : (fastMode ? DriveConstants.kFastTeleMaxMetersPerSec : DriveConstants.kTeleMaxMetersPerSec);
-    double maxTurnSpeed = fasterMode ? DriveConstants.kFasterTeleMaxRadiansPerSec : (fastMode ? DriveConstants.kFastTeleMaxRadiansPerSec : DriveConstants.kTeleMaxRadiansPerSec);
-    xSpeed = xLimiter.calculate(xSpeed) * maxDriveSpeed;
-    ySpeed = yLimiter.calculate(ySpeed) * maxDriveSpeed;
-    turningSpeed = turningLimiter.calculate(turningSpeed) * maxTurnSpeed;
-
-    // I am speed
+    // Set chassis speeds
     ChassisSpeeds chassisSpeeds;
-    if (shuffleFieldOriented.getBoolean(fieldOrientedFunction) && pov.get() == -1) {
-      // Field oriented
+    if (shuffleFieldOriented.getBoolean(fieldOrientedFunction) && !nudge) {
+      // Field oriented if pov is not touched
       chassisSpeeds =
         ChassisSpeeds.fromFieldRelativeSpeeds(
           xSpeed,
@@ -99,11 +49,11 @@ public class SwerveDriveCommand extends Command {
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
     }
 
-    // Divide and conker
+    // ChassisSpeeds to swerve module states
     SwerveModuleState[] moduleStates =
       DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
 
-    // Actually do the thing
+    // Set module states
     swerveSubsystem.setModuleStates(moduleStates);
   }
 
@@ -115,5 +65,12 @@ public class SwerveDriveCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
+  }
+
+  public void setDriveSpeeds(double xSpeed, double ySpeed, double turnSpeed, boolean nudge) {
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    this.turningSpeed = turnSpeed;
+    this.nudge = nudge;
   }
 }
