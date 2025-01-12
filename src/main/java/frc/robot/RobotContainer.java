@@ -54,7 +54,7 @@ public class RobotContainer {
 
     auto_tab.add("pick auto", autoChooser);
 
-    swerveSubsystem.setDefaultCommand(new DriveFromControllerCommand(swerveSubsystem, null, null, null, false, null, null, null, null, null));
+    swerveSubsystem.setDefaultCommand(new DriveFromControllerCommand(swerveSubsystem, this::getLeftX, this::getLeftY, this::getRightX, this::getSlowMode, this::getFasterMode, this::getPOV));
 
 
     // Configure the trigger bindings
@@ -87,7 +87,7 @@ public class RobotContainer {
   //marcus was here
 
   boolean getSlowMode() {
-    return !m_driverController.getHID().getR2Button();
+    return m_driverController.getHID().getR2Button();
   }
 
   double getRightX() {return m_driverController.getRightX();}
@@ -95,8 +95,8 @@ public class RobotContainer {
   double getLeftY() {return -m_driverController.getLeftY();}
   double getPOV() {return m_driverController.getHID().getPOV();}
   boolean getRightTrigger() {return m_driverController.getHID().getR2Button();}
-  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
-  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
+  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kJoystickDeadband ? m_auxController.getRightY() : 0;}
+  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kJoystickDeadband ? m_auxController.getLeftY() : 0;}
   double getAuxPOV() {return m_auxController.getHID().getPOV();}
   double getAuxLTrig(){return m_auxController.getL2Axis();}
   double getAuxRTrig(){return m_auxController.getR2Axis();}

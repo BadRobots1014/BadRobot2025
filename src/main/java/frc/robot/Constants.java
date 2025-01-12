@@ -40,7 +40,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kSecondControllerPort = 1;
-    public static final double kDriveDeadband = 0.02;
+    public static final double kJoystickDeadband = 0.02;
     public static final double kTriggerDeadband = 0.75;
   }
 
@@ -54,8 +54,10 @@ public final class Constants {
     public static final double kSpeakerTheta = 180;
     
     //Turn theta 
-    public static final double kTurnThetaMaxSpeed = 0.9;
-    public static final double kTurnThetaShutoffSensitivity = 0.005;
+    public static final double kTurnThetaFastSpeed = 0.9;
+    public static final double kTurnThetaSlowSpeed = 0.4;
+    public static final double kTurnThetaErrorForSlowSpeed = 0.4;
+    public static final double kTurnThetaShutoffSensitivity = 1; //degree error margin
 
     // Distance between centers of right and left wheels on robot
     public static final double kTrackWidth = Units.inchesToMeters(24.75);
@@ -132,12 +134,12 @@ public final class Constants {
     public static final double kYSlewRateLimit = 8;
     public static final double kTurnSlewRateLimit = 10;
 
-    public static final double kTeleMaxRadiansPerSec = Math.PI / 2; // TODO adjust max teleop speeds
-    public static final double kFastTeleMaxRadiansPerSec = Math.PI;
+    public static final double kTeleMaxRadiansPerSec = Math.PI; // TODO adjust max teleop speeds
+    public static final double kSlowTeleMaxRadiansPerSec = Math.PI / 2;
     public static final double kFasterTeleMaxRadiansPerSec = Math.PI;
 
-    public static final double kTeleMaxMetersPerSec = 0.3;
-    public static final double kFastTeleMaxMetersPerSec = 1.0;
+    public static final double kSlowTeleMaxMetersPerSec = 0.3;
+    public static final double kTeleMaxMetersPerSec = 1.0;
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.8;
 

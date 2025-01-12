@@ -9,26 +9,23 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
-import java.util.function.Supplier;
 
 public class SwerveDriveCommand extends Command {
 
   public final SwerveSubsystem swerveSubsystem;
-  public Supplier<Boolean> fastModeFunction, fasterModeFunction;
-  public boolean fieldOrientedFunction;
   private ShuffleboardTab m_tab;
   private GenericEntry shuffleFieldOriented;
 
   private double xSpeed, ySpeed, turningSpeed;
   private boolean nudge;
 
-  public SwerveDriveCommand(SwerveSubsystem subsystem, boolean fieldOriented) {
+  public SwerveDriveCommand(SwerveSubsystem subsystem) {
     swerveSubsystem = subsystem;
     
     addRequirements(swerveSubsystem);
 
     m_tab = Shuffleboard.getTab("Swerve Instance");
-    shuffleFieldOriented = m_tab.add("Field Oriented" + this.toString(), fieldOriented).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
+    shuffleFieldOriented = m_tab.add("Field Oriented" + this.toString(), DriveConstants.kFieldOriented).withWidget(BuiltInWidgets.kToggleSwitch).getEntry();
   }
 
   @Override
@@ -36,7 +33,7 @@ public class SwerveDriveCommand extends Command {
 
     // Set chassis speeds
     ChassisSpeeds chassisSpeeds;
-    if (shuffleFieldOriented.getBoolean(fieldOrientedFunction) && !nudge) {
+    if (shuffleFieldOriented.getBoolean(DriveConstants.kFieldOriented) && !nudge) {
       // Field oriented if pov is not touched
       chassisSpeeds =
         ChassisSpeeds.fromFieldRelativeSpeeds(
