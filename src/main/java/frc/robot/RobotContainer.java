@@ -7,7 +7,6 @@ package frc.robot;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.DriveFromControllerCommand;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -33,7 +32,7 @@ public class RobotContainer {
   ShuffleboardTab auto_tab = Shuffleboard.getTab("auto");
 
   // The robot's subsystems and commands are defined here...
-  private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final SwerveSubsystem swerveSubsystem;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandPS4Controller m_driverController =
@@ -43,8 +42,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    boolean isCompetition = true;
+
+    boolean isCompetition = false;
     //TODO: set isCompetition to true for comp
+
+    swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+    swerveSubsystem.setDefaultCommand(new DriveFromControllerCommand(swerveSubsystem, this::getLeftX, this::getLeftY, this::getRightX, this::getSlowMode, this::getFasterMode, this::getPOV));
 
     autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(
       (stream) -> isCompetition
@@ -53,8 +56,6 @@ public class RobotContainer {
     );
 
     auto_tab.add("pick auto", autoChooser);
-
-    swerveSubsystem.setDefaultCommand(new DriveFromControllerCommand(swerveSubsystem, this::getLeftX, this::getLeftY, this::getRightX, this::getSlowMode, this::getFasterMode, this::getPOV));
 
 
     // Configure the trigger bindings

@@ -42,6 +42,8 @@ public class SwerveSubsystem extends SubsystemBase {
     i = m_tab.add("i", ModuleConstants.kTurningI).getEntry();
     d = m_tab.add("d", ModuleConstants.kTurningD).getEntry();
 
+    System.out.println("config started");
+
     // Load the RobotConfig from the GUI settings. You should probably
     // store this in your Constants file
     RobotConfig config = null;
@@ -76,6 +78,8 @@ public class SwerveSubsystem extends SubsystemBase {
             },
             this // Reference to this subsystem to set requirements
     );
+
+    System.out.println("the thangy is configged");
   }
 
   // Modules

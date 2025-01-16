@@ -31,9 +31,9 @@ public final class Constants {
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kModuleDeadband = 0.005;
-    public static final double kTurningP = 1;
+    public static final double kTurningP = 0.0;
     public static final double kTurningI = 0.0;
-    public static final double kTurningD = 0.004;
+    public static final double kTurningD = 0.0;
     public static final double kTurningPeriod = .005;
   }
 
@@ -72,7 +72,8 @@ public final class Constants {
     );
 
     // TODO Using tall bot?
-    public static final boolean tallBot = true;
+    public static final boolean tallBot = false;
+    public static final boolean stupidBot = true;
 
     // Short bot offsets
     public static final double kFROffset = Math.PI / 2 - 2;
@@ -86,11 +87,17 @@ public final class Constants {
     public static final double kTallBLOffset = .314 * Math.PI * 2 + (Math.PI / 2);
     public static final double kTallFLOffset = .106 * Math.PI * 2;
 
+    //Stupid bot offsets
+    public static final double kStupidFROffset = -Math.PI/2;
+    public static final double kStupidBROffset = -Math.PI/2;
+    public static final double kStupidBLOffset = -Math.PI/2;
+    public static final double kStupidFLOffset = -Math.PI/2;
+
     // Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
-    public static final double kBackRightChassisAngularOffset = (tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = (tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = (tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = (stupidBot ? kStupidFROffset : tallBot ? kTallFROffset : kFROffset);
+    public static final double kBackRightChassisAngularOffset = (stupidBot ? kStupidBROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = (stupidBot ? kStupidBLOffset : tallBot ? kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = (stupidBot ? kStupidFLOffset : tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 11;
