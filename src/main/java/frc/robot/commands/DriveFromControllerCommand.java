@@ -48,15 +48,17 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
       turningSpeed = turningSpdFunction.get();
       slowMode = slowModeFunction.get();
       fasterMode = fasterModeFunction.get();
+
+      //we dont need to calculate turn if the robot is being nudged
+      calculateTurn();
     }
     else { //nudge if pov is being inputted
       xSpeed = pov.get() == 90 ? -DriveConstants.kNudgeSpeed : (pov.get() == 270 ? DriveConstants.kNudgeSpeed : 0);
       ySpeed = pov.get() == 0 ? DriveConstants.kNudgeSpeed : (pov.get() == 180 ? -DriveConstants.kNudgeSpeed : 0);
     }
 
-    //we always need to calculate drive, turn and set the values
+    //we always need to calculate drive and set the values
     calculateDrive();
-    calculateTurn();
     setDriveSpeeds();
   }
 
