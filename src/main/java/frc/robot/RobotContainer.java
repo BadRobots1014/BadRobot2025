@@ -4,10 +4,19 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
+
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,14 +30,28 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController =
-      new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+  private final PS4Controller m_driverController =
+      new PS4Controller(OperatorConstants.kDriverControllerPort);
+  private final PS4Controller m_auxController =
+      new PS4Controller(OperatorConstants.kDriverControllerPort);
+
+  private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController);
+
+  boolean fastMode = false, fasterMode = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+    () -> getLeftX(),
+    () -> getLeftY(),
+    () -> getRightX(),
+    DriveConstants.kFieldOriented,
+    this::getFastMode,
+    this::getFasterMode,
+    this::getPOV,
+    this::getAuxLeftTrigger,
+    this::getAuxRightTrigger));
     // Configure the trigger bindings
     configureBindings();
   }
@@ -43,14 +66,37 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
   }
+
+  boolean getFastMode() {
+    if (m_driverController.getL1Button()) {
+      fastMode = !fastMode;
+    }
+    return fastMode;
+  }
+
+  boolean getFasterMode() {
+    if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
+      fasterMode = true;
+    }
+    else fasterMode = false;
+    return fasterMode;
+  }
+  double getRightX() {return m_driverController.getRightX();}
+  double getLeftX() {return -m_driverController.getLeftX();}
+  double getLeftY() {return -m_driverController.getLeftY();}
+  double getPOV() {return m_driverController.getPOV();}
+  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
+  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
+  double getAuxPOV() {return m_auxController.getPOV();}
+  double getAuxLeftTrigger() {
+    return m_auxController.getL2Axis();
+  }
+  double getAuxRightTrigger() {
+    return m_auxController.getR2Axis();
+  }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -59,6 +105,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return Autos.exampleAuto(new ExampleSubsystem());
   }
 }

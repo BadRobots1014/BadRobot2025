@@ -1,6 +1,8 @@
 package frc.robot.util;
 
 import static edu.wpi.first.units.Units.Degrees;
+import static edu.wpi.first.units.Units.Radians;
+import static edu.wpi.first.units.Units.Rotations;
 
 import com.ctre.phoenix6.configs.CANcoderConfigurator;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
@@ -194,15 +196,15 @@ public class SwerveModule {
   //the 4 methods above go through the conversion factor defined above in relative encoder
 
   public double getAbsoluteEncoderRot() {
-    return absoluteEncoder.getAbsolutePosition().getValue().in(Degrees);
-  } // Returns position of absolute encoder in degrees
+    return absoluteEncoder.getAbsolutePosition().getValue().in(Rotations);
+  } // Returns position of absolute encoder in ROTATIONS (not degrees) :(
 
   public double getAbsoluteEncoderRad() {
-    return getAbsoluteEncoderRot() * 2 * Math.PI;
+    return absoluteEncoder.getAbsolutePosition().getValue().in(Radians);
   } // Returns position of absolute encoder in radians
 
   public double getAbsoluteEncoderDeg() {
-    return getAbsoluteEncoderRot() * 360;
+    return absoluteEncoder.getAbsolutePosition().getValue().in(Degrees);
   } // Returns position of absolute encoder in degrees
 
   public SwerveModuleState getState() {
