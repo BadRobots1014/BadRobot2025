@@ -3,6 +3,8 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -15,6 +17,8 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
 
   public double xSpeed = 0, ySpeed = 0, turningSpeed = 0;
   public boolean slowMode = false, fasterMode = false;
+
+  public double m_finalTurnSpeed = 0, finalx = 0, finaly = 0;
 
   public DriveFromControllerCommand(
     SwerveSubsystem swerveSubsystem,
@@ -37,10 +41,35 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
       xLimiter = new SlewRateLimiter(DriveConstants.kXSlewRateLimit);
       yLimiter = new SlewRateLimiter(DriveConstants.kYSlewRateLimit);
       turningLimiter = new SlewRateLimiter(DriveConstants.kTurnSlewRateLimit);
+
+      ShuffleboardTab m_tab = Shuffleboard.getTab("controller command");
+      m_tab.addDouble("final turn speed", this::getFinalTurnSpeed);
+      m_tab.addDouble("final x", this::getFinalx);
+      m_tab.addDouble("final y", this::getFinaly);
+
+
+    }
+
+  double getFinalTurnSpeed()
+  {
+    return m_finalTurnSpeed;
+  }
+
+  double getFinalx()
+  {
+    return m_finalTurnSpeed;
+  }
+
+  double getFinaly()
+  {
+    return m_finalTurnSpeed;
   }
 
   @Override
   public void execute() {
+
+    //swerveSubsystem.testMotor();/* 
+
     // Get controller inputs
     if (pov.get() == -1) {
       xSpeed = xSpdFunction.get();
@@ -59,7 +88,7 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
 
     //we always need to calculate drive and set the values
     calculateDrive();
-    setDriveSpeeds();
+    setDriveSpeeds();//*/ 
   }
 
   public void calculateDrive() {
@@ -71,6 +100,9 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
     double maxDriveSpeed = fasterMode ? DriveConstants.kFasterTeleMaxMetersPerSec : (slowMode ? DriveConstants.kSlowTeleMaxMetersPerSec : DriveConstants.kTeleMaxMetersPerSec);
     xSpeed = xLimiter.calculate(xSpeed) * maxDriveSpeed;
     ySpeed = yLimiter.calculate(ySpeed) * maxDriveSpeed;
+
+    finalx = xSpeed;
+    finaly = ySpeed;
   }
 
   public void calculateTurn() {
@@ -80,6 +112,8 @@ public class DriveFromControllerCommand extends SwerveDriveCommand {
     // Slew rates
     double maxTurnSpeed = fasterMode ? DriveConstants.kFasterTeleMaxRadiansPerSec : (slowMode ? DriveConstants.kSlowTeleMaxRadiansPerSec : DriveConstants.kTeleMaxRadiansPerSec);
     turningSpeed = turningLimiter.calculate(turningSpeed) * maxTurnSpeed;
+
+    m_finalTurnSpeed = turningSpeed;
   }
 
   public void setDriveSpeeds()

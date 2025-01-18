@@ -210,8 +210,8 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void testMotor() {
-    System.out.println(Controller.getPOV());
-    m_tab.addInteger("POV", Controller::getPOV);
+
+
 
     if (Controller.getPOV() > -1) {
       int pov = Controller.getPOV();
@@ -220,6 +220,7 @@ public class SwerveSubsystem extends SubsystemBase {
       backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(pov)));
       backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(pov)));
     }
+
 
     double speedMultiplyer = Controller.getR1Button() ? .3 : 1;
 
@@ -230,7 +231,7 @@ public class SwerveSubsystem extends SubsystemBase {
     else if (Controller.getCircleButton()) module = backRight;
     else if (Controller.getCrossButton()) module = backLeft;
 
-    if (module == null) {
+    /*if (module == null) {
       frontLeft.setDesiredState(
         new SwerveModuleState(
           Controller.getLeftY() * speedMultiplyer,
@@ -256,7 +257,10 @@ public class SwerveSubsystem extends SubsystemBase {
         )
       );
       return;
-    }
+    }*/
+
+    if (module == null)
+      return;
 
     frontLeft.setDesiredState(new SwerveModuleState());
     frontRight.setDesiredState(new SwerveModuleState());
@@ -266,8 +270,9 @@ public class SwerveSubsystem extends SubsystemBase {
     module.setDesiredState(
       new SwerveModuleState(
         Controller.getLeftY() * speedMultiplyer,
-        Rotation2d.fromRotations(.5 * Controller.getLeftX())
+        Rotation2d.fromRotations(/* .001 * Controller.getLeftX()*/0)
       )
     );
+    System.out.println(Controller.getLeftY() + " " + Controller.getLeftX());
   }
 }

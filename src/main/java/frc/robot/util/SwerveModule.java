@@ -35,6 +35,7 @@ public class SwerveModule {
   private SwerveModuleState m_lastState = new SwerveModuleState();
   private SwerveModuleState m_lastStateOptimized = new SwerveModuleState();
   private double m_lastPIDOutput = 0;
+  private double lastStateAngle = 0;
 
   public SwerveModule(
     int driveMotorId,
@@ -102,6 +103,7 @@ public class SwerveModule {
     m_tab.addDouble("Last angle optimized" + driveMotorId, this::getLastStateAngleOptimized);
     m_tab.addDouble("Last speed optimized" + driveMotorId, this::getLastStateSpeedOptimized);
     m_tab.addDouble("Encoder angle" + driveMotorId, this::getAbsoluteEncoderRad);
+    m_tab.addDouble("last State angle rad" + driveMotorId, () -> {return this.lastStateAngle;});
     m_tab.addDouble("Last PID Output" + driveMotorId, this::getLastPIDOutput);
     m_tab.addDouble("Last error" + driveMotorId, this::getLastError);
 
@@ -126,6 +128,7 @@ public class SwerveModule {
     // i have no idea if this is still a todo, its been there for over a year
     state = optimize(state, getState().angle);
     m_lastStateOptimized = state;
+    lastStateAngle = state.angle.getRadians();
     driveMotor.set(
       state.speedMetersPerSecond //* DriveConstants.kMaxSpeedMetersPerSecond
     );
