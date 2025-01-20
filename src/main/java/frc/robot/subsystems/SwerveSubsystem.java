@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -41,7 +43,7 @@ public class SwerveSubsystem extends SubsystemBase {
     i = m_tab.add("i", ModuleConstants.kTurningI).getEntry();
     d = m_tab.add("d", ModuleConstants.kTurningD).getEntry();
 
-    /*RobotConfig config;
+    RobotConfig config = null;
     try{
       config = RobotConfig.fromGUISettings();
     } catch (Exception e) {
@@ -72,7 +74,7 @@ public class SwerveSubsystem extends SubsystemBase {
               return false;
             },
             this // Reference to this subsystem to set requirements
-    );*/
+    );
   }
 
   // Modules

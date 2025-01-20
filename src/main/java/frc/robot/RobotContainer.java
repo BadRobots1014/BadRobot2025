@@ -16,7 +16,11 @@ import frc.robot.subsystems.SwerveSubsystem;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -37,6 +41,7 @@ public class RobotContainer {
       new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController);
+  private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = false, fasterMode = false;
 
@@ -52,6 +57,15 @@ public class RobotContainer {
     this::getPOV,
     this::getAuxLeftTrigger,
     this::getAuxRightTrigger));
+
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    // Another option that allows you to specify the default auto by its name
+    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -105,6 +119,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(new ExampleSubsystem());
+    return autoChooser.getSelected();
   }
 }
