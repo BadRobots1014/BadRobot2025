@@ -17,6 +17,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.ModuleConstants;
@@ -38,6 +39,10 @@ public class SwerveModule {
   private SwerveModuleState m_lastStateOptimized = new SwerveModuleState();
   private double m_lastPIDOutput = 0;
 
+  private GenericEntry p;
+  private GenericEntry i;
+  private GenericEntry d;
+
   public SwerveModule(
     int driveMotorId,
     int turningMotorId,
@@ -45,7 +50,10 @@ public class SwerveModule {
     boolean turningMotorReversed,
     int absoluteEncoderId,
     double absoluteEncoderOffset,
-    boolean absoluteEncoderReversed
+    boolean absoluteEncoderReversed,
+    GenericEntry p,
+    GenericEntry i,
+    GenericEntry d
   ) {
     // Absolute encoder setup
     this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
@@ -89,9 +97,9 @@ public class SwerveModule {
     // Setup PID controllers
     turningPidController =
       new PIDController(
-        ModuleConstants.kTurningP,
-        ModuleConstants.kTurningI,
-        ModuleConstants.kTurningD,
+        p.getDouble(1),
+        i.getDouble(0),
+        d.getDouble(0),
         ModuleConstants.kTurningPeriod
       );
     turningPidController.enableContinuousInput(-Math.PI, Math.PI);
@@ -117,6 +125,7 @@ public class SwerveModule {
   }
 
   public void setDesiredState(SwerveModuleState state) {
+
     if (
       Math.abs(state.speedMetersPerSecond) < ModuleConstants.kModuleDeadband
     ) {

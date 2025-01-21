@@ -27,21 +27,41 @@ public class SwerveSubsystem extends SubsystemBase {
 
   PS4Controller Controller;
 
-  public GenericEntry p;
-  public GenericEntry i;
-  public GenericEntry d;
+  public ShuffleboardTab m_tab = Shuffleboard.getTab("swerve");
+
+  public GenericEntry p = m_tab.add("p", ModuleConstants.kTurningP).getEntry();
+  public GenericEntry i = m_tab.add("i", ModuleConstants.kTurningI).getEntry();
+  public GenericEntry d = m_tab.add("d", ModuleConstants.kTurningD).getEntry();
 
   public double offsetX = 0;
   public double offsetY = 0;
 
   public SwerveSubsystem(PS4Controller controller) {
 
-    m_tab = Shuffleboard.getTab("swerve");
+    //Delay to allow navx to boot up
+    new Thread(() -> {
+      try {
+        Thread.sleep(DriveConstants.kBootupDelay);
+        resetPose();
+      } catch (Exception e) {}
+    }).start();
+
+    //Shuffle bored
+    m_tab = Shuffleboard.getTab("Swerve");
+    m_tab.addNumber("Heading", this::getHeading);
+    m_tab.addNumber("Yaw", this::getYaw);
+    m_tab.addNumber("Roll", this::getRoll);
+    m_tab.addNumber("Pitch", this::getPitch);
+    m_tab.addNumber("X", this::getX);
+    m_tab.addNumber("Y", this::getY);
+    m_tab.addNumber("X Offset", () -> offsetX);
+    m_tab.addNumber("Y Offset", () -> offsetY);
+    m_tab.addBoolean("NavX isConnected", gyro::isConnected);
+    m_tab.addBoolean("NavX isCalibrating", gyro::isCalibrating);
+
     Controller = controller;
 
-    p = m_tab.add("p", ModuleConstants.kTurningP).getEntry();
-    i = m_tab.add("i", ModuleConstants.kTurningI).getEntry();
-    d = m_tab.add("d", ModuleConstants.kTurningD).getEntry();
+    System.out.print(p);
 
     RobotConfig config = null;
     try{
@@ -85,7 +105,8 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kFrontLeftTurningEncoderReversed,
     DriveConstants.kFrontLeftEncoderCanId,
     DriveConstants.kFrontLeftChassisAngularOffset,
-    DriveConstants.kFrontLeftAbsoluteEncoderReversed
+    DriveConstants.kFrontLeftAbsoluteEncoderReversed,
+    p,i,d
   );
 
   public SwerveModule frontRight = new SwerveModule(
@@ -95,7 +116,8 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kFrontRightTurningEncoderReversed,
     DriveConstants.kFrontRightEncoderCanId,
     DriveConstants.kFrontRightChassisAngularOffset,
-    DriveConstants.kFrontRightAbsoluteEncoderReversed
+    DriveConstants.kFrontRightAbsoluteEncoderReversed,
+    p,i,d
   );
 
   public SwerveModule backLeft = new SwerveModule(
@@ -105,7 +127,8 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kBackLeftTurningEncoderReversed,
     DriveConstants.kRearLeftEncoderCanId,
     DriveConstants.kBackLeftChassisAngularOffset,
-    DriveConstants.kBackLeftAbsoluteEncoderReversed
+    DriveConstants.kBackLeftAbsoluteEncoderReversed,
+    p,i,d
   );
 
   public SwerveModule backRight = new SwerveModule(
@@ -115,37 +138,15 @@ public class SwerveSubsystem extends SubsystemBase {
     DriveConstants.kBackRightTurningEncoderReversed,
     DriveConstants.kRearRightEncoderCanId,
     DriveConstants.kBackRightChassisAngularOffset,
-    DriveConstants.kBackRightAbsoluteEncoderReversed
+    DriveConstants.kBackRightAbsoluteEncoderReversed,
+    p,i,d
   );
 
   // The gyro
   //private final AHRS gyro = new AHRS(SPI.Port.kMXP); this is old
    private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
 
-  // Shuffleboard
-  private final ShuffleboardTab m_tab;
-
   public SwerveSubsystem() {
-    //Delay to allow navx to boot up
-    new Thread(() -> {
-      try {
-        Thread.sleep(DriveConstants.kBootupDelay);
-        resetPose();
-      } catch (Exception e) {}
-    }).start();
-
-    //Shuffle bored
-    m_tab = Shuffleboard.getTab("Swerve");
-    m_tab.addNumber("Heading", this::getHeading);
-    m_tab.addNumber("Yaw", this::getYaw);
-    m_tab.addNumber("Roll", this::getRoll);
-    m_tab.addNumber("Pitch", this::getPitch);
-    m_tab.addNumber("X", this::getX);
-    m_tab.addNumber("Y", this::getY);
-    m_tab.addNumber("X Offset", () -> offsetX);
-    m_tab.addNumber("Y Offset", () -> offsetY);
-    m_tab.addBoolean("NavX isConnected", gyro::isConnected);
-    m_tab.addBoolean("NavX isCalibrating", gyro::isCalibrating);
   }
 
   // Gyro data shenanigans
