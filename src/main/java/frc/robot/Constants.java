@@ -19,5 +19,6 @@ public final class Constants {
 
   public final class BlinkinConstants {
     public final static int kBlinkinPort = 0;
+    public final static double kBlinkinDefaultColorCode = .57;
   } 
 }

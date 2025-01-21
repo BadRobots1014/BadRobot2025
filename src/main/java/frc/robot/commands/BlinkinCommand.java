@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.BlinkinConstants;
 import frc.robot.subsystems.BlinkinSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 

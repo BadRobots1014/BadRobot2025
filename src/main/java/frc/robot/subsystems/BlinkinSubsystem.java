@@ -39,7 +39,7 @@ public class BlinkinSubsystem extends SubsystemBase {
   }
 
   public void setDefault(){
-    setBlinkin(.69);
+    setBlinkin(BlinkinConstants.kBlinkinDefaultColorCode);
   }
 
 }
