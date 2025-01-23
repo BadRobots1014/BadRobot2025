@@ -15,7 +15,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,12 +55,10 @@ public class SwerveSubsystem extends SubsystemBase {
     m_tab.addNumber("Y", this::getY);
     m_tab.addNumber("X Offset", () -> offsetX);
     m_tab.addNumber("Y Offset", () -> offsetY);
-    m_tab.addBoolean("NavX isConnected", gyro::isConnected);
-    m_tab.addBoolean("NavX isCalibrating", gyro::isCalibrating);
+    m_tab.addBoolean("NavX isConnected", gru::isConnected);
+    m_tab.addBoolean("NavX isCalibrating", gru::isCalibrating);
 
     Controller = controller;
-
-    System.out.print(p);
 
     RobotConfig config = null;
     try{
@@ -144,37 +141,34 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // The gyro
   //private final AHRS gyro = new AHRS(SPI.Port.kMXP); this is old
-   private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
-
-  public SwerveSubsystem() {
-  }
+   private final AHRS gru = new AHRS(NavXComType.kMXP_SPI);
 
   // Gyro data shenanigans
   public void resetPose() {
-    gyro.reset();
-    gyro.resetDisplacement();
+    gru.reset();
+    gru.resetDisplacement();
     setOffset(new Pose2d());
   }
   public void resetPose(Pose2d pose) {
-    gyro.reset();
-    gyro.resetDisplacement();
+    gru.reset();
+    gru.resetDisplacement();
     setOffset(pose);
   }
   public void setOffset(Pose2d pose) {
-    gyro.setAngleAdjustment(pose.getRotation().getDegrees());
+    gru.setAngleAdjustment(pose.getRotation().getDegrees());
     offsetX = pose.getX();
     offsetY = pose.getY();
   }
-  public double getHeading() {return Math.IEEEremainder(gyro.getAngle(), 360);}
+  public double getHeading() {return Math.IEEEremainder(gru.getAngle(), 360);}
   public Rotation2d getRotation2d() {return Rotation2d.fromDegrees(getHeading());}
-  public double getYaw() {return Math.IEEEremainder(gyro.getYaw(), 360);}
-  public double getRoll() {return Math.IEEEremainder(gyro.getRoll(), 360);}
-  public double getPitch() {return Math.IEEEremainder(gyro.getPitch(), 360);}
-  public double getX() {return gyro.getDisplacementX() + offsetX;}
-  public double getY() {return gyro.getDisplacementY() + offsetY;}
-  public double getXSpeed() {return gyro.getVelocityX();}
-  public double getYSpeed() {return gyro.getVelocityY();}
-  public double getTurnSpeed() {return gyro.getRate();}
+  public double getYaw() {return Math.IEEEremainder(gru.getYaw(), 360);}
+  public double getRoll() {return Math.IEEEremainder(gru.getRoll(), 360);}
+  public double getPitch() {return Math.IEEEremainder(gru.getPitch(), 360);}
+  public double getX() {return gru.getDisplacementX() + offsetX;}
+  public double getY() {return gru.getDisplacementY() + offsetY;}
+  public double getXSpeed() {return gru.getVelocityX();}
+  public double getYSpeed() {return gru.getVelocityY();}
+  public double getTurnSpeed() {return gru.getRate();}
   public Pose2d getPose() {return new Pose2d(getX(), getY(), getRotation2d());}
 
   public ChassisSpeeds getRobotRelativeSpeeds() {return new ChassisSpeeds(getXSpeed(), getYSpeed(), getTurnSpeed());}

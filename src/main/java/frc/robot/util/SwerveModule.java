@@ -133,8 +133,6 @@ public class SwerveModule {
       return;
     }
     m_lastState = state;
-    // TODO fix optimization
-    // i have no idea if this is still a todo, its been there for over a year
     state = optimize(state, getState().angle);
     m_lastStateOptimized = state;
     driveMotor.set(
