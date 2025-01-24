@@ -7,11 +7,13 @@ package frc.robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.BooleanSupplier;
@@ -44,6 +46,7 @@ public class RobotContainer {
       new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = false, fasterMode = false;
@@ -84,6 +87,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+    m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem));
   }
 
   boolean getFastMode() {
