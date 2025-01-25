@@ -6,6 +6,7 @@ import frc.robot.util.LimelightHelpers;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
 import frc.robot.Constants.DriveConstants;
 
@@ -54,7 +55,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
           driveX,
           driveY,
           driveTheta,
-          true,
+          false,
           () -> false,
           () -> false,
           () -> -1d,
@@ -76,13 +77,14 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         // double tagId = LimelightHelpers.getFiducialID("");
 
         double yaw = posFromTag.getRotation().getZ();
-        double x = posFromTag.getX() * DriveConstants.kAutoSpeedLimit;
+        double x = posFromTag.getX();
 
-        double turnSpeed = Math.sin(yaw) * DriveConstants.kAutoSpeedLimit;
+        double turnSpeed = Math.sin(yaw);
         // Take the smaller speed depending on direction
-        double xSpeed = x > 0 ? Math.min(Math.abs(x), 1) : Math.max(Math.abs(x), -1);
+        double xSpeed = -MathUtil.clamp(x,-1,1);
         // Z in 3d space corrosponds to the Y for the motor
         double ySpeed = Math.min(posFromTag.getZ() * DriveConstants.kAutoSpeedLimit, 1);
+
 
         // super.setDriveSpeeds(xSpeed, ySpeed, turnSpeed, false);
         driveXd = xSpeed;
