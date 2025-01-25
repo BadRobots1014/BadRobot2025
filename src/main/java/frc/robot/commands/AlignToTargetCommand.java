@@ -8,6 +8,8 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import frc.robot.Constants.DriveConstants;
 
 public class AlignToTargetCommand extends SwerveDriveCommand {
@@ -18,6 +20,8 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
     private static double driveXd = 0;
     private static double driveYd = 0;
     private static double driveThetad = 0;
+
+    private PS4Controller m_controller;
 
     private static Supplier<Double> driveX = new Supplier<Double>() {
       @Override
@@ -38,7 +42,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       }
     };
 
-    public AlignToTargetCommand(LimelightSubsystem limelightSubsystem, SwerveSubsystem swerveSubsystem) {
+    public AlignToTargetCommand(LimelightSubsystem limelightSubsystem, SwerveSubsystem swerveSubsystem, PS4Controller controller) {
       // SwerveSubsystem subsystem,
       // Supplier<Double> xSupplier,
       // Supplier<Double> ySupplier,
@@ -84,6 +88,14 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         double xSpeed = -MathUtil.clamp(x,-1,1);
         // Z in 3d space corrosponds to the Y for the motor
         double ySpeed = Math.min(posFromTag.getZ() * DriveConstants.kAutoSpeedLimit, 1);
+
+        //GET READY TO RUUUUMMMMBBBLLLLEEEEE
+        if (yaw > 0) {
+          m_controller.setRumble(RumbleType.kLeftRumble, 0.5);
+        }
+        else if (yaw < 0) {
+          m_controller.setRumble(RumbleType.kRightRumble, 0.5);
+        }
 
 
         // super.setDriveSpeeds(xSpeed, ySpeed, turnSpeed, false);

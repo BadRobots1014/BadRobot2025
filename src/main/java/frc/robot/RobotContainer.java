@@ -86,8 +86,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-    m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem));
+    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem, m_driverController.getHID()));
+    m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
   }
 
   boolean getFastMode() {
