@@ -4,29 +4,43 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ClimberSubsystem;
 
-/** An example command that uses an example subsystem. */
 public class ClimbCommand extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+  private final ClimberSubsystem m_subsystem;
+  private final Supplier<Double> m_leftPower;
+  private final Supplier<Double> m_rightPower;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
-
-  public ExampleCommand(ExampleSubsystem subsystem) {
+  public ClimbCommand(ClimberSubsystem subsystem, double power) {
     m_subsystem = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    m_leftPower = () -> power;
+    m_rightPower = () -> power;
     addRequirements(subsystem);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
+  public ClimbCommand(ClimberSubsystem subsystem, Supplier<Double> power) {
+    m_subsystem = subsystem;
+    m_leftPower = power;
+    m_rightPower = power;
+    addRequirements(subsystem);
+  }
+
+  public ClimbCommand(ClimberSubsystem subsystem, double leftPower, double rightPower) {
+    m_subsystem = subsystem;
+    m_leftPower = () -> leftPower;
+    m_rightPower = () -> rightPower;
+    addRequirements(subsystem);
+  }
+
+  public ClimbCommand(ClimberSubsystem subsystem, Supplier<Double> leftPower, Supplier<Double> rightPower) {
+    m_subsystem = subsystem;
+    m_leftPower = leftPower;
+    m_rightPower = rightPower;
+    addRequirements(subsystem);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -37,7 +51,9 @@ public class ClimbCommand extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_subsystem.stopClimbers();
+  }
 
   // Returns true when the command should end.
   @Override
