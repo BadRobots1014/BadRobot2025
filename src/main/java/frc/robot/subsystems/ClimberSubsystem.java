@@ -19,6 +19,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SparkMax leftClimber;
   private final SparkMax rightClimber;
 
+
+  // Creates Left/Right climber objects and configures them
   public ClimberSubsystem() {
     leftClimber = new SparkMax(ClimberConstants.kLeftClimberCanId, MotorType.kBrushless);
     rightClimber = new SparkMax(ClimberConstants.kRightClimberCanId, MotorType.kBrushless);
@@ -28,27 +30,22 @@ public class ClimberSubsystem extends SubsystemBase {
 
     leftClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
   }
 
+  // Retrieves the amount of AMPs in the Left/Right climbers
   public double getLeftClimberCurrent() {return leftClimber.getOutputCurrent();}
   public double getRightClimberCurrent() {return rightClimber.getOutputCurrent();}
 
   /**
-   * Runs the climber at a speed
-   * 
-   * @param power The power to run the climber at
-   * 
+   * Runs the climber at a certain power level (speed)
+   * @param power The power in AMPs to run the climber at
    */
   public void runClimber(double power) {
     rightClimber.set(getLeftClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
     leftClimber.set(getRightClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
   }
 
-  /**
-   * Stops the climbers
-   * 
-   */
+  // Stops the climber motors
   public void stopClimber() {
     rightClimber.stopMotor();
     leftClimber.stopMotor();
