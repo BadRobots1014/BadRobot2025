@@ -11,48 +11,30 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class ClimbCommand extends Command {
   private final ClimberSubsystem m_subsystem;
-  private final Supplier<Double> m_leftPower;
-  private final Supplier<Double> m_rightPower;
+  private final Supplier<Double> m_power;
 
   public ClimbCommand(ClimberSubsystem subsystem, double power) {
     m_subsystem = subsystem;
-    m_leftPower = () -> power;
-    m_rightPower = () -> power;
+    m_power = () -> power;
     addRequirements(subsystem);
   }
 
   public ClimbCommand(ClimberSubsystem subsystem, Supplier<Double> power) {
     m_subsystem = subsystem;
-    m_leftPower = power;
-    m_rightPower = power;
-    addRequirements(subsystem);
-  }
-
-  public ClimbCommand(ClimberSubsystem subsystem, double leftPower, double rightPower) {
-    m_subsystem = subsystem;
-    m_leftPower = () -> leftPower;
-    m_rightPower = () -> rightPower;
-    addRequirements(subsystem);
-  }
-
-  public ClimbCommand(ClimberSubsystem subsystem, Supplier<Double> leftPower, Supplier<Double> rightPower) {
-    m_subsystem = subsystem;
-    m_leftPower = leftPower;
-    m_rightPower = rightPower;
+    m_power = power;
     addRequirements(subsystem);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.runClimber(false, m_leftPower.get());
-    m_subsystem.runClimber(true, m_rightPower.get());
+    m_subsystem.runClimber(m_power.get()); // Runs both climbers at the same time, so there is no need to run it twice. I am not sure how we should reference the power from both
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_subsystem.stopClimbers();
+    m_subsystem.stopClimber();
   }
 
   // Returns true when the command should end.
