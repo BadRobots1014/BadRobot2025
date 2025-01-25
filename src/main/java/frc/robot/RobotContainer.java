@@ -44,6 +44,7 @@ public class RobotContainer {
       new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+  private final ExampleSubsystem m_exampleSubsytem = new ExampleSubsystem();
   private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = false, fasterMode = false;
@@ -84,6 +85,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+    m_driverController.L2().whileTrue(new ExampleCommand(m_exampleSubsytem));
   }
 
   boolean getFastMode() {
