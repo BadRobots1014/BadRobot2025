@@ -143,4 +143,12 @@ public final class Constants {
 
     //public static final Button kTestMotorButton = Button.kLeftBumper;
   }
+
+  public static final class ClimberConstants {
+    public static final int kLeftClimberCanId = 0;
+    public static final int kRightClimberCanId = 0;
+    public static final int kClimberUpPower = -1;
+    public static final int kClimberDownPower = 1;
+    public static final int kClimberMaxAmps = 200000;
+  } 
 }
