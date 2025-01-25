@@ -117,9 +117,11 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         //GET READY TO RUUUUMMMMBBBLLLLEEEEE
         if (yaw > 0) {
           m_controller.setRumble(RumbleType.kLeftRumble, 0.5);
+          m_controller.setRumble(RumbleType.kRightRumble, 0);
         }
         else if (yaw < 0) {
           m_controller.setRumble(RumbleType.kRightRumble, 0.5);
+          m_controller.setRumble(RumbleType.kLeftRumble, 0);
         }
 
 
@@ -131,5 +133,12 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         driveThetad = turningPID.calculate(yaw, 0);
         super.execute();
 
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+      m_controller.setRumble(RumbleType.kRightRumble, 0);
+      m_controller.setRumble(RumbleType.kLeftRumble, 0);
+      super.end(interrupted);
     }
 }

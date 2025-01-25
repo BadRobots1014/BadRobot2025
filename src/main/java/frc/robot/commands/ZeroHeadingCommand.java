@@ -20,4 +20,10 @@ public class ZeroHeadingCommand extends Command {
     m_subsystem.resetPose();
     m_controller.setRumble(RumbleType.kBothRumble, 0.2);
   }
+
+  @Override
+  public void end(boolean interrupted) {
+    m_controller.setRumble(RumbleType.kRightRumble, 0);
+    m_controller.setRumble(RumbleType.kLeftRumble, 0);
+  }
 }
