@@ -66,7 +66,7 @@ public class ElevatorCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("ElevatorCommand started with goal level: " + goalLevel);
+    System.out.println("Elevator started with goal level: " + goalLevel);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -101,7 +101,7 @@ public class ElevatorCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("ElevatorCommand ended" + (interrupted ? " (interrupted)" : ""));
+    System.out.println("Elevator done" + (interrupted ? " (interrupted)" : ""));
   }
 
   // Returns true when the command should end.
