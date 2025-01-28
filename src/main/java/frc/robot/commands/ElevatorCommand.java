@@ -4,15 +4,35 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
+
+import edu.wpi.first.math.controller.PIDController;
+
 /** An example command that uses an example subsystem. */
 public class ElevatorCommand extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private final ElevatorSubsystem m_subsystem;
-  private Integer m_targetLevel;
+  private final Integer goalLevel;
+  private PIDController m_pidController;
+
+  private final SparkMax m_leftElevator;
+  private final SparkMax m_rightElevator;
+
+  private SparkAbsoluteEncoder leftEncoder;
+  private SparkAbsoluteEncoder rightEncoder;
+
+  private double goalPosition;
+  private final double errorMargin = 0.1;
 
   /**
    * @param elevatorsubsystem The subsystem referenced in this command
@@ -20,27 +40,73 @@ public class ElevatorCommand extends Command {
    */
   public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, int targetLevel) {
     m_subsystem = elevatorsubsystem;
-    m_targetLevel = targetLevel;
+    goalLevel = targetLevel;
+
+    m_pidController = new PIDController(1, 0, 0);
+
+    m_leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
+    m_rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
+    SparkMaxConfig elevatorConfig = new SparkMaxConfig();
+
+    elevatorConfig.idleMode(IdleMode.kBrake);
+
+    m_leftElevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    m_rightElevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    leftEncoder = m_leftElevator.getAbsoluteEncoder();
+    rightEncoder = m_rightElevator.getAbsoluteEncoder();
+
+
     addRequirements(elevatorsubsystem);
+
+    System.out.println("Elevator Command configured");
+
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("ElevatorCommand started with goal level: " + goalLevel);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Would somehow retrieve what level you are currently on and adjust itself using the runElevator/stopElevator functions
+
+    switch(goalLevel) {
+
+      case 1:
+        m_leftElevator.set(m_pidController.calculate(leftEncoder.getPosition(), ElevatorConstants.kLvlOnePos));
+        m_rightElevator.set(m_pidController.calculate(rightEncoder.getPosition(), ElevatorConstants.kLvlOnePos));
+        goalPosition = ElevatorConstants.kLvlOnePos;
+        break;
+      case 2:
+        m_leftElevator.set(m_pidController.calculate(leftEncoder.getPosition(), ElevatorConstants.kLvlTwoPos));
+        m_rightElevator.set(m_pidController.calculate(rightEncoder.getPosition(), ElevatorConstants.kLvlTwoPos));
+        goalPosition = ElevatorConstants.kLvlTwoPos;
+        break;
+      case 3:
+        m_leftElevator.set(m_pidController.calculate(leftEncoder.getPosition(), ElevatorConstants.kLvlThreePos));
+        m_rightElevator.set(m_pidController.calculate(rightEncoder.getPosition(), ElevatorConstants.kLvlThreePos));
+        goalPosition = ElevatorConstants.kLvlThreePos;
+        break;
+      case 4:
+        m_leftElevator.set(m_pidController.calculate(leftEncoder.getPosition(), ElevatorConstants.kLvlFourPos));
+        m_rightElevator.set(m_pidController.calculate(rightEncoder.getPosition(), ElevatorConstants.kLvlFourPos));
+        goalPosition = ElevatorConstants.kLvlFourPos;
+        break;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    System.out.println("ElevatorCommand ended" + (interrupted ? " (interrupted)" : ""));
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Math.abs(leftEncoder.getPosition() - goalPosition) < errorMargin && Math.abs(rightEncoder.getPosition() - goalPosition) < errorMargin;
   }
 }

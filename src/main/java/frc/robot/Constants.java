@@ -150,5 +150,9 @@ public final class Constants {
     public static final int kElevatorUpPower = -1;
     public static final int kElevatorDownPower = 1;
     public static final int kElevatorMaxAmps = 140;
+    public static final double kLvlOnePos = 0.0;
+    public static final double kLvlTwoPos = 0.0;
+    public static final double kLvlThreePos = 0.0;
+    public static final double kLvlFourPos = 0.0;
   }
 }
