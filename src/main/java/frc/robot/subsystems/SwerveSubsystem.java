@@ -144,9 +144,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // Gru data shenanigans
   public void resetPose() {
-    gru.reset();
-    gru.resetDisplacement();
-    setOffset(new Pose2d());
+    resetPose(new Pose2d());
   }
   public void resetPose(Pose2d pose) {
     gru.reset();
