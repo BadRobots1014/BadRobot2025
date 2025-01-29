@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -49,6 +50,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void stopElevator() {
     rightElevator.stopMotor();
     leftElevator.stopMotor();
+  }
+
+  public double getLeftElevatorEncoder() {
+    return leftElevator.getAbsoluteEncoder().getPosition();
+  }
+
+  public double getRightElevatorEncoder() {
+    return rightElevator.getAbsoluteEncoder().getPosition();
   }
 
 
