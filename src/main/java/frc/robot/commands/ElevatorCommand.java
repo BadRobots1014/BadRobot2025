@@ -29,9 +29,10 @@ public class ElevatorCommand extends Command {
     m_subsystem = elevatorsubsystem;
     goalLevelSupplier = targetLevel;
 
+    // Uses the same PID controller so they should be synched. Change variables in Constants file
     m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
 
-
+    // Ensures that the runElevator and stopElevator functions are present
     addRequirements(elevatorsubsystem);
 
     System.out.println("Elevator Command configured");
@@ -50,6 +51,7 @@ public class ElevatorCommand extends Command {
 
     switch(goalLevelSupplier.get()) {
 
+      // Sends PID controller calculations to both motors. runElevator essentially replaces motor.set function
       case 1:
         m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getLeftElevatorEncoder(), ElevatorConstants.kLvlOnePos));
         goalPosition = ElevatorConstants.kLvlOnePos;
@@ -73,12 +75,14 @@ public class ElevatorCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     System.out.println("Elevator done" + (interrupted ? " (interrupted)" : ""));
+    // Just in case...
     m_subsystem.stopElevator();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // Not sure how exactly to calculate this...
     return m_subsystem.getLeftElevatorEncoder() == goalPosition && m_subsystem.getLeftElevatorCurrent() == goalPosition;
   }
 }
