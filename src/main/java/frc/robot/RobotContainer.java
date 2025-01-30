@@ -13,6 +13,8 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.commands.ElevatorCommand;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -46,6 +48,8 @@ public class RobotContainer {
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final SendableChooser<Command> autoChooser;
 
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+
   boolean fastMode = false, fasterMode = false;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -60,6 +64,11 @@ public class RobotContainer {
     this::getPOV,
     this::getAuxLeftTrigger,
     this::getAuxRightTrigger));
+
+    m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1));
+    m_driverController.square().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2));
+    m_driverController.circle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 3));
+    m_driverController.triangle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 4));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
