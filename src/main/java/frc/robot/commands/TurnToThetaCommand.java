@@ -2,55 +2,43 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.TurnThetaHelper;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-  static double driveThetad;
   SwerveSubsystem m_subsystem;
 
-  double currentTheta;
   Supplier<Double> targetTheta;
 
-  PIDController turningPID;
-
-  private static Supplier<Double> driveTheta = new Supplier<Double>() {
-    @Override
-    public Double get() {
-      return driveThetad;
-    }
-  };
-  
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY)
-  {
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX,
+      Supplier<Double> moveY) {
     super(
-      swerveSubsystem,
-      moveX,
-      moveY,
-      driveTheta,
-      false,
-      () -> false,
-      () -> false,
-      () -> -1d,
-      () -> 0d,
-      () -> 0d
-    );
-    this.targetTheta = targetTheta;
+        swerveSubsystem,
+        moveX,
+        moveY,
+        swerveSubsystem.thetaHelper.driveTheta,
+        false,
+        () -> false,
+        () -> false,
+        () -> -1d,
+        () -> 0d,
+        () -> 0d);
     m_subsystem = swerveSubsystem;
-
-    turningPID = new PIDController(1, 0, 0);
-    turningPID.enableContinuousInput(0, 2 * Math.PI);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    currentTheta = m_subsystem.getYaw();
-
+    // Since the supplier will always point to the target value, it can be set
+    // prematurely
+    swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
   }
 
   @Override
@@ -61,11 +49,14 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     // //check which way is closer to target
     // boolean turnClockwise = ((currentAngle + 180) % 360) > targetTheta;
 
-    currentTheta = m_subsystem.getRotation2d().getRadians();
+    // Begin rotating to target theta
+    Rotation2d currentTheta = m_subsystem.getRotation2d();
+    m_subsystem.thetaHelper.calculate(currentTheta);
+
     System.out.println("target" + targetTheta);
     System.out.println("current" + currentTheta);
-    driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
-    System.out.println("drive speed " + driveThetad);
+    System.out.println("drive speed " + m_subsystem.thetaHelper.driveTheta.get());
+
     super.execute();
   }
 

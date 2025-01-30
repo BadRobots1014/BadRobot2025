@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 import frc.robot.util.SwerveModule;
+import frc.robot.util.TurnThetaHelper;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -150,7 +151,7 @@ public class SwerveSubsystem extends SubsystemBase {
   // Here, our starting pose is 5 meters along the long end of the field and in
   // the
   // center of the field along the short end, facing the opposing alliance wall.s
-  public SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
       DriveConstants.kDriveKinematics, gru.getRotation2d(),
       new SwerveModulePosition[] {
           frontLeft.getDrivePositionModule(),
@@ -158,6 +159,9 @@ public class SwerveSubsystem extends SubsystemBase {
           backLeft.getDrivePositionModule(),
           backRight.getDrivePositionModule()
       }, new Pose2d(5.0, 13.5, new Rotation2d()));
+
+  // Util for handling turn to theta instructions
+  public final TurnThetaHelper thetaHelper = new TurnThetaHelper(getYaw());
 
   // Gru data shenanigans
   public void resetPose() {
