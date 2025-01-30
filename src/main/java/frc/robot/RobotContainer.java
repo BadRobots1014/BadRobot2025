@@ -91,7 +91,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true));
+    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
   }
 
   boolean getFastMode() {
@@ -124,6 +124,9 @@ public class RobotContainer {
   }
   double getRightAngle() {
     return Math.atan2(this.getRightX(), -this.getRightY()) + Math.PI;
+  }
+  boolean angleRelevant() {
+    return Math.pow(getRightX(), 2) + Math.pow(getRightY(), 2) >= 0.2;
   }
   
 

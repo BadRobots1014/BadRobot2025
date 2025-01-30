@@ -25,6 +25,10 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
       return driveThetad;
     }
   };
+
+  private static Supplier<Boolean> angleRelevant;
+
+  private static double lastTheta = 0;
   
   public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY, boolean fieldOriented)
   {
@@ -45,21 +49,55 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
 
     turningPID = new PIDController(1,0, 0);
     turningPID.enableContinuousInput(0, 2*Math.PI);
+
+    angleRelevant = () -> true;
+  }
+
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevant)
+  {
+    super(
+      swerveSubsystem,
+      moveX,
+      moveY,
+      driveTheta,
+      fieldOriented,
+      () -> false,
+      () -> false,
+      () -> -1d,
+      () -> 0d,
+      () -> 0d
+    );
+    this.targetTheta = targetTheta;
+    m_subsystem = swerveSubsystem;
+
+    turningPID = new PIDController(1,0, 0);
+    turningPID.enableContinuousInput(0, 2*Math.PI);
+
+    this.angleRelevant = angleRelevant;
   }
 
   @Override
   public void initialize() {
-    currentTheta = m_subsystem.getYaw();
-
+    lastTheta = m_subsystem.getRotation2d().getRadians();
   }
 
   @Override
   public void execute() {
-    currentTheta = m_subsystem.getRotation2d().getRadians();
-    System.out.println("target" + targetTheta.get());
-    System.out.println("current" + currentTheta);
-    driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
-    super.execute();
+    if (angleRelevant.get()) {
+      currentTheta = m_subsystem.getRotation2d().getRadians();
+      lastTheta = targetTheta.get();
+      System.out.println("target" + targetTheta.get());
+      System.out.println("current" + currentTheta);
+      driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
+      super.execute();
+    }
+    else {
+      currentTheta = m_subsystem.getRotation2d().getRadians();
+      System.out.println("target" + lastTheta);
+      System.out.println("current" + currentTheta);
+      driveThetad = turningPID.calculate(lastTheta, currentTheta);
+      super.execute(); 
+    }
   }
 
   @Override
