@@ -91,7 +91,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> getRightAngle(), () -> 0d, () -> 0d));
+    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true));
   }
 
   boolean getFastMode() {
@@ -108,8 +108,8 @@ public class RobotContainer {
     else fasterMode = false;
     return fasterMode;
   }
-  double getRightX() {return -m_driverController.getRightX();}
-  double getRightY() {return -m_driverController.getRightY();}
+  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? -m_driverController.getRightX() : 0;}
+  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;}
   double getLeftX() {return m_driverController.getLeftX();}
   double getLeftY() {return m_driverController.getLeftY();}
   double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 180)%360;}
@@ -123,7 +123,7 @@ public class RobotContainer {
     return m_auxController.getR2Axis();
   }
   double getRightAngle() {
-    return Math.pow(Math.pow(getRightX(), 2) + Math.pow(getRightY(), 2), 1/2) >= 0.5 ? Math.atan2(getRightY(), getRightX()) : Integer.MAX_VALUE;
+    return Math.atan2(this.getRightX(), -this.getRightY()) + Math.PI;
   }
   
 

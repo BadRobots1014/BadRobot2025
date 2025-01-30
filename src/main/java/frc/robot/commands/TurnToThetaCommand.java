@@ -26,14 +26,14 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     }
   };
   
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY)
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY, boolean fieldOriented)
   {
     super(
       swerveSubsystem,
       moveX,
       moveY,
       driveTheta,
-      false,
+      fieldOriented,
       () -> false,
       () -> false,
       () -> -1d,
@@ -44,7 +44,7 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     m_subsystem = swerveSubsystem;
 
     turningPID = new PIDController(1,0, 0);
-    turningPID.enableContinuousInput(-Math.PI, Math.PI);
+    turningPID.enableContinuousInput(0, 2*Math.PI);
   }
 
   @Override
@@ -55,14 +55,11 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
 
   @Override
   public void execute() {
-    if (targetTheta.get() != Integer.MAX_VALUE) {
-      currentTheta = m_subsystem.getRotation2d().getRadians();
-      System.out.println("target" + targetTheta);
-      System.out.println("current" + currentTheta);
-      driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
-      System.out.println("drive speed " + driveThetad);
-      super.execute();
-    }
+    currentTheta = m_subsystem.getRotation2d().getRadians();
+    System.out.println("target" + targetTheta.get());
+    System.out.println("current" + currentTheta);
+    driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
+    super.execute();
   }
 
   @Override
