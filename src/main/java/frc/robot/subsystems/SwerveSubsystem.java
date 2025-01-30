@@ -139,15 +139,12 @@ public class SwerveSubsystem extends SubsystemBase {
     p,i,d
   );
 
-  // The gyro
-  //private final AHRS gyro = new AHRS(SPI.Port.kMXP); this is old
-   private final AHRS gru = new AHRS(NavXComType.kMXP_SPI);
+  // The gru
+  private final AHRS gru = new AHRS(NavXComType.kMXP_SPI);
 
-  // Gyro data shenanigans
+  // Gru data shenanigans
   public void resetPose() {
-    gru.reset();
-    gru.resetDisplacement();
-    setOffset(new Pose2d());
+    resetPose(new Pose2d());
   }
   public void resetPose(Pose2d pose) {
     gru.reset();
@@ -168,7 +165,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public double getY() {return gru.getDisplacementY() + offsetY;}
   public double getXSpeed() {return gru.getVelocityX();}
   public double getYSpeed() {return gru.getVelocityY();}
-  public double getTurnSpeed() {return gru.getRate();}
+  public double getTurnSpeed() {return gru.getRate()/180*Math.PI;}
   public Pose2d getPose() {return new Pose2d(getX(), getY(), getRotation2d());}
 
   public ChassisSpeeds getRobotRelativeSpeeds() {return new ChassisSpeeds(getXSpeed(), getYSpeed(), getTurnSpeed());}

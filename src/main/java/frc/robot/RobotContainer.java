@@ -12,6 +12,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ZeroHeadingCommand;
+import frc.robot.commands.TurnToThetaCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -90,6 +91,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem, m_driverController.getHID()));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
+    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.PI));
   }
 
   boolean getFastMode() {
