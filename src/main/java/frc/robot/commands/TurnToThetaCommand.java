@@ -25,19 +25,21 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
       return driveThetad;
     }
   };
-
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta) {
+  
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY)
+  {
     super(
-        swerveSubsystem,
-        () -> 0d,
-        () -> 0d,
-        driveTheta,
-        false,
-        () -> false,
-        () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+      swerveSubsystem,
+      moveX,
+      moveY,
+      driveTheta,
+      false,
+      () -> false,
+      () -> false,
+      () -> -1d,
+      () -> 0d,
+      () -> 0d
+    );
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
