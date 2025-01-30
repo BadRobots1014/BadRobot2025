@@ -91,7 +91,7 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem, m_driverController.getHID()));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, m_driverController.getHID()., () -> 0d, () -> 0d));
+    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.PI, () -> 0d, () -> 0d));
   }
 
   boolean getFastMode() {
