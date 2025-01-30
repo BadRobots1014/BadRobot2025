@@ -9,7 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
   static double driveThetad;
   SwerveSubsystem m_subsystem;
@@ -25,26 +25,24 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
       return driveThetad;
     }
   };
-  
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta)
-  {
+
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta) {
     super(
-      swerveSubsystem,
-      () -> 0d,
-      () -> 0d,
-      driveTheta,
-      false,
-      () -> false,
-      () -> false,
-      () -> -1d,
-      () -> 0d,
-      () -> 0d
-    );
+        swerveSubsystem,
+        () -> 0d,
+        () -> 0d,
+        driveTheta,
+        false,
+        () -> false,
+        () -> false,
+        () -> -1d,
+        () -> 0d,
+        () -> 0d);
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    turningPID = new PIDController(1,0, 0);
-    turningPID.enableContinuousInput(0, 2*Math.PI);
+    turningPID = new PIDController(1, 0, 0);
+    turningPID.enableContinuousInput(0, 2 * Math.PI);
   }
 
   @Override
@@ -70,10 +68,13 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {
     return false;
   }
 }
+
+// Noiritgc was here
