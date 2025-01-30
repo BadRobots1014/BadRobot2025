@@ -108,7 +108,13 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
-      // Turn to specific rotation
+      // Returns the yaw even though it says pitch
+      double yaw = lastPos.getRotation().getY();
+
+      // Computes what angle the robot has to be to face the april tag
+      targetThetad = currentTheta.getRadians() - yaw;
+
+      // Run PID to compute speed
       swerveSubsystem.thetaHelper.calculate(currentTheta);
 
       // Take the smaller speed depending on direction
@@ -117,8 +123,8 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
       // Z in 3d space corrosponds to the Y for the motor
       driveYd = Math.min(lastPos.getZ(), 1);
-    } else {
 
+    } else {
     }
 
     /*
