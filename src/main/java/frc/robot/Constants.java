@@ -147,7 +147,7 @@ public final class Constants {
 
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
-    public static final double kAutoDisplacementTolerance = 0.0254; // How far off in meters it targets for
+    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
