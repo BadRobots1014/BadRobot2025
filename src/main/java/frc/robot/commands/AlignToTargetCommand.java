@@ -36,7 +36,10 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
   private PS4Controller m_controller;
 
-  ShuffleboardTab m_tab = Shuffleboard.getTab("Limelight");
+  double remainingXDistance;
+  double remainingYDistance;
+
+  ShuffleboardTab m_tab;
 
   private static Supplier<Double> driveX = new Supplier<Double>() {
     @Override
@@ -88,6 +91,10 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
     m_limelight_subsystem = limelightSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_limelight_subsystem);
+
+    m_tab = Shuffleboard.getTab("Limelight");
+    m_tab.addDouble("Remaining X distance", () -> remainingXDistance);
+    m_tab.addDouble("Remaining Y distance", () -> remainingYDistance);
   }
 
   // Called when the command is initially scheduled.
@@ -102,7 +109,6 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
   @Override
   public void execute() {
     lastTag = LimelightHelpers.getFiducialID("");
-
     // If it actively sees an april tag
     if (lastTag != -1) {
       // set last position
@@ -115,7 +121,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
       // Returns the yaw even though it says pitch
-      double yaw = lastPosLimelight.getRotation().getY();
+      double yaw = -lastPosLimelight.getRotation().getY();
 
       // Computes what angle the robot has to be to face the april tag
       targetTheta = new Rotation2d(currentTheta.getRadians() - yaw);
@@ -124,18 +130,23 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
 
       // Take the smaller speed depending on direction
-      double x = lastPosLimelight.getX();
+      double x = -lastPosLimelight.getX();
       driveXd = Math.tanh(x * DriveConstants.kAutoSpeedLimit);
 
       // Z in 3d space corrosponds to the Y for the motor
       driveYd = Math.tanh(lastPosLimelight.getZ() * DriveConstants.kAutoSpeedLimit);
     } else {
+      // get current rotation for turning
+      Rotation2d currentTheta = swerveSubsystem.getRotation2d();
+
+      // Run PID to compute speed
+      swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
 
       Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
 
       // total distance - distance travelled
-      double remainingXDistance = lastPosLimelight.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
-      double remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
+      remainingXDistance = -lastPosLimelight.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
+      remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
 
       if (Math.abs(remainingXDistance) > DriveConstants.kAutoDisplacementTolerance) {
         driveXd = -Math.tanh(remainingXDistance * DriveConstants.kAutoSpeedLimit);
