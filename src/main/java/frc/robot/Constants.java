@@ -146,7 +146,7 @@ public final class Constants {
     public static final double kNudgeSpeed = 0.8;
 
     // Limelight Automation
-    public static final double kAutoSpeedLimit = 0.5;
+    public static final double kAutoSpeedLimit = 5;
     public static final double kAutoDisplacementTolerance = 0.0254; // How far off in meters it targets for
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
