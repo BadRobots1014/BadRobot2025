@@ -17,20 +17,27 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
 
   Supplier<Double> targetTheta;
 
+  private static Supplier<Boolean> angleRelevant;
+
+  private static Rotation2d lastTheta = new Rotation2d();
+
   public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX,
-      Supplier<Double> moveY) {
+      Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevant) {
     super(
         swerveSubsystem,
         moveX,
         moveY,
         swerveSubsystem.thetaHelper.driveTheta,
-        false,
+        fieldOriented,
         () -> false,
         () -> false,
         () -> -1d,
         () -> 0d,
         () -> 0d);
+    this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
+
+    this.angleRelevant = angleRelevant;
   }
 
   // Called when the command is initially scheduled.
@@ -38,7 +45,8 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
   public void initialize() {
     // Since the supplier will always point to the target value, it can be set
     // prematurely
-    swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
+    lastTheta = m_subsystem.getRotation2d();
+    // swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
   }
 
   @Override
@@ -50,8 +58,11 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     // boolean turnClockwise = ((currentAngle + 180) % 360) > targetTheta;
 
     // Begin rotating to target theta
+    if (angleRelevant.get()){
+      lastTheta = new Rotation2d(targetTheta.get());
+    }
     Rotation2d currentTheta = m_subsystem.getRotation2d();
-    m_subsystem.thetaHelper.calculate(currentTheta);
+    m_subsystem.thetaHelper.calculate(currentTheta, lastTheta);
 
     System.out.println("target" + targetTheta);
     System.out.println("current" + currentTheta);

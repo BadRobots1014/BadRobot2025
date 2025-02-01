@@ -28,7 +28,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
   private static double driveXd = 0;
   private static double driveYd = 0;
-  private static double targetThetad = 0;
+  private static Rotation2d targetTheta = new Rotation2d();
 
   private static Pose3d lastPos; // Last read position relative to tag
   private static double lastTag; // The last tag ID read
@@ -52,12 +52,12 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
     }
   };
 
-  private static Supplier<Double> targetTheta = new Supplier<Double>() {
-    @Override
-    public Double get() {
-      return targetThetad;
-    }
-  };
+  // private static Supplier<Double> targetTheta = new Supplier<Double>() {
+  //   @Override
+  //   public Double get() {
+  //     return targetThetad;
+  //   }
+  // };
 
   public AlignToTargetCommand(LimelightSubsystem limelightSubsystem, SwerveSubsystem swerveSubsystem,
       PS4Controller controller) {
@@ -93,9 +93,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Since the supplier will always point to the target value, it can be set
-    // prematurely
-    swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
+    // // Since the supplier will always point to the target value, it can be set
+    // // prematurely
+    // swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -118,10 +118,10 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       double yaw = lastPos.getRotation().getY();
 
       // Computes what angle the robot has to be to face the april tag
-      targetThetad = currentTheta.getRadians() - yaw;
+      targetTheta = new Rotation2d(currentTheta.getRadians() - yaw);
 
       // Run PID to compute speed
-      swerveSubsystem.thetaHelper.calculate(currentTheta);
+      swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
 
       // Take the smaller speed depending on direction
       double x = lastPos.getX();

@@ -9,7 +9,8 @@ public class TurnThetaHelper {
     double driveThetad;
 
     double currentTheta;
-    Supplier<Double> targetTheta;
+    double targetTheta;
+    // Supplier<Double> targetTheta;
 
     PIDController turningPID;
 
@@ -28,16 +29,17 @@ public class TurnThetaHelper {
         turningPID.enableContinuousInput(0, 2 * Math.PI);
     }
 
-    // Sets desired angle in radians
-    public void setTargetTheta(Supplier<Double> targetTheta) {
-        this.targetTheta = targetTheta;
-    }
+    // // Sets desired angle in radians
+    // public void setTargetTheta(Supplier<Double> targetTheta) {
+    //     this.targetTheta = targetTheta;
+    // }
 
     // Place in execute function of command to keep feeding PID
     // Requires subsystem.getRotation2d() to be passed
-    public void calculate(Rotation2d currentTheta) {
+    public void calculate(Rotation2d currentTheta, Rotation2d targetTheta) {
         this.currentTheta = currentTheta.getRadians();
+        this.targetTheta = targetTheta.getRadians();
 
-        driveThetad = turningPID.calculate(targetTheta.get(), this.currentTheta);
+        driveThetad = turningPID.calculate(this.targetTheta, this.currentTheta);
     }
 }
