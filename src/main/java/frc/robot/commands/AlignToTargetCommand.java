@@ -110,7 +110,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
       // set last displacement
       lastDisplacement = swerveSubsystem.m_odometry.getPoseMeters();
-0
+
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
