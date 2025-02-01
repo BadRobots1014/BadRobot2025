@@ -136,7 +136,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       double remainingDistance = lastPos.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
 
       if (Math.abs(remainingDistance) > DriveConstants.kAutoDisplacementTolerance) {
-        driveXd = Math.tanh(remainingDistance);
+        driveXd = Math.tanh(remainingDistance * DriveConstants.kAutoSpeedLimit);
       } else {
         driveXd = 0;
       }
