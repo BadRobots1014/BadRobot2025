@@ -9,11 +9,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -49,11 +53,11 @@ public final class Constants {
     // TODO turn field oriented on or off
     public static final boolean kFieldOriented = true;
 
-    //Preset drive angles
+    // Preset drive angles
     public static final double kSourceTheta = 60;
     public static final double kSpeakerTheta = 180;
-    
-    //Turn theta 
+
+    // Turn theta
     public static final double kTurnThetaMaxSpeed = 0.9;
     public static final HashMap<Integer, Double> aprilTagAngles = new HashMap<>(
       Map.ofEntries(
@@ -166,10 +170,11 @@ public final class Constants {
     public static final double kFastTeleMaxMetersPerSec = 1.0;
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.8;
-    
-    // Limelight Automation
-    public static final double kAutoSpeedLimit = 0.5;
 
-    //public static final Button kTestMotorButton = Button.kLeftBumper;
+    // Limelight Automation
+    public static final double kAutoSpeedLimit = 2;
+    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+
+    // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
 }
