@@ -30,7 +30,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
   private static double driveYd = 0;
   private static double targetThetad = 0;
 
-  private static Pose3d lastPos; // Last read position relative to tag
+  private static Pose3d lastPosLimelight; // Last read position relative to tag
   private static double lastTag; // The last tag ID read
   private static Pose2d lastDisplacement; // last position the robot was at when it saw a tag
 
@@ -106,16 +106,16 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
     // If it actively sees an april tag
     if (lastTag != -1) {
       // set last position
-      lastPos = LimelightHelpers.getBotPose3d_TargetSpace("");
+      lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
 
       // set last displacement
       lastDisplacement = swerveSubsystem.m_odometry.getPoseMeters();
-
+0
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
       // Returns the yaw even though it says pitch
-      double yaw = lastPos.getRotation().getY();
+      double yaw = lastPosLimelight.getRotation().getY();
 
       // Computes what angle the robot has to be to face the april tag
       targetThetad = currentTheta.getRadians() - yaw;
@@ -124,18 +124,18 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       swerveSubsystem.thetaHelper.calculate(currentTheta);
 
       // Take the smaller speed depending on direction
-      double x = lastPos.getX();
+      double x = lastPosLimelight.getX();
       driveXd = Math.tanh(x * DriveConstants.kAutoSpeedLimit);
 
       // Z in 3d space corrosponds to the Y for the motor
-      driveYd = Math.tanh(lastPos.getZ() * DriveConstants.kAutoSpeedLimit);
+      driveYd = Math.tanh(lastPosLimelight.getZ() * DriveConstants.kAutoSpeedLimit);
     } else {
 
       Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
 
       // total distance - distance travelled
-      double remainingXDistance = lastPos.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
-      double remainingYDistance = lastPos.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
+      double remainingXDistance = lastPosLimelight.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
+      double remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
 
       if (Math.abs(remainingXDistance) > DriveConstants.kAutoDisplacementTolerance) {
         driveXd = Math.tanh(remainingXDistance * DriveConstants.kAutoSpeedLimit);
