@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -61,28 +64,28 @@ public final class Constants {
     public static final double kTurnThetaMaxSpeed = 0.9;
     public static final HashMap<Integer, Double> aprilTagAngles = new HashMap<>(
       Map.ofEntries(
-        Map.entry(1, 126),
-        Map.entry(2, 234),
-        Map.entry(3, 270),
-        Map.entry(4, 0),
-        Map.entry(5, 0),
-        Map.entry(6, 300),
-        Map.entry(7, 0),
-        Map.entry(8, 60),
-        Map.entry(9, 120),
-        Map.entry(10, 180),
-        Map.entry(11, 240),
-        Map.entry(12, 54),
-        Map.entry(13, 306),
-        Map.entry(14, 180),
-        Map.entry(15, 180),
-        Map.entry(16, 90),
-        Map.entry(17, 240),
-        Map.entry(18, 180),
-        Map.entry(19, 120),
-        Map.entry(20, 60),
-        Map.entry(21, 0),
-        Map.entry(22, 300),
+        Map.entry(1, 126d),
+        Map.entry(2, 234d),
+        Map.entry(3, 270d),
+        Map.entry(4, 0d),
+        Map.entry(5, 0d),
+        Map.entry(6, 300d),
+        Map.entry(7, 0d),
+        Map.entry(8, 60d),
+        Map.entry(9, 120d),
+        Map.entry(10, 180d),
+        Map.entry(11, 240d),
+        Map.entry(12, 54d),
+        Map.entry(13, 306d),
+        Map.entry(14, 180d),
+        Map.entry(15, 180d),
+        Map.entry(16, 90d),
+        Map.entry(17, 240d),
+        Map.entry(18, 180d),
+        Map.entry(19, 120d),
+        Map.entry(20, 60d),
+        Map.entry(21, 0d),
+        Map.entry(22, 300d)
       )
     );
     public static final double kTurnThetaShutoffSensitivity = 0.005;
