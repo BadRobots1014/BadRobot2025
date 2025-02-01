@@ -53,10 +53,10 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
   };
 
   // private static Supplier<Double> targetTheta = new Supplier<Double>() {
-  //   @Override
-  //   public Double get() {
-  //     return targetThetad;
-  //   }
+  // @Override
+  // public Double get() {
+  // return targetThetad;
+  // }
   // };
 
   public AlignToTargetCommand(LimelightSubsystem limelightSubsystem, SwerveSubsystem swerveSubsystem,
@@ -138,7 +138,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       double remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
 
       if (Math.abs(remainingXDistance) > DriveConstants.kAutoDisplacementTolerance) {
-        driveXd = Math.tanh(remainingXDistance * DriveConstants.kAutoSpeedLimit);
+        driveXd = -Math.tanh(remainingXDistance * DriveConstants.kAutoSpeedLimit);
       } else {
         driveXd = 0;
       }
