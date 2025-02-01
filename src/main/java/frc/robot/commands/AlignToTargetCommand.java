@@ -11,12 +11,14 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.DriveConstants;
 
 public class AlignToTargetCommand extends SwerveDriveCommand {
@@ -28,8 +30,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
   private static double driveYd = 0;
   private static double targetThetad = 0;
 
-  private static Pose3d lastPos;
-  private static double lastTag;
+  private static Pose3d lastPos; // Last read position relative to tag
+  private static double lastTag; // The last tag ID read
+  private static Pose2d lastDisplacement; // last position the robot was at when it saw a tag
 
   private PS4Controller m_controller;
 
@@ -105,6 +108,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // set last position
       lastPos = LimelightHelpers.getBotPose3d_TargetSpace("");
 
+      // set last displacement
+      lastDisplacement = swerveSubsystem.m_odometry.getPoseMeters();
+
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
@@ -125,6 +131,17 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       driveYd = Math.min(lastPos.getZ(), 1);
 
     } else {
+      Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
+      // total distance - distance travelled
+      double remainingDistance = lastPos.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
+
+      if (Math.abs(remainingDistance) > DriveConstants.kAutoDisplacementTolerance) {
+        driveXd = remainingDistance * DriveConstants.kAutoSpeedLimit;
+      } else {
+        driveXd = 0;
+      }
+
+      driveYd = 0;
     }
 
     /*

@@ -38,6 +38,9 @@ public class SwerveSubsystem extends SubsystemBase {
   public double offsetX = 0;
   public double offsetY = 0;
 
+  // The current position of robot relative to starting position (odometry)
+  public Pose2d m_currentDisplacement;
+
   public SwerveSubsystem(PS4Controller controller) {
 
     // Delay to allow navx to boot up
@@ -162,6 +165,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // Util for handling turn to theta instructions
   public final TurnThetaHelper thetaHelper = new TurnThetaHelper(getYaw());
+
+  @Override
+  public void periodic() {
+    // Get the rotation of the robot from the gyro.
+    var gyroAngle = gru.getRotation2d();
+    // Update the pose
+    m_currentDisplacement = m_odometry.update(gyroAngle,
+        new SwerveModulePosition[] {
+            frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+            backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+        });
+  }
 
   // Gru data shenanigans
   public void resetPose() {
