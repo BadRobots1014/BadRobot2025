@@ -129,19 +129,25 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
       // Z in 3d space corrosponds to the Y for the motor
       driveYd = Math.tanh(lastPos.getZ() * DriveConstants.kAutoSpeedLimit);
-
     } else {
-      Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
-      // total distance - distance travelled
-      double remainingDistance = lastPos.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
 
-      if (Math.abs(remainingDistance) > DriveConstants.kAutoDisplacementTolerance) {
-        driveXd = Math.tanh(remainingDistance * DriveConstants.kAutoSpeedLimit);
+      Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
+
+      // total distance - distance travelled
+      double remainingXDistance = lastPos.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
+      double remainingYDistance = lastPos.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
+
+      if (Math.abs(remainingXDistance) > DriveConstants.kAutoDisplacementTolerance) {
+        driveXd = Math.tanh(remainingXDistance * DriveConstants.kAutoSpeedLimit);
       } else {
         driveXd = 0;
       }
 
-      driveYd = 0;
+      if (Math.abs(remainingYDistance) > DriveConstants.kAutoDisplacementTolerance) {
+        driveYd = Math.tanh(remainingYDistance * DriveConstants.kAutoSpeedLimit);
+      } else {
+        driveYd = 0;
+      }
     }
 
     /*
