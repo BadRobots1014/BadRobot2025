@@ -36,7 +36,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
   private PS4Controller m_controller;
 
-  private PIDController horizontalPID;
+  private PIDController horizontalPID = new PIDController(3, 0, 0);
 
   double remainingXDistance;
   double remainingYDistance;
@@ -92,8 +92,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
     m_limelight_subsystem = limelightSubsystem;
 
-    horizontalPID = new PIDController(1, 0, 0);
-    horizontalPID.enableContinuousInput(-1, 1);
+    horizontalPID = new PIDController(1.4, 0, 0);
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_limelight_subsystem);
@@ -140,7 +139,8 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       driveXd = horizontalPID.calculate(0d, x);
 
       // Z in 3d space corrosponds to the Y for the motor
-      double y = lastPosLimelight.getZ();
+      double y = lastPosLimelight.getZ(); 
+      //driveYd = 0;
       driveYd = horizontalPID.calculate(DriveConstants.kAutoTargetDistance, y);
     } else {
       // get current rotation for turning
@@ -152,11 +152,13 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       Pose2d currentDisplacement = swerveSubsystem.m_currentDisplacement;
 
       // total distance - distance travelled
-      remainingXDistance = -lastPosLimelight.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
+      remainingXDistance = lastPosLimelight.getX() - (lastDisplacement.getX() - currentDisplacement.getX());
       remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
 
-      driveXd = horizontalPID.calculate(0d, remainingXDistance);
-      driveYd = horizontalPID.calculate(DriveConstants.kAutoTargetDistance, remainingXDistance);
+      driveXd = horizontalPID.calculate(0d, -remainingXDistance);
+      //driveYd = 0;
+
+      driveYd = horizontalPID.calculate(DriveConstants.kAutoTargetDistance, remainingYDistance);
     }
 
     /*
