@@ -99,6 +99,32 @@ public class SwerveDriveCommand extends Command {
       chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
     }
 
+    // Read "tilt" or robot based on gyro on the roborio
+    // I am not sure what the APIs here, looks like maybe AnalogGyro
+
+    // The idea is that the if you read over a certain thresold of "tilt", you ignore 
+    // input from the ps4 controller and use a PID controller to calculate what to do with
+    // the motors 
+
+    // If the robot is falling forward, only the front wheels are touching the ground, the rear 
+    // wheels are in the air. If you drive the front wheels fast enough, you can "catch" the fall.
+    // If the robot is falling backwards, you do the opposite
+    // The greater tilt, the faster you need to drive the wheels
+
+    // FYI The tuning process can be a bit tricky for this
+
+    // Basically here you are detect that the robot is "falling", either forward or backward
+    // if (Math.abs(tiltDegrees) > degreeFallingThresold) { 
+    //    double tiltPidController.calculate(tiltDegrees)
+    //    if (tiltDegress > 0) { // let's assume in the pesudocode postive tilt is falling forwards
+    //      drive the front wheels forward 
+    //    } else {
+    //      drive the rear wheels backwards
+    //    }
+    // } else {
+    //  normal swerve drive from your ps4 controller
+    // }
+
     // Divide and conker
     SwerveModuleState[] moduleStates =
       DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
