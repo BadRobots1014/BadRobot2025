@@ -98,8 +98,13 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
     addRequirements(m_limelight_subsystem);
 
     m_tab = Shuffleboard.getTab("Limelight");
-    m_tab.addDouble("Remaining X distance", () -> remainingXDistance);
+
+    m_tab.addString("Current Displacement", () -> swerveSubsystem.m_currentDisplacement.toString());
+    m_tab.addString("Last Displacement", () -> lastDisplacement.toString());
+    m_tab.addString("Limelight Previous", () -> lastPosLimelight.toString());
+
     m_tab.addDouble("Remaining Y distance", () -> remainingYDistance);
+    m_tab.addDouble("Remaining X distance", () -> remainingXDistance);
   }
 
   // Called when the command is initially scheduled.
@@ -139,8 +144,8 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       driveXd = horizontalPID.calculate(0d, x);
 
       // Z in 3d space corrosponds to the Y for the motor
-      double y = lastPosLimelight.getZ(); 
-      //driveYd = 0;
+      double y = lastPosLimelight.getZ();
+      // driveYd = 0;
       driveYd = horizontalPID.calculate(DriveConstants.kAutoTargetDistance, y);
     } else {
       // get current rotation for turning
@@ -156,7 +161,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       remainingYDistance = lastPosLimelight.getZ() - (lastDisplacement.getY() - currentDisplacement.getY());
 
       driveXd = horizontalPID.calculate(0d, -remainingXDistance);
-      //driveYd = 0;
+      // driveYd = 0;
 
       driveYd = horizontalPID.calculate(DriveConstants.kAutoTargetDistance, remainingYDistance);
     }
