@@ -154,11 +154,9 @@ public class SwerveSubsystem extends SubsystemBase {
   // The gru
   private final AHRS gru = new AHRS(NavXComType.kMXP_SPI);
 
-  // Creating odometry object from the kinematics object and the initial wheel
-  // positions.
-  // Here, our starting pose is 5 meters along the long end of the field and in
-  // the
-  // center of the field along the short end, facing the opposing alliance wall.s
+  // Creating odometry object from the kinematics object and the initial wheel positions.
+  // Here, our starting pose is 5 meters along the long end of the field and in the
+  // center of the field along the short end, facing the opposing alliance wall.
   public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
     DriveConstants.kDriveKinematics,
     gru.getRotation2d(),
@@ -177,7 +175,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Get the rotation of the robot from the gyro.
     Rotation2d gyroAngle = gru.getRotation2d();
     // Update the pose
-    m_currentDisplacement = UpdateOdometry(gyroAngle);
+    m_currentDisplacement = updateOdometry(gyroAngle);
   }
 
   // Gru data shenanigans
@@ -245,7 +243,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return new ChassisSpeeds(getXSpeed(), getYSpeed(), getTurnSpeed());
   }
 
-  public Pose2d UpdateOdometry(Rotation2d gyroAngle) {
+  public Pose2d updateOdometry(Rotation2d gyroAngle) {
     m_odometry.update(gyroAngle,
       new SwerveModulePosition[] {
         frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
@@ -254,6 +252,10 @@ public class SwerveSubsystem extends SubsystemBase {
     );
     m_field.setRobotPose(m_odometry.getPoseMeters());
     System.out.println(m_odometry.getPoseMeters());
+    return m_odometry.getPoseMeters();
+  }
+
+  public Pose2d getOdomentryPose() {
     return m_odometry.getPoseMeters();
   }
 
