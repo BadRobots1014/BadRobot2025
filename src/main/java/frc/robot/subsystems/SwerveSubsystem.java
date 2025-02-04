@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
@@ -37,6 +39,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public double offsetX = 0;
   public double offsetY = 0;
+
+  private Field2d m_field = new Field2d();
 
   // The current position of robot relative to starting position (odometry)
   public Pose2d m_currentDisplacement;
@@ -64,6 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
     m_tab.addNumber("Y Offset", () -> offsetY);
     m_tab.addBoolean("NavX isConnected", gru::isConnected);
     m_tab.addBoolean("NavX isCalibrating", gru::isCalibrating);
+    SmartDashboard.putData(m_field);
 
     Controller = controller;
 
@@ -155,13 +160,14 @@ public class SwerveSubsystem extends SubsystemBase {
   // the
   // center of the field along the short end, facing the opposing alliance wall.s
   public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
-      DriveConstants.kDriveKinematics, gru.getRotation2d(),
-      new SwerveModulePosition[] {
-          frontLeft.getDrivePositionModule(),
-          frontRight.getDrivePositionModule(),
-          backLeft.getDrivePositionModule(),
-          backRight.getDrivePositionModule()
-      }, new Pose2d(5.0, 13.5, new Rotation2d()));
+    DriveConstants.kDriveKinematics,
+    gru.getRotation2d(),
+    new SwerveModulePosition[] {
+      frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+      backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+    },
+    new Pose2d(13.5, 5.0, new Rotation2d())
+  );
 
   // Util for handling turn to theta instructions
   public final TurnThetaHelper thetaHelper = new TurnThetaHelper(getYaw());
@@ -169,13 +175,9 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Get the rotation of the robot from the gyro.
-    var gyroAngle = gru.getRotation2d();
+    Rotation2d gyroAngle = gru.getRotation2d();
     // Update the pose
-    m_currentDisplacement = m_odometry.update(gyroAngle,
-        new SwerveModulePosition[] {
-            frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
-            backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
-        });
+    m_currentDisplacement = UpdateOdometry(gyroAngle);
   }
 
   // Gru data shenanigans
@@ -241,6 +243,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getRobotRelativeSpeeds() {
     return new ChassisSpeeds(getXSpeed(), getYSpeed(), getTurnSpeed());
+  }
+
+  public Pose2d UpdateOdometry(Rotation2d gyroAngle) {
+    m_odometry.update(gyroAngle,
+      new SwerveModulePosition[] {
+        frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+        backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+      }
+    );
+    m_field.setRobotPose(m_odometry.getPoseMeters());
+    System.out.println(m_odometry.getPoseMeters());
+    return m_odometry.getPoseMeters();
   }
 
   public void driveRobotRelative(ChassisSpeeds speeds) {

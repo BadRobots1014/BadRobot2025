@@ -94,12 +94,17 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
     horizontalPID = new PIDController(1.4, 0, 0);
 
+    lastDisplacement = new Pose2d();
+    lastPosLimelight = new Pose3d();
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_limelight_subsystem);
 
     m_tab = Shuffleboard.getTab("Limelight");
 
-    m_tab.addString("Current Displacement", () -> swerveSubsystem.m_currentDisplacement.toString());
+    m_tab.addDouble("Current Displacement X", () -> swerveSubsystem.getPose().getX());
+    m_tab.addDouble("Current Displacement Y", () -> swerveSubsystem.getPose().getY());
+    m_tab.addDouble("Current Displacement Rotation", () -> swerveSubsystem.getPose().getRotation().getDegrees());
     m_tab.addString("Last Displacement", () -> lastDisplacement.toString());
     m_tab.addString("Limelight Previous", () -> lastPosLimelight.toString());
 
