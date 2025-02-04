@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 import java.util.function.Supplier;
 
@@ -23,14 +24,17 @@ public class ElevatorCommand extends Command {
 
   /**
    * @param elevatorsubsystem The subsystem referenced in this command
-   * @param targetLevel A number 1-4 in which you want to set the height of the elevator to
+   * @param targetLevel       A number 1-4 in which you want to set the height of
+   *                          the elevator to
    */
   public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, Supplier<Integer> targetLevel) {
     m_subsystem = elevatorsubsystem;
     goalLevelSupplier = targetLevel;
 
-    // Uses the same PID controller so they should be synched. Change variables in Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
+    // Uses the same PID controller so they should be synched. Change variables in
+    // Constants file
+    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI,
+        ElevatorConstants.kElevatorP);
 
     // Ensures that the runElevator and stopElevator functions are present
     addRequirements(elevatorsubsystem);
@@ -49,26 +53,40 @@ public class ElevatorCommand extends Command {
   @Override
   public void execute() {
 
-    switch(goalLevelSupplier.get()) {
+    // use constants for power later
+    if (goalLevelSupplier.get() == 1)
+      m_subsystem.runElevator(.5);
+    if (goalLevelSupplier.get() == 2)
+      m_subsystem.runElevator(-.5);
 
-      // Sends PID controller calculations to both motors. runElevator essentially replaces motor.set function
-      case 1:
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getLeftElevatorEncoder(), ElevatorConstants.kLvlOnePos));
-        goalPosition = ElevatorConstants.kLvlOnePos;
-        break;
-      case 2:
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getLeftElevatorEncoder(), ElevatorConstants.kLvlTwoPos));
-        goalPosition = ElevatorConstants.kLvlTwoPos;
-        break;
-      case 3:
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getLeftElevatorEncoder(), ElevatorConstants.kLvlThreePos));
-        goalPosition = ElevatorConstants.kLvlThreePos;
-        break;
-      case 4:
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getLeftElevatorEncoder(), ElevatorConstants.kLvlFourPos));
-        goalPosition = ElevatorConstants.kLvlFourPos;
-        break;
-    }
+    // This code is good but commented out for now as we don't have encoders yet and not really that far into the elevator
+    /*
+     * switch(goalLevelSupplier.get()) {
+     * 
+     * // Sends PID controller calculations to both motors. runElevator essentially
+     * replaces motor.set function
+     * case 1:
+     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
+     * getLeftElevatorEncoder(), ElevatorConstants.kLvlOnePos));
+     * goalPosition = ElevatorConstants.kLvlOnePos;
+     * break;
+     * case 2:
+     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
+     * getLeftElevatorEncoder(), ElevatorConstants.kLvlTwoPos));
+     * goalPosition = ElevatorConstants.kLvlTwoPos;
+     * break;
+     * case 3:
+     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
+     * getLeftElevatorEncoder(), ElevatorConstants.kLvlThreePos));
+     * goalPosition = ElevatorConstants.kLvlThreePos;
+     * break;
+     * case 4:
+     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
+     * getLeftElevatorEncoder(), ElevatorConstants.kLvlFourPos));
+     * goalPosition = ElevatorConstants.kLvlFourPos;
+     * break;
+     * }
+     */
   }
 
   // Called once the command ends or is interrupted.
@@ -80,9 +98,13 @@ public class ElevatorCommand extends Command {
   }
 
   // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    // Not sure how exactly to calculate this...
-    return m_subsystem.getLeftElevatorEncoder() == goalPosition && m_subsystem.getLeftElevatorCurrent() == goalPosition;
-  }
+   @Override
+   public boolean isFinished() {
+    /* 
+   // Not sure how exactly to calculate this...
+    return m_subsystem.getLeftElevatorEncoder() == goalPosition &&
+    m_subsystem.getLeftElevatorCurrent() == goalPosition;
+    */
+    return false;
+   }
 }

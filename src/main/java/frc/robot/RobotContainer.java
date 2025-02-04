@@ -67,8 +67,6 @@ public class RobotContainer {
 
     m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1));
     m_driverController.square().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2));
-    m_driverController.circle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 3));
-    m_driverController.triangle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 4));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();

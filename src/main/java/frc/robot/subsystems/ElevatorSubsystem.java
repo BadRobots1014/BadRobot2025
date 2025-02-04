@@ -20,45 +20,51 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax leftElevator;
   private final SparkMax rightElevator;
 
-
   // Creates Left/Right climber objects and configures them
   public ElevatorSubsystem() {
     leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
-    SparkMaxConfig elevatorConfig = new SparkMaxConfig();
 
-    elevatorConfig.idleMode(IdleMode.kBrake);
+    SparkMaxConfig rightElevatorConfig = new SparkMaxConfig();
+    SparkMaxConfig leftElevatorConfig = new SparkMaxConfig();
 
-    leftElevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    rightElevator.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    leftElevatorConfig.idleMode(IdleMode.kBrake);
+    leftElevatorConfig.inverted(false);
+
+    rightElevatorConfig.idleMode(IdleMode.kBrake);
+    rightElevatorConfig.follow(ElevatorConstants.kLeftElevatorCanId, true);
+
+    leftElevator.configure(leftElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rightElevator.configure(rightElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
+  // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope
+
   // Retrieves the amount of AMPs in the Left/Right climbers
-  public double getLeftElevatorCurrent() {return leftElevator.getOutputCurrent();}
-  public double getRightElevatorCurrent() {return rightElevator.getOutputCurrent();}
+  public double getElevatorCurrent() {
+    return leftElevator.getOutputCurrent();
+  }
 
   /**
    * Runs the elevator at a certain speed determined by the amount of AMPs
-   * @param power The power in AMPs to run the climber at. +Power = Up, -Power = Down
+   * 
+   * @param power The power in AMPs to run the climber at. +Power = Up, -Power =
+   *              Down
    */
   public void runElevator(double power) {
-    rightElevator.set(getRightElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
-    leftElevator.set(getLeftElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
+    System.out.println("Setting power to " + power);
+    leftElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
   }
 
   // Stops the climber motors
   public void stopElevator() {
-    rightElevator.stopMotor();
     leftElevator.stopMotor();
   }
 
-  public double getLeftElevatorEncoder() {
-    return leftElevator.getAbsoluteEncoder().getPosition();
-  }
-
-  public double getRightElevatorEncoder() {
-    return rightElevator.getAbsoluteEncoder().getPosition();
-  }
-
+  /*
+  public double getElevatorEncoder() {
+  return leftElevator.getAbsoluteEncoder().getPosition();
+  }  
+  */
 
 }
