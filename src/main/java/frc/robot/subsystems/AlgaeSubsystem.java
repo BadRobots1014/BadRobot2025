@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -16,13 +17,13 @@ import frc.robot.Constants.AlgaeConstants;
 
 public class AlgaeSubsystem extends SubsystemBase {
 
-  private final SparkMax topMotor;
-  private final SparkMax bottomMotor;
+  private final SparkFlex topMotor;
+  private final SparkFlex bottomMotor;
 
   /** Creates a new ExampleSubsystem. */
   public AlgaeSubsystem() {
-    topMotor = new SparkMax(AlgaeConstants.kLeftCanId, MotorType.kBrushless);
-    bottomMotor = new SparkMax(AlgaeConstants.kRightCanId, MotorType.kBrushless);
+    topMotor = new SparkFlex(AlgaeConstants.kLeftCanId, MotorType.kBrushless);
+    bottomMotor = new SparkFlex(AlgaeConstants.kRightCanId, MotorType.kBrushless);
 
     SparkMaxConfig topMotorConfig = new SparkMaxConfig();
     SparkMaxConfig bottomMotorConfig = new SparkMaxConfig();
@@ -31,7 +32,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     topMotorConfig.inverted(false);
 
     bottomMotorConfig.idleMode(IdleMode.kBrake);
-    bottomMotorConfig.inverted(true);
+    bottomMotorConfig.inverted(false);
 
     topMotor.configure(topMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     bottomMotor.configure(bottomMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -57,11 +58,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void SpinTop(double power) {
-    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power  * AlgaeConstants.kTopMaxSpeed : 0);
   }
 
   public void SpinBottom(double power) {
-    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power * AlgaeConstants.kBottomMaxSpeed : 0);
   }
 
   public void Stop() {

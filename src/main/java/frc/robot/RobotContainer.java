@@ -50,11 +50,11 @@ public class RobotContainer {
       OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
-  private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+  //private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
-  private final SendableChooser<Command> autoChooser;
+  // private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = false, fasterMode = false;
 
@@ -75,12 +75,12 @@ public class RobotContainer {
     m_algaeSubsystem.setDefaultCommand(new AlgaeCommand(m_algaeSubsystem, () -> getLeftY(), () -> getRightY()));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
+    //autoChooser = AutoBuilder.buildAutoChooser();
 
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
 
     // Configure the trigger bindings
     configureBindings();
@@ -186,6 +186,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return autoChooser.getSelected();
+    return null;
   }
 }
