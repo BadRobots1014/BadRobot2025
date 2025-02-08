@@ -48,12 +48,20 @@ public class AlgaeSubsystem extends SubsystemBase {
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
   public void SpinIn(double power) {
-    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
-    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+    SpinTop(power);
+    SpinBottom(power);
   }
 
   public void SpinOut(double power) {
     SpinIn(-power);
+  }
+
+  public void SpinTop(double power) {
+    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+  }
+
+  public void SpinBottom(double power) {
+    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
   }
 
   public void Stop() {

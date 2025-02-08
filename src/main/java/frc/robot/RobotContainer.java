@@ -35,18 +35,20 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController =
-      new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
-  private final PS4Controller m_auxController =
-      new PS4Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
+      OperatorConstants.kDriverControllerPort);
+  private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
@@ -56,9 +58,9 @@ public class RobotContainer {
 
   boolean fastMode = false, fasterMode = false;
 
-  
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
     // () -> getLeftX(),
@@ -70,6 +72,7 @@ public class RobotContainer {
     // this::getPOV,
     // this::getAuxLeftTrigger,
     // this::getAuxRightTrigger));
+    m_algaeSubsystem.setDefaultCommand(new AlgaeCommand(m_algaeSubsystem, () -> getLeftY(), () -> getRightY()));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -84,20 +87,32 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
-    // m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-    // m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
-    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    // m_driverController.options().whileTrue(new
+    // ZeroHeadingCommand(m_swerveSubsystem));
+    // m_driverController.R2().whileTrue(new
+    // AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem,
+    // m_driverController.getHID()));
+    // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem,
+    // () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () ->
+    // this.angleRelevant()));
+    // m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+    // true)); // Uncomment when set algae speeds are determined
+    // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+    // false));
   }
 
   boolean getFastMode() {
@@ -110,31 +125,59 @@ public class RobotContainer {
   boolean getFasterMode() {
     if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
       fasterMode = true;
-    }
-    else fasterMode = false;
+    } else
+      fasterMode = false;
     return fasterMode;
   }
-  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? -m_driverController.getRightX() : 0;}
-  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;}
-  double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 180)%360;}
-  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
-  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
-  double getAuxPOV() {return m_auxController.getPOV();}
+
+  double getRightX() {
+    return Math.abs(m_driverController.getRightX()) >= 0.1 ? -m_driverController.getRightX() : 0;
+  }
+
+  double getRightY() {
+    return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;
+  }
+
+  double getLeftX() {
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY() {
+    return m_driverController.getLeftY();
+  }
+
+  double getPOV() {
+    return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV()
+        : (m_driverController.getHID().getPOV() + 180) % 360;
+  }
+
+  double getAuxRightY() {
+    return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;
+  }
+
+  double getAuxLeftY() {
+    return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;
+  }
+
+  double getAuxPOV() {
+    return m_auxController.getPOV();
+  }
+
   double getAuxLeftTrigger() {
     return m_auxController.getL2Axis();
   }
+
   double getAuxRightTrigger() {
     return m_auxController.getR2Axis();
   }
+
   double getRightAngle() {
     return Math.atan2(this.getRightX(), -this.getRightY()) + Math.PI;
   }
+
   boolean angleRelevant() {
     return Math.pow(getRightX(), 2) + Math.pow(getRightY(), 2) >= 0.2;
   }
-  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
