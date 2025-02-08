@@ -11,16 +11,14 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 
 public class AlgaeSubsystem extends SubsystemBase {
-  
+
   private final SparkMax leftMotor;
   private final SparkMax rightMotor;
-  
+
   /** Creates a new ExampleSubsystem. */
   public AlgaeSubsystem() {
     leftMotor = new SparkMax(AlgaeConstants.kLeftCanId, MotorType.kBrushless);
@@ -44,16 +42,17 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
+   * An example method querying a boolean state of the subsystem (for example, a
+   * digital sensor).
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-  public void OpenGrabber(int power) {
+  public void OpenGrabber(double power) {
     leftMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
-    rightMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0); 
+    rightMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
   }
 
-  public void CloseGrabber(int power) {
+  public void CloseGrabber(double power) {
     OpenGrabber(-power);
   }
 

@@ -1,15 +1,13 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
   static double driveThetad;
   SwerveSubsystem m_subsystem;
@@ -29,49 +27,47 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
   private static Supplier<Boolean> angleRelevant;
 
   private static double lastTheta = 0;
-  
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY, boolean fieldOriented)
-  {
+
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX,
+      Supplier<Double> moveY, boolean fieldOriented) {
     super(
-      swerveSubsystem,
-      moveX,
-      moveY,
-      driveTheta,
-      fieldOriented,
-      () -> false,
-      () -> false,
-      () -> -1d,
-      () -> 0d,
-      () -> 0d
-    );
+        swerveSubsystem,
+        moveX,
+        moveY,
+        driveTheta,
+        fieldOriented,
+        () -> false,
+        () -> false,
+        () -> -1d,
+        () -> 0d,
+        () -> 0d);
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    turningPID = new PIDController(1,0, 0);
-    turningPID.enableContinuousInput(0, 2*Math.PI);
+    turningPID = new PIDController(1, 0, 0);
+    turningPID.enableContinuousInput(0, 2 * Math.PI);
 
     angleRelevant = () -> true;
   }
 
-  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX, Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevant)
-  {
+  public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX,
+      Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevant) {
     super(
-      swerveSubsystem,
-      moveX,
-      moveY,
-      driveTheta,
-      fieldOriented,
-      () -> false,
-      () -> false,
-      () -> -1d,
-      () -> 0d,
-      () -> 0d
-    );
+        swerveSubsystem,
+        moveX,
+        moveY,
+        driveTheta,
+        fieldOriented,
+        () -> false,
+        () -> false,
+        () -> -1d,
+        () -> 0d,
+        () -> 0d);
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    turningPID = new PIDController(1,0, 0);
-    turningPID.enableContinuousInput(0, 2*Math.PI);
+    turningPID = new PIDController(1, 0, 0);
+    turningPID.enableContinuousInput(0, 2 * Math.PI);
 
     this.angleRelevant = angleRelevant;
   }
@@ -90,18 +86,18 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
       System.out.println("current" + currentTheta);
       driveThetad = turningPID.calculate(targetTheta.get(), currentTheta);
       super.execute();
-    }
-    else {
+    } else {
       currentTheta = m_subsystem.getRotation2d().getRadians();
       System.out.println("target" + lastTheta);
       System.out.println("current" + currentTheta);
       driveThetad = turningPID.calculate(lastTheta, currentTheta);
-      super.execute(); 
+      super.execute();
     }
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   @Override
   public boolean isFinished() {
