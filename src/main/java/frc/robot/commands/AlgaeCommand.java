@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlgaeCommand extends Command {
   private final AlgaeSubsystem m_subsystem;
-  private final boolean targetOpen;
+  private final boolean spinIn;
 
-  public AlgaeCommand(AlgaeSubsystem subsystem, boolean open) {
+  public AlgaeCommand(AlgaeSubsystem subsystem, boolean spinIn) {
     m_subsystem = subsystem;
 
-    targetOpen = open;
+    this.spinIn = spinIn;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -28,10 +28,10 @@ public class AlgaeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (targetOpen) {
-      m_subsystem.OpenGrabber(AlgaeConstants.kPower);
+    if (spinIn) {
+      m_subsystem.SpinIn(AlgaeConstants.kPower);
     } else {
-      m_subsystem.CloseGrabber(AlgaeConstants.kPower);
+      m_subsystem.SpinOut(AlgaeConstants.kPower);
     }
   }
 

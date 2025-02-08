@@ -16,29 +16,29 @@ import frc.robot.Constants.AlgaeConstants;
 
 public class AlgaeSubsystem extends SubsystemBase {
 
-  private final SparkMax leftMotor;
-  private final SparkMax rightMotor;
+  private final SparkMax topMotor;
+  private final SparkMax bottomMotor;
 
   /** Creates a new ExampleSubsystem. */
   public AlgaeSubsystem() {
-    leftMotor = new SparkMax(AlgaeConstants.kLeftCanId, MotorType.kBrushless);
-    rightMotor = new SparkMax(AlgaeConstants.kRightCanId, MotorType.kBrushless);
+    topMotor = new SparkMax(AlgaeConstants.kLeftCanId, MotorType.kBrushless);
+    bottomMotor = new SparkMax(AlgaeConstants.kRightCanId, MotorType.kBrushless);
 
-    SparkMaxConfig leftMotorConfig = new SparkMaxConfig();
-    SparkMaxConfig rightMotorConfig = new SparkMaxConfig();
+    SparkMaxConfig topMotorConfig = new SparkMaxConfig();
+    SparkMaxConfig bottomMotorConfig = new SparkMaxConfig();
 
-    leftMotorConfig.idleMode(IdleMode.kBrake);
-    // leftMotorConfig.inverted(false);
+    topMotorConfig.idleMode(IdleMode.kBrake);
+    topMotorConfig.inverted(false);
 
-    rightMotorConfig.idleMode(IdleMode.kBrake);
-    // rightMotorConfig.inverted(true);
+    bottomMotorConfig.idleMode(IdleMode.kBrake);
+    bottomMotorConfig.inverted(true);
 
-    leftMotor.configure(leftMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    rightMotor.configure(rightMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    topMotor.configure(topMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    bottomMotor.configure(bottomMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   public double getMotorCurrent() {
-    return leftMotor.getOutputCurrent();
+    return topMotor.getOutputCurrent();
   }
 
   /**
@@ -47,18 +47,18 @@ public class AlgaeSubsystem extends SubsystemBase {
    *
    * @return value of some boolean subsystem state, such as a digital sensor.
    */
-  public void OpenGrabber(double power) {
-    leftMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
-    rightMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+  public void SpinIn(double power) {
+    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
+    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power : 0);
   }
 
-  public void CloseGrabber(double power) {
-    OpenGrabber(-power);
+  public void SpinOut(double power) {
+    SpinIn(-power);
   }
 
   public void Stop() {
-    leftMotor.stopMotor();
-    rightMotor.stopMotor();
+    topMotor.stopMotor();
+    bottomMotor.stopMotor();
   }
 
   @Override
