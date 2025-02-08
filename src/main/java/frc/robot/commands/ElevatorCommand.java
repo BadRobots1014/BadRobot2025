@@ -55,9 +55,9 @@ public class ElevatorCommand extends Command {
 
     // use constants for power later
     if (goalLevelSupplier.get() == 1)
-      m_subsystem.runElevator(.5);
+      m_subsystem.runElevator(.9);
     if (goalLevelSupplier.get() == 2)
-      m_subsystem.runElevator(-.5);
+      m_subsystem.runElevator(-.9);
 
     // This code is good but commented out for now as we don't have encoders yet and not really that far into the elevator
     /*

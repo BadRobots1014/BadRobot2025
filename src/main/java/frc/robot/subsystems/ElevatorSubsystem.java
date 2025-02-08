@@ -31,8 +31,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevatorConfig.idleMode(IdleMode.kBrake);
     leftElevatorConfig.inverted(false);
 
+    leftElevatorConfig.inverted(true);
     rightElevatorConfig.idleMode(IdleMode.kBrake);
-    rightElevatorConfig.follow(ElevatorConstants.kLeftElevatorCanId, true);
 
     leftElevator.configure(leftElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightElevator.configure(rightElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -54,11 +54,15 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void runElevator(double power) {
     System.out.println("Setting power to " + power);
     leftElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
+    rightElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
+
   }
 
   // Stops the climber motors
   public void stopElevator() {
     leftElevator.stopMotor();
+    rightElevator.stopMotor();
+
   }
 
   /*

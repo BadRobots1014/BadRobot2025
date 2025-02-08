@@ -54,16 +54,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftX(),
-    () -> getLeftY(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV,
-    this::getAuxLeftTrigger,
-    this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+    // () -> getLeftX(),
+    // () -> getLeftY(),
+    // () -> getRightX(),
+    // DriveConstants.kFieldOriented,
+    // this::getFastMode,
+    // this::getFasterMode,
+    // this::getPOV,
+    // this::getAuxLeftTrigger,
+    // this::getAuxRightTrigger));
 
     m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1));
     m_driverController.square().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2));
