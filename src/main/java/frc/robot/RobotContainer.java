@@ -11,6 +11,7 @@ import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TestModuleCommand;
 import frc.robot.commands.TestOdometry;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.commands.TurnToThetaCommand;
@@ -23,6 +24,8 @@ import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,16 +60,22 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftX(),
-    () -> getLeftY(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV,
-    this::getAuxLeftTrigger,
-    this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+    // () -> getLeftX(),
+    // () -> getLeftY(),
+    // () -> getRightX(),
+    // DriveConstants.kFieldOriented,
+    // this::getFastMode,
+    // this::getFasterMode,
+    // this::getPOV,
+    // this::getAuxLeftTrigger,
+    // this::getAuxRightTrigger));
+    m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
+      new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // thinks FL
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks FR
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks BL
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks BR
+    }));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -94,7 +103,7 @@ public class RobotContainer {
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
     m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
 
-    m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
+    // m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
   }
 
   boolean getFastMode() {
