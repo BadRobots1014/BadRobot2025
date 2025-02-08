@@ -71,10 +71,10 @@ public class RobotContainer {
     // this::getAuxLeftTrigger,
     // this::getAuxRightTrigger));
     m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
-      new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // thinks FL
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks FR
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks BL
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // thinks BR
+      new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     }));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
