@@ -251,7 +251,6 @@ public class SwerveSubsystem extends SubsystemBase {
       }
     );
     m_field.setRobotPose(m_odometry.getPoseMeters());
-    System.out.println(m_odometry.getPoseMeters());
     return m_odometry.getPoseMeters();
   }
 

@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.util.TurnThetaHelper;
 
 import java.util.function.Supplier;
 
@@ -11,10 +10,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
-  @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
+  static double driveThetad;
   SwerveSubsystem m_subsystem;
 
+  double currentTheta;
   Supplier<Double> targetTheta;
 
   private static Supplier<Boolean> angleRelevant;
@@ -40,13 +41,9 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     this.angleRelevant = angleRelevant;
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // Since the supplier will always point to the target value, it can be set
-    // prematurely
     lastTheta = m_subsystem.getRotation2d();
-    // swerveSubsystem.thetaHelper.setTargetTheta(targetTheta);
   }
 
   @Override
@@ -64,21 +61,18 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     Rotation2d currentTheta = m_subsystem.getRotation2d();
     m_subsystem.thetaHelper.calculate(currentTheta, lastTheta);
 
-    System.out.println("target" + targetTheta);
-    System.out.println("current" + currentTheta);
-    System.out.println("drive speed " + m_subsystem.thetaHelper.driveTheta.get());
+    //System.out.println("target" + targetTheta);
+    //System.out.println("current" + currentTheta);
+    //System.out.println("drive speed " + m_subsystem.thetaHelper.driveTheta.get());
 
     super.execute();
   }
 
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   @Override
   public boolean isFinished() {
     return false;
   }
 }
-
-// Noiritgc was here
