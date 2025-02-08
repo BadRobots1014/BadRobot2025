@@ -146,4 +146,10 @@ public final class Constants {
 
     //public static final Button kTestMotorButton = Button.kLeftBumper;
   }
+  public static class AlgaeConstants {
+    public static final int kLeftCanId = 58;
+    public static final int kRightCanId = 59;
+
+    public static final int kMaxAmps = 140;
+  }
 }
