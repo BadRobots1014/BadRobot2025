@@ -7,12 +7,14 @@ package frc.robot;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AlgaeCommand;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.commands.TurnToThetaCommand;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -48,6 +50,8 @@ public class RobotContainer {
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+
   private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = false, fasterMode = false;
@@ -56,16 +60,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftX(),
-    () -> getLeftY(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV,
-    this::getAuxLeftTrigger,
-    this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+    // () -> getLeftX(),
+    // () -> getLeftY(),
+    // () -> getRightX(),
+    // DriveConstants.kFieldOriented,
+    // this::getFastMode,
+    // this::getFasterMode,
+    // this::getPOV,
+    // this::getAuxLeftTrigger,
+    // this::getAuxRightTrigger));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -89,9 +93,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-    m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
+    // m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+    // m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
+    // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
+    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
   }
 
   boolean getFastMode() {
