@@ -55,11 +55,12 @@ public class ElevatorCommand extends Command {
 
     // use constants for power later
     if (goalLevelSupplier.get() == 1)
-      m_subsystem.runElevator(.5);
+      m_subsystem.runElevator(ElevatorConstants.kElevatorUpPower);
     if (goalLevelSupplier.get() == 2)
-      m_subsystem.runElevator(-.5);
+      m_subsystem.runElevator(ElevatorConstants.kElevatorDownPower);
 
-    // This code is good but commented out for now as we don't have encoders yet and not really that far into the elevator
+    // This code is good but commented out for now as we don't have encoders yet and
+    // not really that far into the elevator
     /*
      * switch(goalLevelSupplier.get()) {
      * 
@@ -98,13 +99,13 @@ public class ElevatorCommand extends Command {
   }
 
   // Returns true when the command should end.
-   @Override
-   public boolean isFinished() {
-    /* 
-   // Not sure how exactly to calculate this...
-    return m_subsystem.getLeftElevatorEncoder() == goalPosition &&
-    m_subsystem.getLeftElevatorCurrent() == goalPosition;
-    */
+  @Override
+  public boolean isFinished() {
+    /*
+     * // Not sure how exactly to calculate this...
+     * return m_subsystem.getLeftElevatorEncoder() == goalPosition &&
+     * m_subsystem.getLeftElevatorCurrent() == goalPosition;
+     */
     return false;
-   }
+  }
 }

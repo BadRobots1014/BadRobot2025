@@ -32,18 +32,20 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController =
-      new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
-  private final PS4Controller m_auxController =
-      new PS4Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
+      OperatorConstants.kDriverControllerPort);
+  private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final SendableChooser<Command> autoChooser;
@@ -52,21 +54,23 @@ public class RobotContainer {
 
   boolean fastMode = false, fasterMode = false;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftX(),
-    () -> getLeftY(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV,
-    this::getAuxLeftTrigger,
-    this::getAuxRightTrigger));
+        () -> getLeftX(),
+        () -> getLeftY(),
+        () -> getRightX(),
+        DriveConstants.kFieldOriented,
+        this::getFastMode,
+        this::getFasterMode,
+        this::getPOV,
+        this::getAuxLeftTrigger,
+        this::getAuxRightTrigger));
 
-    m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1));
-    m_driverController.square().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2));
+    m_driverController.triangle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1)); // up
+    m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2)); // down
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -81,12 +85,17 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
    * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
   private void configureBindings() {
@@ -103,24 +112,47 @@ public class RobotContainer {
   boolean getFasterMode() {
     if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
       fasterMode = true;
-    }
-    else fasterMode = false;
+    } else
+      fasterMode = false;
     return fasterMode;
   }
-  double getRightX() {return -m_driverController.getRightX();}
-  double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 180)%360;}
-  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
-  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
-  double getAuxPOV() {return m_auxController.getPOV();}
+
+  double getRightX() {
+    return -m_driverController.getRightX();
+  }
+
+  double getLeftX() {
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY() {
+    return m_driverController.getLeftY();
+  }
+
+  double getPOV() {
+    return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV()
+        : (m_driverController.getHID().getPOV() + 180) % 360;
+  }
+
+  double getAuxRightY() {
+    return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;
+  }
+
+  double getAuxLeftY() {
+    return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;
+  }
+
+  double getAuxPOV() {
+    return m_auxController.getPOV();
+  }
+
   double getAuxLeftTrigger() {
     return m_auxController.getL2Axis();
   }
+
   double getAuxRightTrigger() {
     return m_auxController.getR2Axis();
   }
-  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
