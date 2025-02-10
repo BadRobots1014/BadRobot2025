@@ -96,10 +96,10 @@ public final class Constants {
     public static final double kWheelBase = Units.inchesToMeters(24.75);
     // Positions of modules relative to the center of mass
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Front left
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front right
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), // Back left
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2) // Back right
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front left
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2), // Front right
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Back left
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2) // Back right
     );
 
     // TODO Using tall bot?

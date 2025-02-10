@@ -60,22 +60,22 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    // () -> getLeftX(),
-    // () -> getLeftY(),
-    // () -> getRightX(),
-    // DriveConstants.kFieldOriented,
-    // this::getFastMode,
-    // this::getFasterMode,
-    // this::getPOV,
-    // this::getAuxLeftTrigger,
-    // this::getAuxRightTrigger));
-    m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
-      new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
-      new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
-    }));
+    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+    () -> getLeftX(),
+    () -> getLeftY(),
+    () -> getRightX(),
+    DriveConstants.kFieldOriented,
+    this::getFastMode,
+    this::getFasterMode,
+    this::getPOV,
+    this::getAuxLeftTrigger,
+    this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
+    //   new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+    // }));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
