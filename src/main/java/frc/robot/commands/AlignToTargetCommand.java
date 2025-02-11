@@ -138,8 +138,8 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // Returns the yaw even though it says pitch
       double yaw = -lastPosLimelight.getRotation().getY();
 
-      // Computes what angle the robot has to be to face the april tag
-      targetTheta = new Rotation2d(currentTheta.getRadians() - yaw);
+      // Use known april tag orientations to know current angle in radians
+      targetTheta = aprilTagAngles.get(lastTag)*Math.PI/180;
 
       // Run PID to compute speed
       swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
