@@ -11,6 +11,8 @@ import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TestModuleCommand;
+import frc.robot.commands.TestOdometry;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.commands.TurnToThetaCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -22,6 +24,8 @@ import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -57,8 +61,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftX(),
     () -> getLeftY(),
+    () -> getLeftX(),
     () -> getRightX(),
     DriveConstants.kFieldOriented,
     this::getFastMode,
@@ -66,6 +70,12 @@ public class RobotContainer {
     this::getPOV,
     this::getAuxLeftTrigger,
     this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
+    //   new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+    // }));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -111,8 +121,8 @@ public class RobotContainer {
   double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? -m_driverController.getRightX() : 0;}
   double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;}
   double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 180)%360;}
+  double getLeftY() {return -m_driverController.getLeftY();}
+  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 270)%360;}
   double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
   double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
   double getAuxPOV() {return m_auxController.getPOV();}
