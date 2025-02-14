@@ -26,7 +26,7 @@ public class TurnThetaHelper {
         this.currentTheta = currentTheta;
 
         turningPID = new PIDController(1, 0, 0);
-        turningPID.enableContinuousInput(0, 2 * Math.PI);
+        turningPID.enableContinuousInput(-Math.PI, Math.PI);
     }
 
     // // Sets desired angle in radians
@@ -40,6 +40,6 @@ public class TurnThetaHelper {
         this.currentTheta = currentTheta.getRadians();
         this.targetTheta = targetTheta.getRadians();
 
-        driveThetad = turningPID.calculate(this.targetTheta, this.currentTheta);
+        driveThetad = turningPID.calculate(this.currentTheta, this.targetTheta);
     }
 }

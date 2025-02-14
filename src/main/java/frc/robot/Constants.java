@@ -31,7 +31,7 @@ public final class Constants {
   public static final class ModuleConstants {
 
     public static final double kWheelDiameterMeters = 0.102;
-    public static final double kDriveMotorGearRatio = 1/8.14;
+    public static final double kDriveMotorGearRatio = 1/9.1d;
     public static final double kTurningMotorGearRatio = 1/12.8;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
     public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
@@ -96,10 +96,10 @@ public final class Constants {
     public static final double kWheelBase = Units.inchesToMeters(24.75);
     // Positions of modules relative to the center of mass
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Front left
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front right
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), // Back left
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2) // Back right
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front left
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2), // Front right
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Back left
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2) // Back right
     );
 
     // TODO Using tall bot?
@@ -112,10 +112,10 @@ public final class Constants {
     public static final double kFLOffset = 0;
 
     // Tall bot offsets
-    public static final double kTallFROffset = -.097 * Math.PI * 2;
-    public static final double kTallBROffset = .179 * Math.PI * 2;
-    public static final double kTallBLOffset = .314 * Math.PI * 2 + (Math.PI / 2);
-    public static final double kTallFLOffset = .106 * Math.PI * 2;
+    public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI/2;
+    public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI/2;
+    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
+    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
@@ -124,20 +124,20 @@ public final class Constants {
     public static final double kFrontLeftChassisAngularOffset = (tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
-    public static final int kFrontRightDrivingCanId = 11;
-    public static final int kRearRightDrivingCanId = 21;
-    public static final int kRearLeftDrivingCanId = 31;
-    public static final int kFrontLeftDrivingCanId = 41;
+    public static final int kFrontRightDrivingCanId = 31;
+    public static final int kRearRightDrivingCanId = 41;
+    public static final int kRearLeftDrivingCanId = 11;
+    public static final int kFrontLeftDrivingCanId = 21;
 
-    public static final int kFrontRightTurningCanId = 12;
-    public static final int kRearRightTurningCanId = 22;
-    public static final int kRearLeftTurningCanId = 32;
-    public static final int kFrontLeftTurningCanId = 42;
+    public static final int kFrontRightTurningCanId = 32;
+    public static final int kRearRightTurningCanId = 42;
+    public static final int kRearLeftTurningCanId = 12;
+    public static final int kFrontLeftTurningCanId = 22;
 
-    public static final int kFrontRightEncoderCanId = 13;
-    public static final int kRearRightEncoderCanId = 23;
-    public static final int kRearLeftEncoderCanId = 33;
-    public static final int kFrontLeftEncoderCanId = 43;
+    public static final int kFrontRightEncoderCanId = 33;
+    public static final int kRearRightEncoderCanId = 43;
+    public static final int kRearLeftEncoderCanId = 13;
+    public static final int kFrontLeftEncoderCanId = 23;
 
     public static final boolean kGyroReversed = false;
 

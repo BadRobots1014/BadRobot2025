@@ -184,7 +184,7 @@ public class SwerveModule {
   } // Returns position of turning encoder in radians
 
   public SwerveModulePosition getDrivePositionModule() {
-    return new SwerveModulePosition(getDrivePosition(), new Rotation2d(getTurningPosition()));
+    return new SwerveModulePosition(-getDrivePosition(), new Rotation2d(getAbsoluteEncoderRad()));
   } // Returns position within SwerveModulePosition class
 
   public double getDriveVelocity() {
@@ -205,6 +205,10 @@ public class SwerveModule {
   public double getAbsoluteEncoderRad() {
     return absoluteEncoder.getAbsolutePosition().getValue().in(Radians);
   } // Returns position of absolute encoder in radians
+
+  public double getInvertedAbsoluteRad() {
+    return -getAbsoluteEncoderRad();
+  }
 
   public double getAbsoluteEncoderDeg() {
     return absoluteEncoder.getAbsolutePosition().getValue().in(Degrees);

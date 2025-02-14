@@ -82,16 +82,16 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
-        this::getPose, // Robot pose supplier
-        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::updateOdometry, // Robot pose supplier
+        this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE
+        (speeds, feedforwards) -> driveAutoRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE
                                                               // ChassisSpeeds. Also optionally outputs individual
                                                               // module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic
                                         // drive trains
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(3.5, 1, 0.0), // Translation PID constants
+            new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
         ),
         config, // The robot configuration
         () -> {
@@ -157,9 +157,9 @@ public class SwerveSubsystem extends SubsystemBase {
   // Creating odometry object from the kinematics object and the initial wheel positions.
   // Here, our starting pose is 5 meters along the long end of the field and in the
   // center of the field along the short end, facing the opposing alliance wall.
-  public final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+  public SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
     DriveConstants.kDriveKinematics,
-    gru.getRotation2d(),
+    this.getRotation2d(),
     new SwerveModulePosition[] {
       frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
       backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
@@ -167,15 +167,25 @@ public class SwerveSubsystem extends SubsystemBase {
     new Pose2d(13.5, 5.0, new Rotation2d())
   );
 
+  public void resetOdometry(Pose2d newPose) {
+    m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      this.getRotation2d(),
+      new SwerveModulePosition[] {
+        frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+        backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+      },
+      newPose
+    );
+  }
+
   // Util for handling turn to theta instructions
   public final TurnThetaHelper thetaHelper = new TurnThetaHelper(getYaw());
 
   @Override
   public void periodic() {
-    // Get the rotation of the robot from the gyro.
-    Rotation2d gyroAngle = gru.getRotation2d();
     // Update the pose
-    m_currentDisplacement = updateOdometry(gyroAngle);
+    m_currentDisplacement = updateOdometry();
   }
 
   // Gru data shenanigans
@@ -203,16 +213,20 @@ public class SwerveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(getHeading());
   }
 
+  public Rotation2d getInvertedRotation2d() {
+    return Rotation2d.fromDegrees(-getHeading());
+  }
+
   public double getYaw() {
-    return Math.IEEEremainder(gru.getYaw(), 360);
+    return -gru.getYaw();
   }
 
   public double getRoll() {
-    return Math.IEEEremainder(gru.getRoll(), 360);
+    return gru.getRoll();
   }
 
   public double getPitch() {
-    return Math.IEEEremainder(gru.getPitch(), 360);
+    return gru.getPitch();
   }
 
   public double getX() {
@@ -243,8 +257,8 @@ public class SwerveSubsystem extends SubsystemBase {
     return new ChassisSpeeds(getXSpeed(), getYSpeed(), getTurnSpeed());
   }
 
-  public Pose2d updateOdometry(Rotation2d gyroAngle) {
-    m_odometry.update(gyroAngle,
+  public Pose2d updateOdometry() {
+    m_odometry.update(this.getRotation2d(),
       new SwerveModulePosition[] {
         frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
         backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
@@ -260,6 +274,10 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void driveRobotRelative(ChassisSpeeds speeds) {
     setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds));
+  }
+
+  public void driveAutoRobotRelative(ChassisSpeeds speeds) {
+    setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond)));
   }
 
   public void stopModules() {
