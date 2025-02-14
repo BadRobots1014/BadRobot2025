@@ -4,21 +4,16 @@ import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.LimelightHelpers;
 
-import static edu.wpi.first.units.Units.Degrees;
-
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.DriveConstants;
 
 public class AlignToTargetCommand extends SwerveDriveCommand {
@@ -135,11 +130,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
-      // Returns the yaw even though it says pitch
-      double yaw = -lastPosLimelight.getRotation().getY();
-
       // Use known april tag orientations to know current angle in radians
-      targetTheta = aprilTagAngles.get(lastTag)*Math.PI/180;
+      double targetRadians = DriveConstants.aprilTagAngles.get(lastTag) * Math.PI / 180;
+      targetTheta = new Rotation2d(targetRadians);
 
       // Run PID to compute speed
       swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
