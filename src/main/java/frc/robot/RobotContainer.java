@@ -10,6 +10,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.PathToLimelight;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TestModuleCommand;
 import frc.robot.commands.TestOdometry;
@@ -102,6 +103,9 @@ public class RobotContainer {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
     m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
+
+    //m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
+    m_driverController.triangle().onTrue(m_swerveSubsystem.PathToLimelight());
   }
 
   boolean getFastMode() {

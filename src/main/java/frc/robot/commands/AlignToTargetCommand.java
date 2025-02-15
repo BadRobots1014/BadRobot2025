@@ -132,7 +132,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
       // Use known april tag orientations to know current angle in radians
       double targetRadians = DriveConstants.aprilTagAngles.get(lastTag) * Math.PI / 180;
-      targetTheta = new Rotation2d(targetRadians);
+      //targetTheta = aprilTagAngles.get(lastTag)*Math.PI/180;
 
       // Run PID to compute speed
       swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
