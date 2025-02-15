@@ -122,7 +122,7 @@ public class RobotContainer {
     else fasterMode = false;
     return fasterMode;
   }
-  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? -m_driverController.getRightX() : 0;}
+  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
   double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;}
   double getLeftX() {return m_driverController.getLeftX();}
   double getLeftY() {return -m_driverController.getLeftY();}
