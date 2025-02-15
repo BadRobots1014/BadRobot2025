@@ -119,7 +119,7 @@ public class RobotContainer {
     return fasterMode;
   }
   double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
-  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? -m_driverController.getRightY() : 0;}
+  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;}
   double getLeftX() {return m_driverController.getLeftX();}
   double getLeftY() {return -m_driverController.getLeftY();}
   double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 270)%360;}
@@ -133,7 +133,7 @@ public class RobotContainer {
     return m_auxController.getR2Axis();
   }
   double getRightAngle() {
-    return Math.atan2(this.getRightX(), -this.getRightY()) + Math.PI;
+    return Math.atan2(this.getRightX(), -this.getRightY());
   }
   boolean angleRelevant() {
     return Math.pow(getRightX(), 2) + Math.pow(getRightY(), 2) >= 0.2;
