@@ -16,39 +16,45 @@ import frc.robot.Constants.ClimberConstants;
 
 public class ClimberSubsystem extends SubsystemBase {
 
-  private final SparkMax leftClimber;
-  private final SparkMax rightClimber;
+  //private final SparkMax leftClimber;
+  //private final SparkMax rightClimber;
+  private final SparkMax climber;
 
 
   // Creates Left/Right climber objects and configures them
   public ClimberSubsystem() {
-    leftClimber = new SparkMax(ClimberConstants.kLeftClimberCanId, MotorType.kBrushless);
-    rightClimber = new SparkMax(ClimberConstants.kRightClimberCanId, MotorType.kBrushless);
+    //leftClimber = new SparkMax(ClimberConstants.kLeftClimberCanId, MotorType.kBrushless);
+    //rightClimber = new SparkMax(ClimberConstants.kRightClimberCanId, MotorType.kBrushless);
+    climber = new SparkMax(ClimberConstants.kClimberCanId, MotorType.kBrushless);
     SparkMaxConfig config = new SparkMaxConfig();
 
     config.idleMode(IdleMode.kBrake);
 
-    leftClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    rightClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    //leftClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    //rightClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    climber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParamenters);
   }
 
   // Retrieves the amount of AMPs in the Left/Right climbers
-  public double getLeftClimberCurrent() {return leftClimber.getOutputCurrent();}
-  public double getRightClimberCurrent() {return rightClimber.getOutputCurrent();}
+  //public double getLeftClimberCurrent() {return leftClimber.getOutputCurrent();}
+  //public double getRightClimberCurrent() {return rightClimber.getOutputCurrent();}
+  public double getClimberCurrent() {return climber.getOutputCurrent();}
 
   /**
    * Runs the climber at a certain power level (speed)
    * @param power The power in AMPs to run the climber at
    */
   public void runClimber(double power) {
-    rightClimber.set(getLeftClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
-    leftClimber.set(getRightClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
+    //rightClimber.set(getLeftClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
+    //leftClimber.set(getRightClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
+    climber.set(getClimberCurrent() < ClimberConstants.kClimberMaxAmps ? power : 0);
   }
 
   // Stops the climber motors
   public void stopClimber() {
-    rightClimber.stopMotor();
-    leftClimber.stopMotor();
+    //rightClimber.stopMotor();
+    //leftClimber.stopMotor();
+    climber.stopMotor();
   }
 
 
