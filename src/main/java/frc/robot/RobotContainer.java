@@ -69,8 +69,8 @@ public class RobotContainer {
         this::getAuxLeftTrigger,
         this::getAuxRightTrigger));
 
-    m_driverController.triangle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1)); // up
-    m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2)); // down
+    m_driverController.cross().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 1)); // up
+    m_driverController.triangle().whileTrue(new ElevatorCommand(m_ElevatorSubsystem, () -> 2)); // down
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
