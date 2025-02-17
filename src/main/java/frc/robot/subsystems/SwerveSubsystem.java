@@ -78,19 +78,19 @@ public class SwerveSubsystem extends SubsystemBase {
         builder.setSmartDashboardType("SwerveDrive");
 
         // Add front left module properties
-        builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getAbsoluteEncoderRad(), null);
+        builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getInvertedAbsoluteRad(), null);
         builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
 
         // Add front right module properties
-        builder.addDoubleProperty("Front Right Angle", () -> frontRight.getAbsoluteEncoderRad(), null);
+        builder.addDoubleProperty("Front Right Angle", () -> frontRight.getInvertedAbsoluteRad(), null);
         builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
 
         // Add back left module properties
-        builder.addDoubleProperty("Back Left Angle", () -> backLeft.getAbsoluteEncoderRad(), null);
+        builder.addDoubleProperty("Back Left Angle", () -> backLeft.getInvertedAbsoluteRad(), null);
         builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
 
         // Add back right module properties
-        builder.addDoubleProperty("Back Right Angle", () -> backRight.getAbsoluteEncoderRad(), null);
+        builder.addDoubleProperty("Back Right Angle", () -> backRight.getInvertedAbsoluteRad(), null);
         builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
 
         // Add robot overall angle property
