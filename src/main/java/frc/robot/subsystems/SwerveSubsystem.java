@@ -192,7 +192,7 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
       backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
     },
-    new Pose2d(13.5, 5.0, new Rotation2d())
+    new Pose2d(13.5, 5.0, this.getRotation2d())
   );
 
   public void resetOdometry(Pose2d newPose) {
