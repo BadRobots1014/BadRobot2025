@@ -72,12 +72,17 @@ public class SwerveSubsystem extends SubsystemBase {
     m_tab.addNumber("Yaw", this::getYaw);
     m_tab.addNumber("Roll", this::getRoll);
     m_tab.addNumber("Pitch", this::getPitch);
-    m_tab.addNumber("X", this::getX);
-    m_tab.addNumber("Y", this::getY);
+    // m_tab.addNumber("X", this::getX);
+    // m_tab.addNumber("Y", this::getY);
+    m_tab.addNumber("X", () -> m_odometry.getPoseMeters().getX());
+    m_tab.addNumber("Y", () -> m_odometry.getPoseMeters().getY());
     m_tab.addNumber("X Offset", () -> offsetX);
     m_tab.addNumber("Y Offset", () -> offsetY);
+    m_tab.addNumber("X Speed", this::getXSpeed);
+    m_tab.addNumber("Y Speed", this::getYSpeed);
     m_tab.addBoolean("NavX isConnected", gru::isConnected);
     m_tab.addBoolean("NavX isCalibrating", gru::isCalibrating);
+    m_tab.addNumber("odometry rotation", () -> m_odometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putData(m_field);
 
     Controller = controller;
@@ -200,7 +205,7 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
       backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
     },
-    new Pose2d(13.5, 5.0, new Rotation2d())
+    new Pose2d(13.5, 5.0, this.getRotation2d())
   );
 
   public void resetOdometry(Pose2d newPose) {
