@@ -97,9 +97,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
     m_tab = Shuffleboard.getTab("Limelight");
 
-    m_tab.addDouble("Current Displacement X", () -> swerveSubsystem.getPose().getX());
-    m_tab.addDouble("Current Displacement Y", () -> swerveSubsystem.getPose().getY());
-    m_tab.addDouble("Current Displacement Rotation", () -> swerveSubsystem.getPose().getRotation().getDegrees());
+    m_tab.addDouble("Current Displacement X", () -> swerveSubsystem.getGruPose().getX());
+    m_tab.addDouble("Current Displacement Y", () -> swerveSubsystem.getGruPose().getY());
+    m_tab.addDouble("Current Displacement Rotation", () -> swerveSubsystem.getGruPose().getRotation().getDegrees());
     m_tab.addString("Last Displacement", () -> lastDisplacement.toString());
     m_tab.addString("Limelight Previous", () -> lastPosLimelight.toString());
 
