@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -56,24 +58,45 @@ public class SwerveSubsystem extends SubsystemBase {
       }
     }).start();
 
-    // Shuffle bored
-    m_tab = Shuffleboard.getTab("Swerve");
-    m_tab.addNumber("Heading", this::getHeading);
-    m_tab.addNumber("Yaw", this::getYaw);
-    m_tab.addNumber("Roll", this::getRoll);
-    m_tab.addNumber("Pitch", this::getPitch);
-    // m_tab.addNumber("X", this::getX);
-    // m_tab.addNumber("Y", this::getY);
-    m_tab.addNumber("X", () -> m_odometry.getPoseMeters().getX());
-    m_tab.addNumber("Y", () -> m_odometry.getPoseMeters().getY());
-    m_tab.addNumber("X Offset", () -> offsetX);
-    m_tab.addNumber("Y Offset", () -> offsetY);
-    m_tab.addNumber("X Speed", this::getXSpeed);
-    m_tab.addNumber("Y Speed", this::getYSpeed);
-    m_tab.addBoolean("NavX isConnected", gru::isConnected);
-    m_tab.addBoolean("NavX isCalibrating", gru::isCalibrating);
-    m_tab.addNumber("odometry rotation", () -> m_odometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Swerve/Heading", getHeading());
+    SmartDashboard.putNumber("Swerve/Yaw", getYaw());
+    SmartDashboard.putNumber("Swerve/Roll", getRoll());
+    SmartDashboard.putNumber("Swerve/Pitch", getPitch());
+    SmartDashboard.putNumber("Swerve/X", getX());
+    SmartDashboard.putNumber("Swerve/Y", getY());
+    SmartDashboard.putNumber("Swerve/X Offset", offsetX);
+    SmartDashboard.putNumber("Swerve/Y Offset", offsetY);
+    SmartDashboard.putBoolean("Swerve/NavX isConnected", gru.isConnected());
+    SmartDashboard.putBoolean("Swerve/NavX isCalibrating", gru.isCalibrating());
+
     SmartDashboard.putData(m_field);
+
+    // Create SmartDashboard data for the swerve drive
+    SmartDashboard.putData("Swerve/Swerve Modules", new Sendable() {
+      @Override
+      public void initSendable(SendableBuilder builder) {
+        builder.setSmartDashboardType("SwerveDrive");
+
+        // Add front left module properties
+        builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getInvertedAbsoluteRad(), null);
+        builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getDriveVelocity(), null);
+
+        // Add front right module properties
+        builder.addDoubleProperty("Front Right Angle", () -> frontRight.getInvertedAbsoluteRad(), null);
+        builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getDriveVelocity(), null);
+
+        // Add back left module properties
+        builder.addDoubleProperty("Back Left Angle", () -> backLeft.getInvertedAbsoluteRad(), null);
+        builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getDriveVelocity(), null);
+
+        // Add back right module properties
+        builder.addDoubleProperty("Back Right Angle", () -> backRight.getInvertedAbsoluteRad(), null);
+        builder.addDoubleProperty("Back Right Velocity", () -> backRight.getDriveVelocity(), null);
+
+        // Add robot overall angle property
+        builder.addDoubleProperty("Robot Angle", () -> 1.6, null);
+      }
+    });
 
     Controller = controller;
 
@@ -307,8 +330,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void testMotor() {
-    System.out.println(Controller.getPOV());
-    m_tab.addInteger("POV", Controller::getPOV);
+    SmartDashboard.putNumber("POV", Controller.getPOV());
 
     if (Controller.getPOV() > -1) {
       int pov = Controller.getPOV();
