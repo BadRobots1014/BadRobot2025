@@ -177,5 +177,17 @@ public final class Constants {
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
+
+    // CoralPath
+    public enum CoralTroughButtons {
+      TOPLEFT,
+      TOP,
+      TOPRIGHT,
+      RIGHT,
+      BOTTOMRIGHT,
+      BOTTOM,
+      BOTTOMLEFT,
+      LEFT
+    }
   }
 }
