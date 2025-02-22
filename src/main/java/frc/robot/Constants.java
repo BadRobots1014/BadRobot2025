@@ -103,7 +103,8 @@ public final class Constants {
     );
 
     // TODO Using tall bot?
-    public static final boolean tallBot = true;
+    public static final boolean tallBot = false;
+    public static final boolean steve = true;
 
     // Short bot offsets
     public static final double kFROffset = Math.PI / 2 - 2;
@@ -117,11 +118,16 @@ public final class Constants {
     public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
     public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
 
+    public static final double kSteveBLOffset = -.241 * Math.PI * 2;
+    public static final double kSteveFLOffset = .007 * Math.PI * 2;
+    public static final double kSteveFROffset = -.335 * Math.PI * 2;
+    public static final double kSteveBROffset = -.387 * Math.PI * 2;
+
     // Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
-    public static final double kBackRightChassisAngularOffset = (tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = (tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = (tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = (steve ? kSteveFROffset : tallBot ? kTallFROffset : kFROffset);
+    public static final double kBackRightChassisAngularOffset = (steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 31;
