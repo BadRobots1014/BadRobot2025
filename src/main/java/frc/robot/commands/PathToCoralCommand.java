@@ -4,8 +4,11 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.DriveConstants.CoralTroughButtons;
+import frc.robot.Constants.CoralConstants.CoralTroughButtons;
+import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
@@ -31,7 +34,8 @@ public class PathToCoralCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+        Pose2d pose = CoralConstants.CoralTroughRed.get(button);
+        // m_subsystem.PathToLimelight(pose);
     }
 
     // Called once the command ends or is interrupted.

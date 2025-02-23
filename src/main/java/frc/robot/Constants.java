@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -177,17 +179,39 @@ public final class Constants {
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
+  }
 
+  public static final class CoralConstants {
     // CoralPath
     public enum CoralTroughButtons {
       TOPLEFT,
       TOP,
       TOPRIGHT,
-      RIGHT,
       BOTTOMRIGHT,
       BOTTOM,
       BOTTOMLEFT,
-      LEFT
     }
+
+    public static Map<CoralTroughButtons, Pose2d> CoralTroughRed = new HashMap<CoralTroughButtons, Pose2d>() {
+      {
+        put(CoralTroughButtons.TOPLEFT, new Pose2d(497.77, 130.17, Rotation2d.fromDegrees(240))); // 11
+        put(CoralTroughButtons.TOP, new Pose2d(481.39, 158.50, Rotation2d.fromDegrees(180))); // 10
+        put(CoralTroughButtons.TOPRIGHT, new Pose2d(497.77, 186.83, Rotation2d.fromDegrees(120))); // 9
+        put(CoralTroughButtons.BOTTOM, new Pose2d(530.49, 186.83, Rotation2d.fromDegrees(60))); // 8
+        put(CoralTroughButtons.BOTTOMRIGHT, new Pose2d(546.87, 158.50, Rotation2d.fromDegrees(0))); // 7
+        put(CoralTroughButtons.BOTTOMLEFT, new Pose2d(530.49, 130.17, Rotation2d.fromDegrees(300))); // 6
+      }
+    };
+
+    public static Map<CoralTroughButtons, Pose2d> CoralThroughBlue = new HashMap<CoralTroughButtons, Pose2d>() {
+      {
+        put(CoralTroughButtons.TOPLEFT, new Pose2d(193.1, 186.83, Rotation2d.fromDegrees(60))); // 20
+        put(CoralTroughButtons.TOP, new Pose2d(209.49, 158.5, Rotation2d.fromDegrees(0))); // 21
+        put(CoralTroughButtons.TOPRIGHT, new Pose2d(193.1, 130.17, Rotation2d.fromDegrees(300))); // 22
+        put(CoralTroughButtons.BOTTOMRIGHT, new Pose2d(160.39, 130.17, Rotation2d.fromDegrees(240))); // 17
+        put(CoralTroughButtons.BOTTOM, new Pose2d(144, 158.5, Rotation2d.fromDegrees(180))); // 18
+        put(CoralTroughButtons.BOTTOMRIGHT, new Pose2d(160.39, 186.83, Rotation2d.fromDegrees(120))); // 19
+      }
+    };
   }
 }
