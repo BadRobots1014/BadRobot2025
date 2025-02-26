@@ -53,11 +53,13 @@ public class ElevatorCommand extends Command {
   @Override
   public void execute() {
 
+    m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalPosition));
+
     // use constants for power later
-    if (goalLevelSupplier.get() == 1)
-      m_subsystem.runElevator(ElevatorConstants.kElevatorUpPower);
-    if (goalLevelSupplier.get() == 2)
-      m_subsystem.runElevator(ElevatorConstants.kElevatorDownPower);
+    // if (goalLevelSupplier.get() == 1)
+    //   m_subsystem.runElevator(ElevatorConstants.kElevatorUpPower);
+    // if (goalLevelSupplier.get() == 2)
+    //   m_subsystem.runElevator(ElevatorConstants.kElevatorDownPower);
 
     // This code is good but commented out for now as we don't have encoders yet and
     // not really that far into the elevator

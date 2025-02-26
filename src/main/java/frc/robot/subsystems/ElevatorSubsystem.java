@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -43,6 +44,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Retrieves the amount of AMPs in the Left/Right climbers
   public double getElevatorCurrent() {
     return leftElevator.getOutputCurrent();
+  }
+
+  public double getElevatorEncoder()
+  {
+    return leftElevator.getAbsoluteEncoder().getPosition();
   }
 
   /**
