@@ -50,6 +50,50 @@ public final class Constants {
     public static final double kDriveDeadband = 0.02;
     public static final double kTriggerDeadband = 0.75;
   }
+  public final class ControllerConstants {
+
+    public final static int kDriverControllerPort = 0;
+    public final static int kSecondControllerPort = 1;
+
+
+    public final static double kMaxThrottle = 1.0;
+    public final static double kSlowThrottle = 0.5;
+    
+    public final static int kThrottleButton = 2;
+    
+}
+
+  public static final class ReefConstants {
+    public final static int kTopReefButton = 0;
+    public final static int kTopLeftReefButton = 1;
+    public final static int kButtomLeftReefButton = 2;
+    public final static int kButtomReefButton = 3;
+    public final static int kButtomRightReefButton = 4;
+    public final static int kTopRightReefButton = 5;
+
+  }
+
+  public static final class CoralConstants {
+    public final static int kLeftTrough = 0;
+    public final static int kRightTrough = 1;
+    public final static int kLeftLevel1 = 2;
+    public final static int kRightLevel1 = 3;
+    public final static int kLeftLevel2 = 4;
+    public final static int kRightLevel2 = 5;
+    public final static int kLeftLevel3 = 6;
+    public final static int kRightLevel3 = 7; 
+  }
+
+  public static final class ColorConstants {
+    public final static double yellow = 0.69;
+    public final static double yellowPatt = -0.07;
+    public final static double red = 0.61;
+    public final static double redPatt = -0.17;
+    public final static double blue = 0.87;
+    public final static double bluePatt = -0.83;
+    public final static double green = 0.77;
+    public final static double greenPatt = -0.37;
+  }
 
   public static final class DriveConstants {
 

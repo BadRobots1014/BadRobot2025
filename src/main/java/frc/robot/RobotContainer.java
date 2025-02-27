@@ -50,6 +50,9 @@ public class RobotContainer {
       new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController =
       new PS4Controller(OperatorConstants.kDriverControllerPort);
+  
+  private Joystick secondaryControllerOne;
+  private Joystick secondaryControllerTwo;
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
@@ -77,6 +80,10 @@ public class RobotContainer {
     //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
     //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
+
+    this.secondaryControllerOne = new Joystick(ControllerConstants.kSecondControllerPortOne);
+    this.secondaryControllerTwo = new Joystick(ControllerConstants.kSecondControllerPortTwo);
+
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
