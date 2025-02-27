@@ -106,6 +106,7 @@ public class RobotContainer {
 
     //m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
     m_driverController.triangle().onTrue(new LimelightPathCommand(m_swerveSubsystem, () -> 2d, () -> 0d, () -> Rotation2d.fromDegrees(90)));
+    m_driverController.square().onTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
   }
 
   boolean getFastMode() {

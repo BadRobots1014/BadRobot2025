@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.util.LimelightHelpers;
 
 public class LimelightPathCommand extends Command {
 
   public final SwerveSubsystem swerveSubsystem;
+  public final LimelightSubsystem limelightSubsystem;
   private final Supplier<Double> X;
   private final Supplier<Double> Y;
   private final Supplier<Rotation2d> Rot;
@@ -19,6 +21,7 @@ public class LimelightPathCommand extends Command {
 
   public LimelightPathCommand(SwerveSubsystem subsystem, Supplier<Double> endX, Supplier<Double> endY, Supplier<Rotation2d> endRot) {
     swerveSubsystem = subsystem;
+    limelightSubsystem = null;
     X = endX;
     Y = endY;
     Rot = endRot;
@@ -26,14 +29,26 @@ public class LimelightPathCommand extends Command {
   }
 
   public LimelightPathCommand(SwerveSubsystem subsystem, LimelightSubsystem limelight) {
+    swerveSubsystem = subsystem;
+    limelightSubsystem = limelight;
+    X = () -> 0d;
+    Y = () -> 0d;
+    Rot = () -> new Rotation2d();
     addRequirements(swerveSubsystem);
-    addRequirements(limelight);
+    addRequirements(limelightSubsystem);
   }
 
   @Override
   public void initialize() {
-    currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
-    currentCommand.initialize();
+    if (limelightSubsystem == null) {
+      currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
+      currentCommand.initialize();
+    }
+    else {
+      var lastTag = LimelightHelpers.getFiducialID("");
+      var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
+      currentCommand = swerveSubsystem.PathToLimelight(() -> -lastPosLimelight.getX(), () -> lastPosLimelight.getY(), () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getX()));
+    }
   }
 
   @Override
