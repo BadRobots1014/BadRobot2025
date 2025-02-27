@@ -155,9 +155,4 @@ public final class Constants {
     public static final double kCoralInSpeed = .5;
     public static final double kCoralOutSpeed = -.2;
   }
-
-  public enum CoralMode {
-    Stop,
-    In,
-  }
 }
