@@ -103,7 +103,8 @@ public final class Constants {
     );
 
     // TODO Using tall bot?
-    public static final boolean tallBot = true;
+    public static final boolean tallBot = false;
+    public static final boolean steve = true;
 
     // Short bot offsets
     public static final double kFROffset = Math.PI / 2 - 2;
@@ -117,27 +118,33 @@ public final class Constants {
     public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
     public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
 
+    public static final double kSteveBLOffset = -.007568 * Math.PI * 2;
+    public static final double kSteveFLOffset = -.083252 * Math.PI * 2;
+    public static final double kSteveFROffset = .480713 * Math.PI * 2;
+    public static final double kSteveBROffset = -.250997 * Math.PI * 2;
+
     // Angular offsets of the modules relative to the chassis in radians
-    public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
-    public static final double kBackRightChassisAngularOffset = (tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = (tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = (tallBot ? kTallFLOffset : kFLOffset);
+
+    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; //(steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackRightChassisAngularOffset = kSteveBROffset; //(steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
-    public static final int kFrontRightDrivingCanId = 31;
-    public static final int kRearRightDrivingCanId = 41;
-    public static final int kRearLeftDrivingCanId = 11;
+    public static final int kFrontRightDrivingCanId = 11;
     public static final int kFrontLeftDrivingCanId = 21;
+    public static final int kRearLeftDrivingCanId = 31;
+    public static final int kRearRightDrivingCanId = 41;
 
-    public static final int kFrontRightTurningCanId = 32;
-    public static final int kRearRightTurningCanId = 42;
-    public static final int kRearLeftTurningCanId = 12;
+    public static final int kFrontRightTurningCanId = 12;
     public static final int kFrontLeftTurningCanId = 22;
+    public static final int kRearLeftTurningCanId = 32;
+    public static final int kRearRightTurningCanId = 42;
 
-    public static final int kFrontRightEncoderCanId = 33;
-    public static final int kRearRightEncoderCanId = 43;
-    public static final int kRearLeftEncoderCanId = 13;
+    public static final int kFrontRightEncoderCanId = 13;
     public static final int kFrontLeftEncoderCanId = 23;
+    public static final int kRearLeftEncoderCanId = 33;
+    public static final int kRearRightEncoderCanId = 43;
 
     public static final boolean kGyroReversed = false;
 
@@ -147,7 +154,7 @@ public final class Constants {
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
 
-    public static final boolean kFrontRightDriveEncoderReversed = false;
+    public static final boolean kFrontRightDriveEncoderReversed = true;
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kFrontRightAbsoluteEncoderReversed = true;
 
