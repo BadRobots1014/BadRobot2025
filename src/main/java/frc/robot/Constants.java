@@ -154,5 +154,7 @@ public final class Constants {
   public static final class CoralConstants {
     public static final double kCoralInSpeed = .5;
     public static final double kCoralOutSpeed = -.2;
+
+    public static final int kCoralCanID = -1;
   }
 }

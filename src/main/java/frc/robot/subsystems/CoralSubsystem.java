@@ -20,7 +20,7 @@ public class CoralSubsystem extends SubsystemBase {
 
   // Creates motor object and configures them
   public CoralSubsystem() {
-    coralMotor = new SparkMax(1984, MotorType.kBrushed);
+    coralMotor = new SparkMax(CoralConstants.kCoralCanID, MotorType.kBrushed);
     SparkMaxConfig config = new SparkMaxConfig();
 
     config.idleMode(IdleMode.kBrake);
