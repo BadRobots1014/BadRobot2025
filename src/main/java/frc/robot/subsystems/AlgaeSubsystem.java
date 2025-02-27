@@ -53,11 +53,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     SpinIn(-power);
   }
 
-  public void SpinTop(double power) {
+  private void SpinTop(double power) {
     topMotor.set(power * AlgaeConstants.kTopMaxSpeed);
   }
 
-  public void SpinBottom(double power) {
+  private void SpinBottom(double power) {
     bottomMotor.set(power * AlgaeConstants.kBottomMaxSpeed);
   }
 
