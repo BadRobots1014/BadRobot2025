@@ -31,4 +31,9 @@ public class CoralCommand extends Command {
   public void end(boolean interrupted) {
     m_subsystem.stopMotor();
   }
+
+  @Override
+  public boolean isFinished(){
+    return false;
+  }
 }
