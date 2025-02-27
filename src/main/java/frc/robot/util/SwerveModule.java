@@ -16,6 +16,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -44,28 +45,25 @@ public class SwerveModule {
   private GenericEntry d;
 
   public SwerveModule(
-    int driveMotorId,
-    int turningMotorId,
-    boolean driveMotorReversed,
-    boolean turningMotorReversed,
-    int absoluteEncoderId,
-    double absoluteEncoderOffset,
-    boolean absoluteEncoderReversed,
-    GenericEntry p,
-    GenericEntry i,
-    GenericEntry d
-  ) {
+      int driveMotorId,
+      int turningMotorId,
+      boolean driveMotorReversed,
+      boolean turningMotorReversed,
+      int absoluteEncoderId,
+      double absoluteEncoderOffset,
+      boolean absoluteEncoderReversed,
+      GenericEntry p,
+      GenericEntry i,
+      GenericEntry d) {
     // Absolute encoder setup
     this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
-    this.absoluteEncoderOffsetRot =
-      this.absoluteEncoderOffsetRad / (2 * Math.PI);
+    this.absoluteEncoderOffsetRot = this.absoluteEncoderOffsetRad / (2 * Math.PI);
     absoluteEncoder = new CANcoder(absoluteEncoderId);
     CANcoderConfigurator configer = absoluteEncoder.getConfigurator();
     MagnetSensorConfigs config = new MagnetSensorConfigs();
     config.AbsoluteSensorDiscontinuityPoint = .5;
     config.MagnetOffset = absoluteEncoderOffsetRot;
-    config.SensorDirection =
-      absoluteEncoderReversed
+    config.SensorDirection = absoluteEncoderReversed
         ? SensorDirectionValue.Clockwise_Positive
         : SensorDirectionValue.CounterClockwise_Positive;
     configer.apply(config);
@@ -80,28 +78,26 @@ public class SwerveModule {
     driveConfig.idleMode(IdleMode.kBrake);
     turningConfig.idleMode(IdleMode.kBrake);
 
-    //relative encoder setup
+    // relative encoder setup
     driveConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
     driveConfig.encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
 
     turningConfig.encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
     turningConfig.encoder.velocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
 
-    //set configuration
+    // set configuration
     driveMotor = new SparkMax(driveMotorId, MotorType.kBrushless);
     turningMotor = new SparkMax(turningMotorId, MotorType.kBrushless);
-    
+
     driveMotor.configure(driveConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     turningMotor.configure(turningConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     // Setup PID controllers
-    turningPidController =
-      new PIDController(
+    turningPidController = new PIDController(
         p.getDouble(1),
         i.getDouble(0),
         d.getDouble(0),
-        ModuleConstants.kTurningPeriod
-      );
+        ModuleConstants.kTurningPeriod);
     turningPidController.enableContinuousInput(-Math.PI, Math.PI);
     turningPidController.reset();
 
@@ -126,9 +122,7 @@ public class SwerveModule {
 
   public void setDesiredState(SwerveModuleState state) {
 
-    if (
-      Math.abs(state.speedMetersPerSecond) < ModuleConstants.kModuleDeadband
-    ) {
+    if (Math.abs(state.speedMetersPerSecond) < ModuleConstants.kModuleDeadband) {
       stop();
       return;
     }
@@ -136,15 +130,12 @@ public class SwerveModule {
     state = optimize(state, getState().angle);
     m_lastStateOptimized = state;
     driveMotor.set(
-      state.speedMetersPerSecond //* DriveConstants.kMaxSpeedMetersPerSecond
+        state.speedMetersPerSecond // * DriveConstants.kMaxSpeedMetersPerSecond
     );
     turningMotor.set(
-      m_lastPIDOutput =
-        turningPidController.calculate(
-          getAbsoluteEncoderRad(),
-          state.angle.getRadians()
-        )
-    );
+        m_lastPIDOutput = turningPidController.calculate(
+            getAbsoluteEncoderRad(),
+            state.angle.getRadians()));
   }
 
   public SwerveModuleState getLastState() {
@@ -192,6 +183,10 @@ public class SwerveModule {
     return turningMotor.getEncoder().getPosition();
   } // Returns position of turning encoder in radians
 
+  public SwerveModulePosition getDrivePositionModule() {
+    return new SwerveModulePosition(-getDrivePosition(), new Rotation2d(getAbsoluteEncoderRad()));
+  } // Returns position within SwerveModulePosition class
+
   public double getDriveVelocity() {
     return driveMotor.getEncoder().getVelocity();
   } // Returns velocity of drive encoder in meters per second
@@ -200,7 +195,8 @@ public class SwerveModule {
     return turningMotor.getEncoder().getVelocity();
   } // Returns velocity of drive encoder in radians per second
 
-  //the 4 methods above go through the conversion factor defined above in relative encoder
+  // the 4 methods above go through the conversion factor defined above in
+  // relative encoder
 
   public double getAbsoluteEncoderRot() {
     return absoluteEncoder.getAbsolutePosition().getValue().in(Rotations);
@@ -210,33 +206,33 @@ public class SwerveModule {
     return absoluteEncoder.getAbsolutePosition().getValue().in(Radians);
   } // Returns position of absolute encoder in radians
 
+  public double getInvertedAbsoluteRad() {
+    return -getAbsoluteEncoderRad();
+  }
+
   public double getAbsoluteEncoderDeg() {
     return absoluteEncoder.getAbsolutePosition().getValue().in(Degrees);
   } // Returns position of absolute encoder in degrees
 
   public SwerveModuleState getState() {
     return new SwerveModuleState(
-      getDriveVelocity(),
-      new Rotation2d(getAbsoluteEncoderRad())
-    );
+        getDriveVelocity(),
+        new Rotation2d(getAbsoluteEncoderRad()));
   } // Returns the above info in the form of a SwerveModuleState
 
   public static SwerveModuleState optimize(
-    SwerveModuleState desiredState,
-    Rotation2d currentAngle
-  ) {
+      SwerveModuleState desiredState,
+      Rotation2d currentAngle) {
     var delta = desiredState.angle.minus(currentAngle);
 
     if (Math.abs(delta.getDegrees()) > 90.0) {
       return new SwerveModuleState(
-        -desiredState.speedMetersPerSecond,
-        desiredState.angle.plus(Rotation2d.fromDegrees(180.0))
-      );
+          -desiredState.speedMetersPerSecond,
+          desiredState.angle.plus(Rotation2d.fromDegrees(180.0)));
     } else {
       return new SwerveModuleState(
-        desiredState.speedMetersPerSecond,
-        desiredState.angle
-      );
+          desiredState.speedMetersPerSecond,
+          desiredState.angle);
     }
   }
 }
