@@ -31,7 +31,7 @@ public class LimelightPathCommand extends Command {
   public LimelightPathCommand(SwerveSubsystem subsystem, LimelightSubsystem limelight) {
     swerveSubsystem = subsystem;
     limelightSubsystem = limelight;
-    X = () -> 0d;
+    X = () -> 1d;
     Y = () -> 0d;
     Rot = () -> new Rotation2d();
     addRequirements(swerveSubsystem);
@@ -40,12 +40,11 @@ public class LimelightPathCommand extends Command {
 
   @Override
   public void initialize() {
-    if (limelightSubsystem == null) {
+    if (limelightSubsystem == null || LimelightHelpers.getFiducialID("") == -1) {
       currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
       currentCommand.initialize();
     }
     else {
-      var lastTag = LimelightHelpers.getFiducialID("");
       var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
       currentCommand = swerveSubsystem.PathToLimelight(() -> -lastPosLimelight.getX(), () -> lastPosLimelight.getY(), () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getX()));
     }
