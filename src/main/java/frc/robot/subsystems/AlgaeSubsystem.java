@@ -38,10 +38,6 @@ public class AlgaeSubsystem extends SubsystemBase {
     bottomMotor.configure(bottomMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  public double getMotorCurrent() {
-    return topMotor.getOutputCurrent();
-  }
-
   /**
    * An example method querying a boolean state of the subsystem (for example, a
    * digital sensor).
@@ -58,11 +54,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   public void SpinTop(double power) {
-    topMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power  * AlgaeConstants.kTopMaxSpeed : 0);
+    topMotor.set(power * AlgaeConstants.kTopMaxSpeed);
   }
 
   public void SpinBottom(double power) {
-    bottomMotor.set(getMotorCurrent() < AlgaeConstants.kMaxAmps ? power * AlgaeConstants.kBottomMaxSpeed : 0);
+    bottomMotor.set(power * AlgaeConstants.kBottomMaxSpeed);
   }
 
   public void Stop() {

@@ -50,7 +50,7 @@ public class RobotContainer {
       OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
-  //private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+  private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
@@ -62,27 +62,17 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    // () -> getLeftX(),
-    // () -> getLeftY(),
-    // () -> getRightX(),
-    // DriveConstants.kFieldOriented,
-    // this::getFastMode,
-    // this::getFasterMode,
-    // this::getPOV,
-    // this::getAuxLeftTrigger,
-    // this::getAuxRightTrigger));
-    m_algaeSubsystem.setDefaultCommand(new AlgaeCommand(m_algaeSubsystem, () -> getLeftY(), () -> getRightY()));
+    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+        () -> getLeftX(),
+        () -> getLeftY(),
+        () -> getRightX(),
+        DriveConstants.kFieldOriented,
+        this::getFastMode,
+        this::getFasterMode,
+        this::getPOV,
+        this::getAuxLeftTrigger,
+        this::getAuxRightTrigger));
 
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    //autoChooser = AutoBuilder.buildAutoChooser();
-
-    // Another option that allows you to specify the default auto by its name
-    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
-
-    // Configure the trigger bindings
     configureBindings();
   }
 
