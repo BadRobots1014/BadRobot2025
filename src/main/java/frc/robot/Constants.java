@@ -185,6 +185,18 @@ public final class Constants {
     public static final double kCoralInSpeed = .5;
     public static final double kCoralOutSpeed = -.2;
 
+    // public static final Button kTestMotorButton = Button.kLeftBumper;
+  }
+
+  public static class AlgaeConstants {
+    public static final int kLeftCanId = 58;
+    public static final int kRightCanId = 59;
+
+    public static final int kMaxAmps = 140;
+    public static final double kPower = .5;
+
+    public static final double kTopMaxSpeed = 0.1;
+    public static final double kBottomMaxSpeed = 0.1;
     public static final int kCoralCanID = -1;
   }
 }
