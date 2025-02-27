@@ -13,7 +13,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.Constants.CoralMode;
 
 public class CoralSubsystem extends SubsystemBase {
 
@@ -24,7 +23,7 @@ public class CoralSubsystem extends SubsystemBase {
     coralMotor = new SparkMax(1984, MotorType.kBrushed);
     SparkMaxConfig config = new SparkMaxConfig();
 
-    config.idleMode(IdleMode.kCoast);
+    config.idleMode(IdleMode.kBrake);
 
     coralMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
@@ -34,10 +33,12 @@ public class CoralSubsystem extends SubsystemBase {
     return coralMotor.getOutputCurrent();
   }
 
-  public void setMotorMode(CoralMode mode) {
-    if (mode == CoralMode.In) {
-      coralMotor.set(CoralConstants.kCoralInSpeed);
+  public void setMotorMode(boolean dump) {
+    if (dump) {
+      // Down
+      coralMotor.set(CoralConstants.kCoralOutSpeed);
     } else {
+      // Up
       coralMotor.set(CoralConstants.kCoralInSpeed);
     }
   }
