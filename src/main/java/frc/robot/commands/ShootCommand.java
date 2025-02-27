@@ -14,7 +14,9 @@ public class ShootCommand extends SequentialCommandGroup {
     ) {
         addCommands(
             new ElevatorCommand(m_elevatorSubsystem, goalPosition).withTimeout(4),
-            new CoralCommand(m_coralSubsystem, true).withTimeout(2)
+            new CoralCommand(m_coralSubsystem, true).withTimeout(1),
+            new CoralCommand(m_coralSubsystem, false).withTimeout(1),
+            new ElevatorCommand(m_elevatorSubsystem, () -> 0).withTimeout(4)
         );
     }
 }
