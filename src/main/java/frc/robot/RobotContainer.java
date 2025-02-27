@@ -105,7 +105,7 @@ public class RobotContainer {
     m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
 
     //m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
-    m_driverController.triangle().onTrue(new LimelightPathCommand(m_swerveSubsystem, () -> 0d, () -> 1d, () -> Rotation2d.fromDegrees(0)));
+    m_driverController.triangle().onTrue(new LimelightPathCommand(m_swerveSubsystem, () -> 2d, () -> 0d, () -> Rotation2d.fromDegrees(90)));
   }
 
   boolean getFastMode() {

@@ -101,8 +101,8 @@ public final class Constants {
     );
 
     // TODO Using tall bot?
-    public static final boolean tallBot = false;
-    public static final boolean steve = true;
+    public static final boolean tallBot = true;
+    public static final boolean steve = false;
 
     // Short bot offsets
     public static final double kFROffset = Math.PI / 2 - 2;

@@ -4,7 +4,9 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class LimelightPathCommand extends Command {
@@ -23,9 +25,15 @@ public class LimelightPathCommand extends Command {
     addRequirements(swerveSubsystem);
   }
 
+  public LimelightPathCommand(SwerveSubsystem subsystem, LimelightSubsystem limelight) {
+    addRequirements(swerveSubsystem);
+    addRequirements(limelight);
+  }
+
   @Override
   public void initialize() {
     currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
+    currentCommand.initialize();
   }
 
   @Override
@@ -40,6 +48,6 @@ public class LimelightPathCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return currentCommand.isFinished();
   }
 }

@@ -25,6 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -133,18 +134,18 @@ public class SwerveSubsystem extends SubsystemBase {
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
       getOdomentryPose(),
-      getOdomentryPose().transformBy(new Transform2d(endX.get(), endY.get(), endRotation.get()))
+      getOdomentryPose().transformBy(new Transform2d(endX.get(), endY.get(), new Rotation2d()))
     );
 
     System.out.println(waypoints);
 
-    PathConstraints constraints = new PathConstraints(.5, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for this path.
+    PathConstraints constraints = new PathConstraints(.5, 3.0, 0.5 * Math.PI, 4 * Math.PI); // The constraints for this path.
     // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
 
     // Create the path using the waypoints created above
     PathPlannerPath path = new PathPlannerPath(
       waypoints,
-      constraints, //TODO this might be issue
+      constraints,
       null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
       new GoalEndState(0.0, endRotation.get()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
     );
@@ -153,6 +154,10 @@ public class SwerveSubsystem extends SubsystemBase {
     path.preventFlipping = true;
 
     return AutoBuilder.followPath(path);
+  }
+
+  public Command PathToLimelight(Supplier<Double> endX, Supplier<Double> endY) {
+    return PathToLimelight(endX, endY, () -> getRotation2d());
   }
 
   // Modules
