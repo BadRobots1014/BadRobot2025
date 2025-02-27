@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.CoralConstants.CoralMode;
 
 public class CoralSubsystem extends SubsystemBase {
 
@@ -33,13 +34,13 @@ public class CoralSubsystem extends SubsystemBase {
     return coralMotor.getOutputCurrent();
   }
 
-  public void setMotorMode(boolean dump) {
-    if (dump) {
-      // Down
-      coralMotor.set(CoralConstants.kCoralOutSpeed);
-    } else {
+  public void setMotorMode(CoralMode mode) {
+    if (mode == CoralMode.UP) {
       // Up
-      coralMotor.set(CoralConstants.kCoralInSpeed);
+      coralMotor.set(CoralConstants.kCoralUpSpeed);
+    } else {
+      // Down will be same speeds, just different times
+      coralMotor.set(CoralConstants.kCoralDownSpeed);
     }
   }
 
@@ -47,5 +48,4 @@ public class CoralSubsystem extends SubsystemBase {
   public void stopMotor() {
     coralMotor.stopMotor();
   }
-
 }

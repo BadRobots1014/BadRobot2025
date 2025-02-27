@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.subsystems.CoralSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -11,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class CoralCommand extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final CoralSubsystem m_subsystem;
-  private boolean dump = false;
+  private CoralMode mode = CoralMode.UP;
 
-  public CoralCommand(CoralSubsystem subsystem, boolean dump) {
+  public CoralCommand(CoralSubsystem subsystem, CoralMode mode) {
     m_subsystem = subsystem;
-    this.dump = dump;
+    this.mode = mode;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -23,7 +24,7 @@ public class CoralCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setMotorMode(dump);
+    m_subsystem.setMotorMode(mode);
   }
 
   // Called once the command ends or is interrupted.
