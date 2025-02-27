@@ -52,8 +52,9 @@ public final class Constants {
   }
   public final class ControllerConstants {
 
-    public final static int kDriverControllerPort = 0;
-    public final static int kSecondControllerPort = 1;
+    public final static int kSecondControllerPortOne = 0;
+    public final static int kSecondControllerPortTwo = 1;
+
 
 
     public final static double kMaxThrottle = 1.0;
