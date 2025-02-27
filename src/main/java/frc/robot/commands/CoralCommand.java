@@ -28,7 +28,6 @@ public class CoralCommand extends Command {
   @Override
   public void execute() {
     m_subsystem.setMotorMode(mode);
-
     startTime = System.nanoTime();
   }
 
