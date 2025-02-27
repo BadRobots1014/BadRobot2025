@@ -198,5 +198,20 @@ public final class Constants {
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
+
+    // Limelight Automation
+    public static final double kAutoSpeedLimit = 0.5;
+
+    // public static final Button kTestMotorButton = Button.kLeftBumper;
+  }
+
+  public static final class CoralConstants {
+    public static final double kCoralInSpeed = .5;
+    public static final double kCoralOutSpeed = -.2;
+  }
+
+  public enum CoralMode {
+    Stop,
+    In,
   }
 }
