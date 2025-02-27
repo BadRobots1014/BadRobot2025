@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -27,9 +30,9 @@ public final class Constants {
 
   public static final class ModuleConstants {
 
-    public static final double kWheelDiameterMeters = 0.0762;
-    public static final double kDriveMotorGearRatio = 8.14;
-    public static final double kTurningMotorGearRatio = 12.8;
+    public static final double kWheelDiameterMeters = 0.102;
+    public static final double kDriveMotorGearRatio = 1/9.1d;
+    public static final double kTurningMotorGearRatio = 1/12.8;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
     public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
@@ -59,6 +62,32 @@ public final class Constants {
 
     // Turn theta
     public static final double kTurnThetaMaxSpeed = 0.9;
+    public static final HashMap<Integer, Double> aprilTagAngles = new HashMap<>(
+      Map.ofEntries(
+        Map.entry(1, 126d),
+        Map.entry(2, 234d),
+        Map.entry(3, 270d),
+        Map.entry(4, 0d),
+        Map.entry(5, 0d),
+        Map.entry(6, 300d),
+        Map.entry(7, 0d),
+        Map.entry(8, 60d),
+        Map.entry(9, 120d),
+        Map.entry(10, 180d),
+        Map.entry(11, 240d),
+        Map.entry(12, 54d),
+        Map.entry(13, 306d),
+        Map.entry(14, 180d),
+        Map.entry(15, 180d),
+        Map.entry(16, 90d),
+        Map.entry(17, 240d),
+        Map.entry(18, 180d),
+        Map.entry(19, 120d),
+        Map.entry(20, 60d),
+        Map.entry(21, 0d),
+        Map.entry(22, 300d)
+      )
+    );
     public static final double kTurnThetaShutoffSensitivity = 0.005;
 
     // Distance between centers of right and left wheels on robot
@@ -67,10 +96,10 @@ public final class Constants {
     public static final double kWheelBase = Units.inchesToMeters(24.75);
     // Positions of modules relative to the center of mass
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Front left
-        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front right
-        new Translation2d(-kWheelBase / 2, kTrackWidth / 2), // Back left
-        new Translation2d(kWheelBase / 2, kTrackWidth / 2) // Back right
+        new Translation2d(kWheelBase / 2, -kTrackWidth / 2), // Front left
+        new Translation2d(kWheelBase / 2, kTrackWidth / 2), // Front right
+        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2), // Back left
+        new Translation2d(-kWheelBase / 2, kTrackWidth / 2) // Back right
     );
 
     // TODO Using tall bot?
@@ -83,10 +112,10 @@ public final class Constants {
     public static final double kFLOffset = 0;
 
     // Tall bot offsets
-    public static final double kTallFROffset = -.097 * Math.PI * 2;
-    public static final double kTallBROffset = .179 * Math.PI * 2;
-    public static final double kTallBLOffset = .314 * Math.PI * 2 + (Math.PI / 2);
-    public static final double kTallFLOffset = .106 * Math.PI * 2;
+    public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI/2;
+    public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI/2;
+    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
+    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
@@ -95,20 +124,20 @@ public final class Constants {
     public static final double kFrontLeftChassisAngularOffset = (tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
-    public static final int kFrontRightDrivingCanId = 11;
-    public static final int kRearRightDrivingCanId = 21;
-    public static final int kRearLeftDrivingCanId = 31;
-    public static final int kFrontLeftDrivingCanId = 41;
+    public static final int kFrontRightDrivingCanId = 31;
+    public static final int kRearRightDrivingCanId = 41;
+    public static final int kRearLeftDrivingCanId = 11;
+    public static final int kFrontLeftDrivingCanId = 21;
 
-    public static final int kFrontRightTurningCanId = 12;
-    public static final int kRearRightTurningCanId = 22;
-    public static final int kRearLeftTurningCanId = 32;
-    public static final int kFrontLeftTurningCanId = 42;
+    public static final int kFrontRightTurningCanId = 32;
+    public static final int kRearRightTurningCanId = 42;
+    public static final int kRearLeftTurningCanId = 12;
+    public static final int kFrontLeftTurningCanId = 22;
 
-    public static final int kFrontRightEncoderCanId = 13;
-    public static final int kRearRightEncoderCanId = 23;
-    public static final int kRearLeftEncoderCanId = 33;
-    public static final int kFrontLeftEncoderCanId = 43;
+    public static final int kFrontRightEncoderCanId = 33;
+    public static final int kRearRightEncoderCanId = 43;
+    public static final int kRearLeftEncoderCanId = 13;
+    public static final int kFrontLeftEncoderCanId = 23;
 
     public static final boolean kGyroReversed = false;
 
@@ -146,7 +175,8 @@ public final class Constants {
     public static final double kNudgeSpeed = 0.8;
 
     // Limelight Automation
-    public static final double kAutoSpeedLimit = 0.5;
+    public static final double kAutoSpeedLimit = 2;
+    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
