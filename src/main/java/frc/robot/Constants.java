@@ -174,6 +174,25 @@ public final class Constants {
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.8;
 
+    // public static final Button kTestMotorButton = Button.kLeftBumper;
+  }
+
+  public static final class ElevatorConstants {
+    public static final int kLeftElevatorCanId = 58;
+    public static final int kRightElevatorCanId = 59;
+
+    public static final double kElevatorUpPower = .2;
+    public static final double kElevatorDownPower = -.2;
+    public static final int kElevatorMaxAmps = 140;
+
+    // public static final double kLvlOnePos = 90.0;
+    // public static final double kLvlTwoPos = 180.0;
+    // public static final double kLvlThreePos = 270.0;
+    // public static final double kLvlFourPos = 359.0;
+
+    public static final double kElevatorP = 1.0;
+    public static final double kElevatorI = 0.0;
+    public static final double kElevatorD = 0.0;
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag

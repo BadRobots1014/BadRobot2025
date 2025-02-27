@@ -20,6 +20,8 @@ import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.commands.ElevatorCommand;
 import frc.robot.util.Elastic;
 
 import java.util.function.BooleanSupplier;
@@ -62,6 +64,8 @@ public class RobotContainer {
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
   // private final SendableChooser<Command> autoChooser;
+
+  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
 
   boolean fastMode = false, fasterMode = false;
 
@@ -143,7 +147,7 @@ public class RobotContainer {
       fasterMode = false;
     return fasterMode;
   }
-
+  
   double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
   double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;}
   double getLeftX() {return m_driverController.getLeftX();}
