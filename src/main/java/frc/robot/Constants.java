@@ -180,8 +180,11 @@ public final class Constants {
   }
 
   public static final class CoralConstants {
-    public static final double kCoralUpSpeed = .5;
+    public static final double kCoralUpSpeed = .2;
     public static final double kCoralDownSpeed = -.2;
+
+    public static final double kCoralDurationSeconds = 1;
+    public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout
 
     public static final int kCoralCanID = -1;
 
