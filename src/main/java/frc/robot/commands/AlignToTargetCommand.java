@@ -83,9 +83,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         false,
         () -> false,
         () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+        () -> -1d);
 
     m_controller = controller;
 

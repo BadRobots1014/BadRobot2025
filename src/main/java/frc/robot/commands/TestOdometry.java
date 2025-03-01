@@ -50,9 +50,7 @@ public class TestOdometry extends SwerveDriveCommand {
         true,
         () -> false,
         () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+        () -> -1d);
 
     m_subsystem = swerveSubsystem;
     drivePID = new PIDController(1.4, 0, 0);

@@ -75,14 +75,14 @@ public final class Constants {
   }
 
   public static final class CoralControllerConstants {
-    public final static int kLeftTrough = 0;
-    public final static int kRightTrough = 1;
-    public final static int kLeftLevel1 = 2;
-    public final static int kRightLevel1 = 3;
-    public final static int kLeftLevel2 = 4;
-    public final static int kRightLevel2 = 5;
-    public final static int kLeftLevel3 = 6;
-    public final static int kRightLevel3 = 7; 
+    public final static int kLeftTrough = 1;
+    public final static int kRightTrough = 2;
+    public final static int kLeftLevel1 = 3;
+    public final static int kRightLevel1 = 4;
+    public final static int kLeftLevel2 = 5;
+    public final static int kRightLevel2 = 6;
+    public final static int kLeftLevel3 = 7;
+    public final static int kRightLevel3 = 8; 
   }
 
   public static final class ColorConstants {
@@ -258,8 +258,8 @@ public final class Constants {
   }
 
   public static class AlgaeConstants {
-    public static final int kLeftCanId = 58;
-    public static final int kRightCanId = 59;
+    public static final int kLeftCanId = 48;
+    public static final int kRightCanId = 49;
 
     public static final int kMaxAmps = 140;
     public static final double kPower = .5;

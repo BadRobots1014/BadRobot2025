@@ -30,9 +30,7 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
         fieldOriented,
         () -> false,
         () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+        () -> -1d);
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
