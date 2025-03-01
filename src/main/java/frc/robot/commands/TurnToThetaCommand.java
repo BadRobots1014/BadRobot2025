@@ -4,9 +4,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.Command;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
@@ -22,7 +20,7 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
   private static Rotation2d lastTheta = new Rotation2d();
 
   public TurnToThetaCommand(SwerveSubsystem swerveSubsystem, Supplier<Double> targetTheta, Supplier<Double> moveX,
-      Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevant) {
+      Supplier<Double> moveY, boolean fieldOriented, Supplier<Boolean> angleRelevantIn) {
     super(
         swerveSubsystem,
         moveX,
@@ -39,7 +37,7 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
 
     PIDController turningPID = new PIDController(1, 0, 0);
     turningPID.enableContinuousInput(0, 2 * Math.PI);
-    this.angleRelevant = angleRelevant;
+    angleRelevant = angleRelevantIn;
   }
 
   @Override
