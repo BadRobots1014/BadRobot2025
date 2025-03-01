@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.util.LimelightHelpers;
@@ -40,28 +41,32 @@ public class LimelightPathCommand extends Command {
 
   @Override
   public void initialize() {
-    if (limelightSubsystem == null || LimelightHelpers.getFiducialID("") == -1) {
+    if (limelightSubsystem == null) {
       currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
+      currentCommand.initialize();
     }
-    else {
+    else if (LimelightHelpers.getFiducialID("") != -1){
       var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
-      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getZ(), () -> lastPosLimelight.getX(), () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getY()));
+      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getZ() + DriveConstants.kAutoTargetDistance, () -> lastPosLimelight.getX(), () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getY()));
+      currentCommand.initialize();
     }
-    currentCommand.initialize();
   }
 
   @Override
   public void execute() {
-    currentCommand.execute();
+    if (currentCommand != null) {
+      currentCommand.execute();
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    currentCommand.end(interrupted);
+    if (currentCommand != null) currentCommand.end(interrupted);
   }
 
   @Override
   public boolean isFinished() {
-    return currentCommand.isFinished();
+    if (currentCommand != null) return currentCommand.isFinished();
+    else return true;
   }
 }

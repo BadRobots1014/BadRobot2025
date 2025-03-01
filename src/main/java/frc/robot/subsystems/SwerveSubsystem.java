@@ -15,6 +15,7 @@ import com.pathplanner.lib.path.IdealStartingState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.util.DriveFeedforwards;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -108,15 +109,15 @@ public class SwerveSubsystem extends SubsystemBase {
                                                               // module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic
                                         // drive trains
-            new PIDConstants(3.5, 1, 0.0), // Translation PID constants
-            new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(3.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(1.0, 1.0, 0.0) // Rotation PID constants
         ),
         config, // The robot configuration
         () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
           // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE"
+          
 
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
@@ -133,7 +134,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     // Reset everything to zero to start
     resetPose();
-    resetOdometry();
+    resetOdometry(new Pose2d(3, 3, new Rotation2d()));
 
     // Create a list of waypoints from poses. Each pose represents one waypoint.
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
@@ -141,10 +142,32 @@ public class SwerveSubsystem extends SubsystemBase {
       getOdomentryPose(),
       getOdomentryPose().transformBy(new Transform2d(endX.get(), endY.get(), new Rotation2d()))
     );
+    
+    System.out.println("Pre-flip" + waypoints);
 
-    System.out.println(waypoints);
+    // Invert the controls on the waypoints
+    waypoints.set(0,
+      new Waypoint(
+        waypoints.get(0).prevControl(),
+        waypoints.get(0).anchor(),
+        waypoints.get(0).nextControl()
+          .plus(waypoints.get(0).anchor()
+            .minus(waypoints.get(0).nextControl()).times(2))
+      )
+    );
+    waypoints.set(1,
+      new Waypoint(
+        waypoints.get(1).prevControl()
+        .plus(waypoints.get(1).anchor()
+          .minus(waypoints.get(1).prevControl()).times(2)),
+        waypoints.get(1).anchor(),
+        waypoints.get(1).nextControl()
+      )
+    );
 
-    PathConstraints constraints = new PathConstraints(.5, 3.0, 0.5 * Math.PI, 4 * Math.PI); // The constraints for this path.
+    System.out.println("Post-flip" + waypoints);
+
+    PathConstraints constraints = new PathConstraints(1.0, 1.0, Math.PI, 4 * Math.PI); // The constraints for this path.
     // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
 
     // Create the path using the waypoints created above
@@ -344,6 +367,10 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void driveAutoRobotRelative(ChassisSpeeds speeds) {
+    setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond)));
+  }
+
+  public void driveAutoRobotRelative(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
     setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond)));
   }
 
