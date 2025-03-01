@@ -82,14 +82,38 @@ public class RobotContainer {
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
-  private final Command m_leftLevel1Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 1));
-  private final Command m_rightLevel1Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 1));
-  private final Command m_leftLevel2Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 2));
-  private final Command m_rightLevel2Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 2));
-  private final Command m_leftLevel3Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 3));
-  private final Command m_rightLevel3Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 3));
-  private final Command m_leftLevel4Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 4));
-  private final Command m_rightLevel4Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+  private final Command m_leftLevel1Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 1)
+);
+private final Command m_rightLevel1Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 1)
+);
+private final Command m_leftLevel2Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 2)
+);
+private final Command m_rightLevel2Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 2)
+);
+private final Command m_leftLevel3Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 3)
+);
+private final Command m_rightLevel3Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 3)
+);
+private final Command m_leftLevel4Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 4)
+);
+private final Command m_rightLevel4Command = Commands.parallel(
+    new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight), 
+    new ElevatorCommand(m_elevatorSubsystem, () -> 4)
+);
 
   /*
   private final AlignToCoralCommand m_leftAlignToCoralCommand = new AlignToCoralCommand(m_swerveSubsystem, -1);

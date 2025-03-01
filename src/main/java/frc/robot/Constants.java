@@ -82,6 +82,9 @@ public final class Constants {
     public final static int kRightLevel3 = 6;
     public final static int kLeftLevel4 = 7;
     public final static int kRightLevel4 = 8;
+
+    public static final int directionLeft = -1;
+    public static final int directionRight = 1;
   }
 
   public static final class ColorConstants {
