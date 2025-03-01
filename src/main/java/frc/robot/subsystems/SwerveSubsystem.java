@@ -130,6 +130,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public Command PathToLimelight(Supplier<Double> endX, Supplier<Double> endY, Supplier<Rotation2d> endRotation)
   {
+
+    // Reset everything to zero to start
+    resetPose();
+    resetOdometry();
+
     // Create a list of waypoints from poses. Each pose represents one waypoint.
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
@@ -214,7 +219,7 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
       backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
     },
-    new Pose2d(13.5, 5.0, this.getRotation2d())
+    new Pose2d(0, 0, this.getRotation2d())
   );
 
   public void resetOdometry(Pose2d newPose) {
@@ -226,6 +231,18 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
       },
       newPose
+    );
+  }
+
+  public void resetOdometry() {
+    m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      this.getRotation2d(),
+      new SwerveModulePosition[] {
+        frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+        backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+      },
+      new Pose2d()
     );
   }
 
