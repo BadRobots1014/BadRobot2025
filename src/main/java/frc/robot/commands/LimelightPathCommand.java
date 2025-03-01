@@ -42,12 +42,12 @@ public class LimelightPathCommand extends Command {
   public void initialize() {
     if (limelightSubsystem == null || LimelightHelpers.getFiducialID("") == -1) {
       currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
-      currentCommand.initialize();
     }
     else {
       var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
-      currentCommand = swerveSubsystem.PathToLimelight(() -> -lastPosLimelight.getX(), () -> lastPosLimelight.getY(), () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getX()));
+      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getZ(), () -> -lastPosLimelight.getX(), () -> Rotation2d.fromRadians(-lastPosLimelight.getRotation().getX()));
     }
+    currentCommand.initialize();
   }
 
   @Override
