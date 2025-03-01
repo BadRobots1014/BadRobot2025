@@ -50,19 +50,18 @@ public final class Constants {
     public static final double kDriveDeadband = 0.02;
     public static final double kTriggerDeadband = 0.75;
   }
+
   public final class ControllerConstants {
 
     public final static int kSecondControllerPortOne = 0;
     public final static int kSecondControllerPortTwo = 1;
 
-
-
     public final static double kMaxThrottle = 1.0;
     public final static double kSlowThrottle = 0.5;
-    
+
     public final static int kThrottleButton = 2;
-    
-}
+
+  }
 
   public static final class ReefControllerConstants {
     public final static int kTopReefButton = 0;
@@ -75,14 +74,14 @@ public final class Constants {
   }
 
   public static final class CoralControllerConstants {
-    public final static int kLeftTrough = 1;
-    public final static int kRightTrough = 2;
-    public final static int kLeftLevel1 = 3;
-    public final static int kRightLevel1 = 4;
-    public final static int kLeftLevel2 = 5;
-    public final static int kRightLevel2 = 6;
-    public final static int kLeftLevel3 = 7;
-    public final static int kRightLevel3 = 8; 
+    public final static int kLeftLevel1 = 1;
+    public final static int kRightLevel1 = 2;
+    public final static int kLeftLevel2 = 3;
+    public final static int kRightLevel2 = 4;
+    public final static int kLeftLevel3 = 5;
+    public final static int kRightLevel3 = 6;
+    public final static int kLeftLevel4 = 7;
+    public final static int kRightLevel4 = 8;
   }
 
   public static final class ColorConstants {
@@ -168,10 +167,14 @@ public final class Constants {
 
     // Angular offsets of the modules relative to the chassis in radians
 
-    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; //(steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackRightChassisAngularOffset = kSteveBROffset; //(steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; // (steve ? kSteveFROffset : tallBot ?
+                                                                                 // kTallBROffset : kBROffset);
+    public static final double kBackRightChassisAngularOffset = kSteveBROffset; // (steve ? kSteveBROffset : tallBot ?
+                                                                                // kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ?
+                                                                               // kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ?
+                                                                                // kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 11;
@@ -235,10 +238,10 @@ public final class Constants {
     public static final double kElevatorDownPower = -.2;
     public static final int kElevatorMaxAmps = 140;
 
-    // public static final double kLvlOnePos = 90.0;
-    // public static final double kLvlTwoPos = 180.0;
-    // public static final double kLvlThreePos = 270.0;
-    // public static final double kLvlFourPos = 359.0;
+    public static final double kLvlOnePos = 90.0;
+    public static final double kLvlTwoPos = 180.0;
+    public static final double kLvlThreePos = 270.0;
+    public static final double kLvlFourPos = 359.0;
 
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;

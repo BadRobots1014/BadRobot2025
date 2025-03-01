@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.CoralControllerConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeCommand;
@@ -43,6 +44,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -60,33 +62,47 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController =
-      new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
+      OperatorConstants.kDriverControllerPort);
 
   private Joystick secondaryControllerOne = new Joystick(ControllerConstants.kSecondControllerPortOne);
   private Joystick secondaryControllerTwo = new Joystick(ControllerConstants.kSecondControllerPortTwo);
 
-  JoystickButton troughLeft = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kLeftTrough);
-  JoystickButton troughRight = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kRightTrough);
   JoystickButton level1Left = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kLeftLevel1);
   JoystickButton level1Right = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kRightLevel1);
   JoystickButton level2Left = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kLeftLevel2);
   JoystickButton level2Right = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kRightLevel2);
   JoystickButton level3Left = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kLeftLevel3);
   JoystickButton level3Right = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kRightLevel3);
+  JoystickButton level4Left = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kLeftLevel4);
+  JoystickButton level4Right = new JoystickButton(secondaryControllerTwo, CoralControllerConstants.kRightLevel4);
 
-  
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
-  
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+
+  private final Command m_leftLevel1Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+  private final Command m_rightLevel1Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+  private final Command m_leftLevel2Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+  private final Command m_rightLevel2Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+  private final Command m_leftLevel3Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+  private final Command m_rightLevel3Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+  private final Command m_leftLevel4Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, -1), new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+  private final Command m_rightLevel4Command = Commands.parallel(new AlignToCoralCommand(m_swerveSubsystem, 1), new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+
+  /*
   private final AlignToCoralCommand m_leftAlignToCoralCommand = new AlignToCoralCommand(m_swerveSubsystem, -1);
   private final AlignToCoralCommand m_rightAlignToCoralCommand = new AlignToCoralCommand(m_swerveSubsystem, 1);
-  
+
+  private final ElevatorCommand m_level1ElevatorCommand = new ElevatorCommand(m_elevatorSubsystem, () -> 1);
+  private final ElevatorCommand m_level2ElevatorCommand = new ElevatorCommand(m_elevatorSubsystem, () -> 2);
+  private final ElevatorCommand m_level3ElevatorCommand = new ElevatorCommand(m_elevatorSubsystem, () -> 3);
+  private final ElevatorCommand m_level4ElevatorCommand = new ElevatorCommand(m_elevatorSubsystem, () -> 4);
+  */
+
   // private final SendableChooser<Command> autoChooser;
 
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
-  
   boolean fastMode = false, fasterMode = false;
 
   /**
@@ -94,21 +110,20 @@ public class RobotContainer {
    */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftY(),
-    () -> getLeftX(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV));
-    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
-    //   new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+        () -> getLeftY(),
+        () -> getLeftX(),
+        () -> getRightX(),
+        DriveConstants.kFieldOriented,
+        this::getFastMode,
+        this::getFasterMode,
+        this::getPOV));
+    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
+    // new SwerveModuleState[] {
+    // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
-
-
 
     // Build an auto chooser. This will use Commands.none() as the default option.
     // autoChooser = AutoBuilder.buildAutoChooser();
@@ -151,14 +166,17 @@ public class RobotContainer {
     // true)); // Uncomment when set algae speeds are determined
     // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
     // false));
-    troughLeft.onTrue(m_leftAlignToCoralCommand);
-    troughRight.onTrue(m_rightAlignToCoralCommand);
-    level1Left.onTrue(m_leftAlignToCoralCommand);
-    level1Right.onTrue(m_rightAlignToCoralCommand);
-    level2Left.onTrue(m_leftAlignToCoralCommand);
-    level2Right.onTrue(m_rightAlignToCoralCommand);
-    level3Left.onTrue(m_leftAlignToCoralCommand);
-    level3Right.onTrue(m_rightAlignToCoralCommand);
+    
+    
+
+    level1Left.onTrue(m_leftLevel1Command);
+    level1Right.onTrue(m_rightLevel1Command);
+    level2Left.onTrue(m_leftLevel2Command);
+    level2Right.onTrue(m_rightLevel2Command);
+    level3Left.onTrue(m_leftLevel3Command);
+    level3Right.onTrue(m_rightLevel3Command);
+    level4Left.onTrue(m_leftLevel4Command);
+    level4Right.onTrue(m_rightLevel4Command);
 
   }
 
@@ -176,12 +194,27 @@ public class RobotContainer {
       fasterMode = false;
     return fasterMode;
   }
-  
-  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
-  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;}
-  double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return -m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 270)%360;}
+
+  double getRightX() {
+    return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;
+  }
+
+  double getRightY() {
+    return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;
+  }
+
+  double getLeftX() {
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY() {
+    return -m_driverController.getLeftY();
+  }
+
+  double getPOV() {
+    return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV()
+        : (m_driverController.getHID().getPOV() + 270) % 360;
+  }
 
   double getRightAngle() {
     return Math.atan2(this.getRightX(), -this.getRightY());
