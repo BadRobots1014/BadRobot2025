@@ -4,33 +4,39 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.CoralControllerConstants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AlignToCoralCommand extends Command {
   private final SwerveSubsystem m_subsystem;
+  private final double m_direction;
     
-    public AlignToCoralCommand(SwerveSubsystem swerveSubsystem, CoralConstants direction) {
+    public AlignToCoralCommand(SwerveSubsystem swerveSubsystem, double direction) {
       m_subsystem = swerveSubsystem;
+      m_direction = direction;
       addRequirements(swerveSubsystem);
     }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, direction * 0.5, 0);
+    ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0, m_direction * 0.5, 0);
 
     // Divide and conquer
     SwerveModuleState[] moduleStates =
       DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
   
     // Actually do the thing
-    swerveSubsystem.setModuleStates(moduleStates);
+    m_subsystem.setModuleStates(moduleStates);
   }
 
   @Override
   public void end(boolean interrupted) {
-    swerveSubsystem.stopModules();
+    m_subsystem.stopModules();
   }
 
   @Override

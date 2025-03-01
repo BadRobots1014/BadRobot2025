@@ -64,7 +64,7 @@ public final class Constants {
     
 }
 
-  public static final class ReefConstants {
+  public static final class ReefControllerConstants {
     public final static int kTopReefButton = 0;
     public final static int kTopLeftReefButton = 1;
     public final static int kButtomLeftReefButton = 2;
@@ -74,7 +74,7 @@ public final class Constants {
 
   }
 
-  public static final class CoralConstants {
+  public static final class CoralControllerConstants {
     public final static int kLeftTrough = 0;
     public final static int kRightTrough = 1;
     public final static int kLeftLevel1 = 2;

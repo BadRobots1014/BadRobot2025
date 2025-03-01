@@ -37,7 +37,7 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    turningPID = new PIDController(1, 0, 0);
+    PIDController turningPID = new PIDController(1, 0, 0);
     turningPID.enableContinuousInput(0, 2 * Math.PI);
     this.angleRelevant = angleRelevant;
   }
