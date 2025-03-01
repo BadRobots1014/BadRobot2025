@@ -31,8 +31,8 @@ public final class Constants {
   public static final class ModuleConstants {
 
     public static final double kWheelDiameterMeters = 0.102;
-    public static final double kDriveMotorGearRatio = 1/9.1d;
-    public static final double kTurningMotorGearRatio = 1/12.8;
+    public static final double kDriveMotorGearRatio = 1 / 9.1d;
+    public static final double kTurningMotorGearRatio = 1 / 12.8;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
     public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
@@ -63,31 +63,29 @@ public final class Constants {
     // Turn theta
     public static final double kTurnThetaMaxSpeed = 0.9;
     public static final HashMap<Integer, Double> aprilTagAngles = new HashMap<>(
-      Map.ofEntries(
-        Map.entry(1, 126d),
-        Map.entry(2, 234d),
-        Map.entry(3, 270d),
-        Map.entry(4, 0d),
-        Map.entry(5, 0d),
-        Map.entry(6, 300d),
-        Map.entry(7, 0d),
-        Map.entry(8, 60d),
-        Map.entry(9, 120d),
-        Map.entry(10, 180d),
-        Map.entry(11, 240d),
-        Map.entry(12, 54d),
-        Map.entry(13, 306d),
-        Map.entry(14, 180d),
-        Map.entry(15, 180d),
-        Map.entry(16, 90d),
-        Map.entry(17, 240d),
-        Map.entry(18, 180d),
-        Map.entry(19, 120d),
-        Map.entry(20, 60d),
-        Map.entry(21, 0d),
-        Map.entry(22, 300d)
-      )
-    );
+        Map.ofEntries(
+            Map.entry(1, 126d),
+            Map.entry(2, 234d),
+            Map.entry(3, 270d),
+            Map.entry(4, 0d),
+            Map.entry(5, 0d),
+            Map.entry(6, 300d),
+            Map.entry(7, 0d),
+            Map.entry(8, 60d),
+            Map.entry(9, 120d),
+            Map.entry(10, 180d),
+            Map.entry(11, 240d),
+            Map.entry(12, 54d),
+            Map.entry(13, 306d),
+            Map.entry(14, 180d),
+            Map.entry(15, 180d),
+            Map.entry(16, 90d),
+            Map.entry(17, 240d),
+            Map.entry(18, 180d),
+            Map.entry(19, 120d),
+            Map.entry(20, 60d),
+            Map.entry(21, 0d),
+            Map.entry(22, 300d)));
     public static final double kTurnThetaShutoffSensitivity = 0.005;
 
     // Distance between centers of right and left wheels on robot
@@ -112,10 +110,10 @@ public final class Constants {
     public static final double kFLOffset = 0;
 
     // Tall bot offsets
-    public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI/2;
-    public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI/2;
-    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
-    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
+    public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI / 2;
+    public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI / 2;
+    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI / 2;
+    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI / 2;
 
     // Angular offsets of the modules relative to the chassis in radians
     public static final double kFrontRightChassisAngularOffset = (tallBot ? kTallFROffset : kFROffset);
@@ -198,6 +196,15 @@ public final class Constants {
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
+
+    // Map of elevator buttons to specific heights
+    // TODO: set heights from encoder
+    public static final HashMap<Integer, Double> kElevatorPresets = new HashMap<>(
+        Map.ofEntries(
+            Map.entry(0, 0d),
+            Map.entry(1, 0d),
+            Map.entry(2, 0d),
+            Map.entry(3, 0d)));
   }
 
   public static final class CoralConstants {
