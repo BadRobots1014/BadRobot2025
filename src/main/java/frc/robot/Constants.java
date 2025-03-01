@@ -143,7 +143,7 @@ public final class Constants {
     public static final int kRearLeftEncoderCanId = 13;
     public static final int kFrontLeftEncoderCanId = 23;
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGruReversed = false;
 
     // Reverse encoders if needed; note that this will break everything if you don't
     // go through and fix everything afterward
@@ -181,6 +181,12 @@ public final class Constants {
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+    public static final double kAutoTranslationalP = 3;
+    public static final double kAutoTranslationalI = 0;
+    public static final double kAutoTranslationalD = 0;
+    public static final double kAutoRotationalP = 1;
+    public static final double kAutoRotationalI = 0;
+    public static final double kAutoRotationalD = 0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
