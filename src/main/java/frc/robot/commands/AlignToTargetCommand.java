@@ -14,7 +14,11 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 
 public class AlignToTargetCommand extends SwerveDriveCommand {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
@@ -144,7 +148,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // Z in 3d space corrosponds to the Y for the motor
       double y = lastPosLimelight.getZ();
       // driveYd = 0;
-      driveYd = drivePID.calculate(DriveConstants.kAutoTargetDistance, y);
+      driveYd = drivePID.calculate(ElevatorConstants.kAutoTargetDistance, y);
     } else {
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
@@ -161,7 +165,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       driveXd = drivePID.calculate(0d, -remainingXDistance);
       // driveYd = 0;
 
-      driveYd = drivePID.calculate(DriveConstants.kAutoTargetDistance, remainingYDistance);
+      driveYd = drivePID.calculate(ElevatorConstants.kAutoTargetDistance, remainingYDistance);
     }
 
     /*
