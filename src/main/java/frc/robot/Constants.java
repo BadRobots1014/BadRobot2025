@@ -140,7 +140,7 @@ public final class Constants {
     public static final int kRearLeftDrivingCanId = steve ? 31 : 11;
     public static final int kRearLeftTurningCanId = steve ? 32 : 12;
     public static final int kRearLeftEncoderCanId = steve ? 33 : 13;
-    
+
     public static final int kRearRightDrivingCanId = 41;
     public static final int kRearRightTurningCanId = 42;
     public static final int kRearRightEncoderCanId = 43;
@@ -153,7 +153,7 @@ public final class Constants {
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
 
-    public static final boolean kFrontRightDriveEncoderReversed = true;
+    public static final boolean kFrontRightDriveEncoderReversed = steve; // This encoder is reversed only on the steve bot.
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kFrontRightAbsoluteEncoderReversed = true;
 
