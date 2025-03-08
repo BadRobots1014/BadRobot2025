@@ -56,6 +56,9 @@ public final class Constants {
     public final static int kSecondControllerPortOne = 0;
     public final static int kSecondControllerPortTwo = 1;
 
+    public final static int kSecondControllerOne = 0;
+    public final static int kSecondControllerTwo = 1;
+
     public final static double kMaxThrottle = 1.0;
     public final static double kSlowThrottle = 0.5;
 
@@ -74,6 +77,7 @@ public final class Constants {
   }
 
   public static final class CoralControllerConstants {
+    // Coral Levels
     public final static int kLeftLevel1 = 1;
     public final static int kRightLevel1 = 2;
     public final static int kLeftLevel2 = 3;
@@ -83,8 +87,31 @@ public final class Constants {
     public final static int kLeftLevel4 = 7;
     public final static int kRightLevel4 = 8;
 
+    // Coral Side
     public static final int directionLeft = -1;
     public static final int directionRight = 1;
+  }
+
+  public static final class AuxControllerConstants {
+    // Uses Controller secondaryControllerOne
+    public final static int[] kLeftBottom = { ControllerConstants.kSecondControllerOne, 1 };
+    public final static int[] kRightBottom = { ControllerConstants.kSecondControllerOne, 2 };
+    public final static int[] kLeftLowerMid = { ControllerConstants.kSecondControllerOne, 3 };
+    public final static int[] kRightLowerMid = { ControllerConstants.kSecondControllerOne, 4 };
+    public final static int[] kLeftUpperMid = { ControllerConstants.kSecondControllerOne, 5 };
+    public final static int[] kRightUpperMid = { ControllerConstants.kSecondControllerOne, 6 };
+    public final static int[] kLeftTop = { ControllerConstants.kSecondControllerOne, 7 };
+    public final static int[] kRightTop = { ControllerConstants.kSecondControllerOne, 8 };
+  }
+
+  public static final class HexControllerConstants {
+    // Uses Controller secondaryControllerOne
+    public final static int[] kTopLeft = { ControllerConstants.kSecondControllerTwo, 9 };
+    public final static int[] kTop = { ControllerConstants.kSecondControllerTwo, 10 };
+    public final static int[] kTopRight = { ControllerConstants.kSecondControllerTwo, 11 };
+    public final static int[] kBottomRight = { ControllerConstants.kSecondControllerOne, 9 };
+    public final static int[] kBottom = { ControllerConstants.kSecondControllerOne, 10 };
+    public final static int[] kBottomLeft = { ControllerConstants.kSecondControllerOne, 11 };
   }
 
   public static final class ColorConstants {
