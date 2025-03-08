@@ -113,7 +113,7 @@ public final class Constants {
     // Tall bot offsets
     public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI / 2;
     public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI / 2;
-    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI / 2;
+    public static final double kTallFROffset = .314 * Math.PI * 2 + Math.PI / 2;
     public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI / 2 + .07;
 
     public static final double kSteveBLOffset = -.007568 * Math.PI * 2;
