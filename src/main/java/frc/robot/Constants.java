@@ -179,6 +179,16 @@ public final class Constants {
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.8;
 
+    // Limelight Automation
+    public static final double kAutoSpeedLimit = 2;
+    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+    public static final double kAutoTranslationalP = 3;
+    public static final double kAutoTranslationalI = 0;
+    public static final double kAutoTranslationalD = 0;
+    public static final double kAutoRotationalP = 1;
+    public static final double kAutoRotationalI = 0;
+    public static final double kAutoRotationalD = 0;
+
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
 
@@ -198,15 +208,6 @@ public final class Constants {
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
-    // Limelight Automation
-    public static final double kAutoSpeedLimit = 2;
-    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
-    public static final double kAutoTranslationalP = 3;
-    public static final double kAutoTranslationalI = 0;
-    public static final double kAutoTranslationalD = 0;
-    public static final double kAutoRotationalP = 1;
-    public static final double kAutoRotationalI = 0;
-    public static final double kAutoRotationalD = 0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
