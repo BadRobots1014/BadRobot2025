@@ -106,7 +106,7 @@ public final class Constants {
 
   public static final class HexControllerConstants {
     // Uses Controller secondaryControllerOne
-    public final static int[] kTopLeft = { ControllerConstants.kSecondControllerTwo, 9 };
+    public final static int[] kTopLeft = { ControllerConstants.kSecondControllerTwo, 12 };
     public final static int[] kTop = { ControllerConstants.kSecondControllerTwo, 10 };
     public final static int[] kTopRight = { ControllerConstants.kSecondControllerTwo, 11 };
     public final static int[] kBottomRight = { ControllerConstants.kSecondControllerOne, 9 };

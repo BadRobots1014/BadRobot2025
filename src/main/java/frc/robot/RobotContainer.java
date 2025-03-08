@@ -94,7 +94,7 @@ public class RobotContainer {
   JoystickButton AuxRightTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightTop[1]);
 
   // Hex Buttons On AUX controller
-  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kTopLeft[1]);
+  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft[1]);
   JoystickButton HexTop = new JoystickButton(auxJoysticks[1], HexControllerConstants.kTop[1]);
   JoystickButton HexTopRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kTopRight[1]);
   JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kBottomRight[1]);
