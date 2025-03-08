@@ -189,8 +189,8 @@ public final class Constants {
   }
 
   public static class AlgaeConstants {
-    public static final int kLeftCanId = 58;
-    public static final int kRightCanId = 59;
+    public static final int kLeftCanId = 51;
+    public static final int kRightCanId = 52;
 
     public static final int kMaxAmps = 140;
     public static final double kPower = .5;
