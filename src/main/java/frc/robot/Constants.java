@@ -100,7 +100,7 @@ public final class Constants {
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2) // Back right
     );
 
-    // TODO Using tall bot?
+    // TODO Which bot?
     public static final boolean tallBot = true;
     public static final boolean steve = false;
 
@@ -114,7 +114,7 @@ public final class Constants {
     public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI / 2;
     public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI / 2;
     public static final double kTallFROffset = .314 * Math.PI * 2 + Math.PI / 2;
-    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI / 2 + .07;
+    public static final double kTallBROffset = .176 * Math.PI * 2 + Math.PI / 2;
 
     public static final double kSteveBLOffset = -.007568 * Math.PI * 2;
     public static final double kSteveFLOffset = -.083252 * Math.PI * 2;
@@ -123,10 +123,10 @@ public final class Constants {
 
     // Angular offsets of the modules relative to the chassis in radians
 
-    public static final double kFrontRightChassisAngularOffset = (steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackRightChassisAngularOffset = (steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = (steve ? kSteveFROffset : (tallBot ? kTallBROffset : kBROffset));
+    public static final double kBackRightChassisAngularOffset = (steve ? kSteveBROffset : (tallBot ? kTallBROffset : kBROffset));
+    public static final double kBackLeftChassisAngularOffset = (steve ? kSteveBLOffset : (tallBot ? kTallBLOffset : kBLOffset));
+    public static final double kFrontLeftChassisAngularOffset = (steve ? kSteveFLOffset : (tallBot ? kTallFLOffset : kFLOffset));
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = steve ? 11 : 31;
@@ -152,18 +152,22 @@ public final class Constants {
     public static final boolean kFrontLeftDriveEncoderReversed = false;
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
+    public static final boolean kFrontLeftDrivingReversed = false;
 
-    public static final boolean kFrontRightDriveEncoderReversed = steve; // This encoder is reversed only on the steve bot.
+    public static final boolean kFrontRightDriveEncoderReversed = !steve; // This encoder is reversed only on the steve bot.
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kFrontRightAbsoluteEncoderReversed = true;
+    public static final boolean kFrontRightDrivingReversed = true;
 
     public static final boolean kBackLeftDriveEncoderReversed = false;
     public static final boolean kBackLeftTurningEncoderReversed = false;
     public static final boolean kBackLeftAbsoluteEncoderReversed = true;
+    public static final boolean kBackLeftDrivingReversed = false;
 
     public static final boolean kBackRightDriveEncoderReversed = false;
     public static final boolean kBackRightTurningEncoderReversed = false;
     public static final boolean kBackRightAbsoluteEncoderReversed = true;
+    public static final boolean kBackRightDrivingReversed = false;
 
     public static final long kBootupDelay = 1000; // milliseconds of delay to allow the navx to start up
 
