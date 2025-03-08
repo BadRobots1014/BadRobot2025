@@ -94,24 +94,26 @@ public final class Constants {
 
   public static final class AuxControllerConstants {
     // Uses Controller secondaryControllerOne
-    public final static int[] kLeftBottom = { ControllerConstants.kSecondControllerOne, 1 };
-    public final static int[] kRightBottom = { ControllerConstants.kSecondControllerOne, 2 };
-    public final static int[] kLeftLowerMid = { ControllerConstants.kSecondControllerOne, 3 };
-    public final static int[] kRightLowerMid = { ControllerConstants.kSecondControllerOne, 4 };
-    public final static int[] kLeftUpperMid = { ControllerConstants.kSecondControllerOne, 5 };
-    public final static int[] kRightUpperMid = { ControllerConstants.kSecondControllerOne, 6 };
-    public final static int[] kLeftTop = { ControllerConstants.kSecondControllerOne, 7 };
-    public final static int[] kRightTop = { ControllerConstants.kSecondControllerOne, 8 };
+    public final static int kLeftBottom = 1;
+    public final static int kRightBottom = 2;
+    public final static int kLeftLowerMid = 3;
+    public final static int kRightLowerMid = 4;
+    public final static int kLeftUpperMid = 5;
+    public final static int kRightUpperMid = 6;
+    public final static int kLeftTop = 7;
+    public final static int kRightTop = 8;
   }
 
   public static final class HexControllerConstants {
-    // Uses Controller secondaryControllerOne
-    public final static int[] kTopLeft = { ControllerConstants.kSecondControllerTwo, 12 };
-    public final static int[] kTop = { ControllerConstants.kSecondControllerTwo, 10 };
-    public final static int[] kTopRight = { ControllerConstants.kSecondControllerTwo, 11 };
-    public final static int[] kBottomRight = { ControllerConstants.kSecondControllerOne, 9 };
-    public final static int[] kBottom = { ControllerConstants.kSecondControllerOne, 10 };
-    public final static int[] kBottomLeft = { ControllerConstants.kSecondControllerOne, 11 };
+    // Uses Controller 1
+    public final static int kTopLeft = 12;
+      // Uses controller 2
+    public final static int kTop = 10;
+    public final static int kTopRight = 11;
+    // Uses controller 1
+    public final static int kBottomRight = 9;
+    public final static int kBottom = 10;
+    public final static int kBottomLeft = 11;
   }
 
   public static final class ColorConstants {
