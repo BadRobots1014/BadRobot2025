@@ -123,25 +123,26 @@ public final class Constants {
 
     // Angular offsets of the modules relative to the chassis in radians
 
-    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; //(steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackRightChassisAngularOffset = kSteveBROffset; //(steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = (steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackRightChassisAngularOffset = (steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
-    public static final int kFrontRightDrivingCanId = 11;
+    public static final int kFrontRightDrivingCanId = steve ? 11 : 31;
+    public static final int kFrontRightTurningCanId = steve ? 12 : 32;
+    public static final int kFrontRightEncoderCanId = steve ? 13 : 33;
+
     public static final int kFrontLeftDrivingCanId = 21;
-    public static final int kRearLeftDrivingCanId = 31;
-    public static final int kRearRightDrivingCanId = 41;
-
-    public static final int kFrontRightTurningCanId = 12;
     public static final int kFrontLeftTurningCanId = 22;
-    public static final int kRearLeftTurningCanId = 32;
-    public static final int kRearRightTurningCanId = 42;
-
-    public static final int kFrontRightEncoderCanId = 13;
     public static final int kFrontLeftEncoderCanId = 23;
-    public static final int kRearLeftEncoderCanId = 33;
+
+    public static final int kRearLeftDrivingCanId = steve ? 31 : 11;
+    public static final int kRearLeftTurningCanId = steve ? 32 : 12;
+    public static final int kRearLeftEncoderCanId = steve ? 33 : 13;
+    
+    public static final int kRearRightDrivingCanId = 41;
+    public static final int kRearRightTurningCanId = 42;
     public static final int kRearRightEncoderCanId = 43;
 
     public static final boolean kGruReversed = false;
