@@ -18,10 +18,11 @@ public class ElevatorCommand extends Command {
 
   private final ElevatorSubsystem m_subsystem;
   private final Supplier<Integer> goalLevelSupplier;
+  private final Supplier<Double> goalSpeedSupplier;
   private PIDController m_pidController;
 
   private double goalPosition;
-
+  
   /**
    * @param elevatorsubsystem The subsystem referenced in this command
    * @param targetLevel       A number 1-4 in which you want to set the height of
@@ -30,6 +31,7 @@ public class ElevatorCommand extends Command {
   public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, Supplier<Integer> targetLevel) {
     m_subsystem = elevatorsubsystem;
     goalLevelSupplier = targetLevel;
+    goalSpeedSupplier = null;
 
     // Uses the same PID controller so they should be synched. Change variables in
     // Constants file
@@ -43,17 +45,36 @@ public class ElevatorCommand extends Command {
 
   }
 
+  public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, Supplier<Double> speed, boolean eh) {
+    m_subsystem = elevatorsubsystem;
+    goalSpeedSupplier = speed;
+    goalLevelSupplier = null;
+
+    // Uses the same PID controller so they should be synched. Change variables in
+    // Constants file
+    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
+
+    // Ensures that the runElevator and stopElevator functions are present
+    addRequirements(elevatorsubsystem);
+
+    System.out.println("Elevator Command configured (womp womp)");
+
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Elevator started with goal level: " + goalLevelSupplier.get());
+    // System.out.println("Elevator started with goal level: " + goalLevelSupplier.get());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalPosition));
+    if (goalLevelSupplier != null) {
+      m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalPosition));
+    }
+    else m_subsystem.runElevator(-goalSpeedSupplier.get());
 
     // use constants for power later
     // if (goalLevelSupplier.get() == 1)
@@ -63,33 +84,28 @@ public class ElevatorCommand extends Command {
 
     // This code is good but commented out for now as we don't have encoders yet and
     // not really that far into the elevator
-    /*
-     * switch(goalLevelSupplier.get()) {
-     * 
-     * // Sends PID controller calculations to both motors. runElevator essentially
-     * replaces motor.set function
-     * case 1:
-     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
-     * getLeftElevatorEncoder(), ElevatorConstants.kLvlOnePos));
-     * goalPosition = ElevatorConstants.kLvlOnePos;
-     * break;
-     * case 2:
-     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
-     * getLeftElevatorEncoder(), ElevatorConstants.kLvlTwoPos));
-     * goalPosition = ElevatorConstants.kLvlTwoPos;
-     * break;
-     * case 3:
-     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
-     * getLeftElevatorEncoder(), ElevatorConstants.kLvlThreePos));
-     * goalPosition = ElevatorConstants.kLvlThreePos;
-     * break;
-     * case 4:
-     * m_subsystem.runElevator(m_pidController.calculate(m_subsystem.
-     * getLeftElevatorEncoder(), ElevatorConstants.kLvlFourPos));
-     * goalPosition = ElevatorConstants.kLvlFourPos;
-     * break;
-     * }
-     */
+
+    // switch(goalLevelSupplier.get()) {     // this stuff is actually not good
+      
+    //   // Sends PID controller calculations to both motors. runElevator essentially
+    //   // replaces motor.set function
+    //   case 1:
+    //     m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), ElevatorConstants.kLvlOnePos));
+    //     goalPosition = ElevatorConstants.kLvlOnePos;
+    //   break;
+    //   case 2:
+    //     m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), ElevatorConstants.kLvlTwoPos));
+    //     goalPosition = ElevatorConstants.kLvlTwoPos;
+    //   break;
+    //   case 3:
+    //     m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), ElevatorConstants.kLvlThreePos));
+    //   goalPosition = ElevatorConstants.kLvlThreePos;
+    //   break;
+    //   case 4:
+    //     m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), ElevatorConstants.kLvlFourPos));
+    //     goalPosition = ElevatorConstants.kLvlFourPos;
+    //   break;
+    // }
   }
 
   // Called once the command ends or is interrupted.

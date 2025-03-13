@@ -55,17 +55,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
-      OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 
-  // private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
   boolean fastMode = false, fasterMode = false;
 
@@ -90,8 +89,10 @@ public class RobotContainer {
     //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
 
+    m_elevatorSubsystem.setDefaultCommand(new ElevatorCommand(m_elevatorSubsystem, this::getRightY, true));
+
     // Build an auto chooser. This will use Commands.none() as the default option.
-    // autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
 
     // Start Elastic Server
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
@@ -99,7 +100,7 @@ public class RobotContainer {
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
   }
@@ -119,16 +120,19 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // m_driverController.options().whileTrue(new
-    // ZeroHeadingCommand(m_swerveSubsystem));
-    // m_driverController.R2().whileTrue(new
-    // AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem,
-    // m_driverController.getHID()));
-    // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem,
-    // () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () ->
-    // this.angleRelevant()));
-    // m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // true)); // Uncomment when set algae speeds are determined
+    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+    m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
+    m_driverController.L2().whileTrue(
+      new TurnToThetaCommand(
+        m_swerveSubsystem,
+        () -> this.getRightAngle(),
+        () -> getLeftX(),
+        () -> getLeftY(),
+        true,
+        () -> this.angleRelevant()
+      )
+    );
+    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds are determined
     // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
     // false));
   }
@@ -179,6 +183,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }
