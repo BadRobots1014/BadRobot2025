@@ -70,24 +70,25 @@ public class RobotContainer {
    */
   public RobotContainer() {
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-    () -> getLeftY(),
-    () -> getLeftX(),
-    () -> getRightX(),
-    DriveConstants.kFieldOriented,
-    this::getFastMode,
-    this::getFasterMode,
-    this::getPOV,
-    this::getAuxLeftTrigger,
-    this::getAuxRightTrigger));
-    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem, new SwerveModuleState[] {
-    //   new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
-    //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+        () -> getLeftY(),
+        () -> getLeftX(),
+        () -> getRightX(),
+        DriveConstants.kFieldOriented,
+        this::getFastMode,
+        this::getFasterMode,
+        this::getPOV,
+        this::getAuxLeftTrigger,
+        this::getAuxRightTrigger));
+    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
+    // new SwerveModuleState[] {
+    // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
 
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
+    // autoChooser = AutoBuilder.buildAutoChooser();
 
     // Start Elastic Server
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
@@ -95,7 +96,7 @@ public class RobotContainer {
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
   }
@@ -123,10 +124,10 @@ public class RobotContainer {
     // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem,
     // () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () ->
     // this.angleRelevant()));
-    // m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // true)); // Uncomment when set algae speeds are determined
-    // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // false));
+    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+        true)); // Uncomment when set algae speeds are determined
+    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+        false));
   }
 
   boolean getFastMode() {
@@ -144,14 +145,39 @@ public class RobotContainer {
     return fasterMode;
   }
 
-  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
-  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;}
-  double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return -m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 270)%360;}
-  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
-  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
-  double getAuxPOV() {return m_auxController.getPOV();}
+  double getRightX() {
+    return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;
+  }
+
+  double getRightY() {
+    return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;
+  }
+
+  double getLeftX() {
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY() {
+    return -m_driverController.getLeftY();
+  }
+
+  double getPOV() {
+    return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV()
+        : (m_driverController.getHID().getPOV() + 270) % 360;
+  }
+
+  double getAuxRightY() {
+    return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;
+  }
+
+  double getAuxLeftY() {
+    return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;
+  }
+
+  double getAuxPOV() {
+    return m_auxController.getPOV();
+  }
+
   double getAuxLeftTrigger() {
     return m_auxController.getL2Axis();
   }

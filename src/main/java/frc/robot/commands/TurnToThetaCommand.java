@@ -37,8 +37,8 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    turningPID = new PIDController(1, 0, 0);
-    turningPID.enableContinuousInput(0, 2 * Math.PI);
+    // turningPID = new PIDController(1, 0, 0);
+    // turningPID.enableContinuousInput(0, 2 * Math.PI);
     this.angleRelevant = angleRelevant;
   }
 
@@ -56,15 +56,16 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
     // boolean turnClockwise = ((currentAngle + 180) % 360) > targetTheta;
 
     // Begin rotating to target theta
-    if (angleRelevant.get()){
+    if (angleRelevant.get()) {
       lastTheta = new Rotation2d(targetTheta.get());
     }
     Rotation2d currentTheta = m_subsystem.getRotation2d();
     m_subsystem.thetaHelper.calculate(currentTheta, lastTheta);
 
-    //System.out.println("target" + targetTheta);
-    //System.out.println("current" + currentTheta);
-    //System.out.println("drive speed " + m_subsystem.thetaHelper.driveTheta.get());
+    // System.out.println("target" + targetTheta);
+    // System.out.println("current" + currentTheta);
+    // System.out.println("drive speed " +
+    // m_subsystem.thetaHelper.driveTheta.get());
 
     super.execute();
   }

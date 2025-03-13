@@ -16,36 +16,47 @@ import frc.robot.Constants.CoralConstants;
 
 public class CoralSubsystem extends SubsystemBase {
 
-  private final SparkMax coralMotor;
+  private final SparkMax coralMotor1;
+  private final SparkMax coralMotor2;
 
   // Creates motor object and configures them
   public CoralSubsystem() {
-    coralMotor = new SparkMax(CoralConstants.kCoralCanID, MotorType.kBrushed);
+    coralMotor1 = new SparkMax(CoralConstants.kCoralCanId1, MotorType.kBrushed);
+    coralMotor2 = new SparkMax(CoralConstants.kCoralCanId2, MotorType.kBrushed);
     SparkMaxConfig config = new SparkMaxConfig();
 
     config.idleMode(IdleMode.kBrake);
 
-    coralMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    coralMotor1.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    coralMotor2.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
-  // Retrieves the amount of AMPs in the motor
-  public double getMotorCurrent() {
-    return coralMotor.getOutputCurrent();
+  // Retrieves the amount of AMPs in motor 1
+  public double getMotor1Current() {
+    return coralMotor1.getOutputCurrent();
+  }
+
+  // Retrieves the amount of AMPs in motor 2
+  public double getMotor2Current() {
+    return coralMotor1.getOutputCurrent();
   }
 
   public void setMotorMode(boolean dump) {
     if (dump) {
       // Down
-      coralMotor.set(CoralConstants.kCoralOutSpeed);
+      coralMotor1.set(CoralConstants.kCoralOutSpeed);
+      coralMotor2.set(CoralConstants.kCoralOutSpeed);
     } else {
       // Up
-      coralMotor.set(CoralConstants.kCoralInSpeed);
+      coralMotor1.set(CoralConstants.kCoralInSpeed);
+      coralMotor2.set(CoralConstants.kCoralInSpeed);
     }
   }
 
   // Stops the motor
   public void stopMotor() {
-    coralMotor.stopMotor();
+    coralMotor1.stopMotor();
+    coralMotor2.stopMotor();
   }
 
 }
