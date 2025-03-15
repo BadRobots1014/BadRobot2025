@@ -95,11 +95,11 @@ public class RobotContainer {
 
   // Hex Buttons On AUX controller
   JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
-  JoystickButton HexTop = new JoystickButton(auxJoysticks[1], HexControllerConstants.kTop);
-  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kTopRight);
-  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kBottomRight);
-  JoystickButton HexBottom = new JoystickButton(auxJoysticks[0], HexControllerConstants.kBottom);
-  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kBottomLeft);
+  JoystickButton HexTop = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTop);
+  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
+  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
+  JoystickButton HexBottom = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottom);
+  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();

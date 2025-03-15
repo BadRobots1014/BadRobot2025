@@ -106,14 +106,13 @@ public final class Constants {
 
   public static final class HexControllerConstants {
     // Uses Controller 1
-    public final static int kTopLeft = 12;
-      // Uses controller 2
+    public final static int kTopLeft = 9;
     public final static int kTop = 10;
     public final static int kTopRight = 11;
-    // Uses controller 1
-    public final static int kBottomRight = 9;
+    // Uses controller 2
+    public final static int kBottomLeft = 9;
     public final static int kBottom = 10;
-    public final static int kBottomLeft = 11;
+    public final static int kBottomRight = 11;
   }
 
   public static final class ColorConstants {
