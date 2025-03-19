@@ -4,6 +4,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 
 public class TurnToThetaCommand extends SwerveDriveCommand {
@@ -29,14 +30,12 @@ public class TurnToThetaCommand extends SwerveDriveCommand {
         fieldOriented,
         () -> false,
         () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+        () -> -1d);
     this.targetTheta = targetTheta;
     m_subsystem = swerveSubsystem;
 
-    // turningPID = new PIDController(1, 0, 0);
-    // turningPID.enableContinuousInput(0, 2 * Math.PI);
+    PIDController turningPID = new PIDController(1, 0, 0);
+    turningPID.enableContinuousInput(0, 2 * Math.PI);
     angleRelevant = angleRelevantIn;
   }
 

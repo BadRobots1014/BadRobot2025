@@ -4,13 +4,20 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AuxControllerConstants;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.CoralControllerConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlgaeCommand;
+import frc.robot.commands.AlignToCoralCommand;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightPathCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TestModuleCommand;
 import frc.robot.commands.TestOdometry;
@@ -33,11 +40,13 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -55,16 +64,92 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController = new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
-  private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
+      OperatorConstants.kDriverControllerPort);
+
+  // The Aux Controller Panel
+  private Joystick[] auxJoysticks = {
+      new Joystick(ControllerConstants.kSecondControllerPortOne),
+      new Joystick(ControllerConstants.kSecondControllerPortTwo)
+  };
+
+  // Coral Buttons On AUX controller
+  JoystickButton level1Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel1);
+  JoystickButton level1Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel1);
+  JoystickButton level2Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel2);
+  JoystickButton level2Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel2);
+  JoystickButton level3Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel3);
+  JoystickButton level3Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel3);
+  JoystickButton level4Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel4);
+  JoystickButton level4Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel4);
+
+  // Other Buttons On AUX controller
+  JoystickButton AuxLeftBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftBottom);
+  JoystickButton AuxRightBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightBottom);
+  JoystickButton AuxLeftLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftLowerMid);
+  JoystickButton AuxRightLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightLowerMid);
+  JoystickButton AuxLeftUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftUpperMid);
+  JoystickButton AuxRightUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightUpperMid);
+  JoystickButton AuxLeftTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftTop);
+  JoystickButton AuxRightTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightTop);
+
+  // Hex Buttons On AUX controller
+  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
+  JoystickButton HexTop = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTop);
+  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
+  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
+  JoystickButton HexBottom = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottom);
+  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
-
-  private final SendableChooser<Command> autoChooser;
-
   private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+
+  private final Command m_leftLevel1Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+  private final Command m_rightLevel1Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+  private final Command m_leftLevel2Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+  private final Command m_rightLevel2Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+  private final Command m_leftLevel3Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+  private final Command m_rightLevel3Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+  private final Command m_leftLevel4Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionLeft),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+  private final Command m_rightLevel4Command = Commands.parallel(
+      new AlignToCoralCommand(m_swerveSubsystem, CoralControllerConstants.directionRight),
+      new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+
+  /*
+   * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
+   * AlignToCoralCommand(m_swerveSubsystem, -1);
+   * private final AlignToCoralCommand m_rightAlignToCoralCommand = new
+   * AlignToCoralCommand(m_swerveSubsystem, 1);
+   * 
+   * private final ElevatorCommand m_level1ElevatorCommand = new
+   * ElevatorCommand(m_elevatorSubsystem, () -> 1);
+   * private final ElevatorCommand m_level2ElevatorCommand = new
+   * ElevatorCommand(m_elevatorSubsystem, () -> 2);
+   * private final ElevatorCommand m_level3ElevatorCommand = new
+   * ElevatorCommand(m_elevatorSubsystem, () -> 3);
+   * private final ElevatorCommand m_level4ElevatorCommand = new
+   * ElevatorCommand(m_elevatorSubsystem, () -> 4);
+   */
+
+  // private final SendableChooser<Command> autoChooser;
+
+  // private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
   boolean fastMode = false, fasterMode = false;
 
@@ -79,9 +164,7 @@ public class RobotContainer {
         DriveConstants.kFieldOriented,
         this::getFastMode,
         this::getFasterMode,
-        this::getPOV,
-        this::getAuxLeftTrigger,
-        this::getAuxRightTrigger));
+        this::getPOV));
     // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
     // new SwerveModuleState[] {
     // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
@@ -129,10 +212,20 @@ public class RobotContainer {
     // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem,
     // () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () ->
     // this.angleRelevant()));
-    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-        true)); // Uncomment when set algae speeds are determined
-    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-        false));
+    // m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+    // true)); // Uncomment when set algae speeds are determined
+    // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
+    // false));
+
+    level1Left.onTrue(m_leftLevel1Command);
+    level1Right.onTrue(m_rightLevel1Command);
+    level2Left.onTrue(m_leftLevel2Command);
+    level2Right.onTrue(m_rightLevel2Command);
+    level3Left.onTrue(m_leftLevel3Command);
+    level3Right.onTrue(m_rightLevel3Command);
+    level4Left.onTrue(m_leftLevel4Command);
+    level4Right.onTrue(m_rightLevel4Command);
+
   }
 
   boolean getFastMode() {
@@ -149,21 +242,26 @@ public class RobotContainer {
       fasterMode = false;
     return fasterMode;
   }
-  
-  double getRightX() {return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;}
-  double getRightY() {return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;}
-  double getLeftX() {return m_driverController.getLeftX();}
-  double getLeftY() {return -m_driverController.getLeftY();}
-  double getPOV() {return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV() : (m_driverController.getHID().getPOV() + 270)%360;}
-  double getAuxRightY() {return Math.abs(m_auxController.getRightY()) > OIConstants.kDriveDeadband ? m_auxController.getRightY() : 0;}
-  double getAuxLeftY() {return Math.abs(m_auxController.getLeftY()) > OIConstants.kDriveDeadband ? m_auxController.getLeftY() : 0;}
-  double getAuxPOV() {return m_auxController.getPOV();}
-  double getAuxLeftTrigger() {
-    return m_auxController.getL2Axis();
+
+  double getRightX() {
+    return Math.abs(m_driverController.getRightX()) >= 0.1 ? m_driverController.getRightX() : 0;
   }
 
-  double getAuxRightTrigger() {
-    return m_auxController.getR2Axis();
+  double getRightY() {
+    return Math.abs(m_driverController.getRightY()) >= 0.1 ? m_driverController.getRightY() : 0;
+  }
+
+  double getLeftX() {
+    return m_driverController.getLeftX();
+  }
+
+  double getLeftY() {
+    return -m_driverController.getLeftY();
+  }
+
+  double getPOV() {
+    return m_driverController.getHID().getPOV() == -1 ? m_driverController.getHID().getPOV()
+        : (m_driverController.getHID().getPOV() + 270) % 360;
   }
 
   double getRightAngle() {

@@ -33,6 +33,8 @@ public final class Constants {
     public static final double kWheelDiameterMeters = 0.102;
     public static final double kDriveMotorGearRatio = 1 / 9.1d;
     public static final double kTurningMotorGearRatio = 1 / 12.8;
+    public static final double kDriveMotorGearRatio = 1 / 9.1d;
+    public static final double kTurningMotorGearRatio = 1 / 12.8;
     public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI * kWheelDiameterMeters;
     public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
     public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
@@ -51,6 +53,81 @@ public final class Constants {
     public static final double kTriggerDeadband = 0.75;
   }
 
+  public final class ControllerConstants {
+
+    public final static int kSecondControllerPortOne = 0;
+    public final static int kSecondControllerPortTwo = 1;
+
+    public final static int kSecondControllerOne = 0;
+    public final static int kSecondControllerTwo = 1;
+
+    public final static double kMaxThrottle = 1.0;
+    public final static double kSlowThrottle = 0.5;
+
+    public final static int kThrottleButton = 2;
+
+  }
+
+  public static final class ReefControllerConstants {
+    public final static int kTopReefButton = 0;
+    public final static int kTopLeftReefButton = 1;
+    public final static int kButtomLeftReefButton = 2;
+    public final static int kButtomReefButton = 3;
+    public final static int kButtomRightReefButton = 4;
+    public final static int kTopRightReefButton = 5;
+
+  }
+
+  public static final class CoralControllerConstants {
+    // Coral Levels
+    public final static int kLeftLevel1 = 1;
+    public final static int kRightLevel1 = 2;
+    public final static int kLeftLevel2 = 3;
+    public final static int kRightLevel2 = 4;
+    public final static int kLeftLevel3 = 5;
+    public final static int kRightLevel3 = 6;
+    public final static int kLeftLevel4 = 7;
+    public final static int kRightLevel4 = 8;
+
+    // Coral Side
+    public static final int directionLeft = -1;
+    public static final int directionRight = 1;
+  }
+
+  public static final class AuxControllerConstants {
+    // Uses Controller secondaryControllerOne
+    public final static int kLeftBottom = 1;
+    public final static int kRightBottom = 2;
+    public final static int kLeftLowerMid = 3;
+    public final static int kRightLowerMid = 4;
+    public final static int kLeftUpperMid = 5;
+    public final static int kRightUpperMid = 6;
+    public final static int kLeftTop = 7;
+    public final static int kRightTop = 8;
+  }
+
+  public static final class HexControllerConstants {
+    // Uses Controller 1
+    public final static int kTopLeft = 9;
+    public final static int kTop = 10;
+    public final static int kTopRight = 11;
+    // Uses controller 2
+    public final static int kBottomLeft = 9;
+    public final static int kBottom = 10;
+    public final static int kBottomRight = 11;
+  }
+
+  public static final class ColorConstants {
+    public final static double yellow = 0.69;
+    public final static double yellowPatt = -0.07;
+    public final static double red = 0.61;
+    public final static double redPatt = -0.17;
+    public final static double blue = 0.87;
+    public final static double bluePatt = -0.83;
+    public final static double green = 0.77;
+    public final static double greenPatt = -0.37;
+  }
+
   public static final class DriveConstants {
 
     // TODO turn field oriented on or off
@@ -62,30 +139,30 @@ public final class Constants {
 
     // Turn theta
     public static final double kTurnThetaMaxSpeed = 0.9;
-    public static final HashMap<Integer, Double> aprilTagAngles = new HashMap<>(
+    public static final HashMap<Double, Double> aprilTagAngles = new HashMap<>(
         Map.ofEntries(
-            Map.entry(1, 126d),
-            Map.entry(2, 234d),
-            Map.entry(3, 270d),
-            Map.entry(4, 0d),
-            Map.entry(5, 0d),
-            Map.entry(6, 300d),
-            Map.entry(7, 0d),
-            Map.entry(8, 60d),
-            Map.entry(9, 120d),
-            Map.entry(10, 180d),
-            Map.entry(11, 240d),
-            Map.entry(12, 54d),
-            Map.entry(13, 306d),
-            Map.entry(14, 180d),
-            Map.entry(15, 180d),
-            Map.entry(16, 90d),
-            Map.entry(17, 240d),
-            Map.entry(18, 180d),
-            Map.entry(19, 120d),
-            Map.entry(20, 60d),
-            Map.entry(21, 0d),
-            Map.entry(22, 300d)));
+            Map.entry(1d, 126d),
+            Map.entry(2d, 234d),
+            Map.entry(3d, 270d),
+            Map.entry(4d, 0d),
+            Map.entry(5d, 0d),
+            Map.entry(6d, 300d),
+            Map.entry(7d, 0d),
+            Map.entry(8d, 60d),
+            Map.entry(9d, 120d),
+            Map.entry(10d, 180d),
+            Map.entry(11d, 240d),
+            Map.entry(12d, 54d),
+            Map.entry(13d, 306d),
+            Map.entry(14d, 180d),
+            Map.entry(15d, 180d),
+            Map.entry(16d, 90d),
+            Map.entry(17d, 240d),
+            Map.entry(18d, 180d),
+            Map.entry(19d, 120d),
+            Map.entry(20d, 60d),
+            Map.entry(21d, 0d),
+            Map.entry(22d, 300d)));
     public static final double kTurnThetaShutoffSensitivity = 0.005;
 
     // Distance between centers of right and left wheels on robot
@@ -115,10 +192,6 @@ public final class Constants {
     public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI / 2;
     public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI / 2;
     public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI / 2;
-    public static final double kTallBLOffset = -.097 * Math.PI * 2 + Math.PI/2;
-    public static final double kTallFLOffset = .179 * Math.PI * 2 + Math.PI/2;
-    public static final double kTallFROffset = .314 * Math.PI * 2 + (Math.PI / 2) + Math.PI/2;
-    public static final double kTallBROffset = .106 * Math.PI * 2 + Math.PI/2;
 
     public static final double kSteveBLOffset = -.007568 * Math.PI * 2;
     public static final double kSteveFLOffset = -.083252 * Math.PI * 2;
@@ -127,10 +200,14 @@ public final class Constants {
 
     // Angular offsets of the modules relative to the chassis in radians
 
-    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; //(steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackRightChassisAngularOffset = kSteveBROffset; //(steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; // (steve ? kSteveFROffset : tallBot ?
+                                                                                 // kTallBROffset : kBROffset);
+    public static final double kBackRightChassisAngularOffset = kSteveBROffset; // (steve ? kSteveBROffset : tallBot ?
+                                                                                // kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ?
+                                                                               // kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ?
+                                                                                // kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 11;
@@ -199,6 +276,10 @@ public final class Constants {
     public static final double kLvlTwoPos = 180.0;
     public static final double kLvlThreePos = 270.0;
     public static final double kLvlFourPos = 359.0;
+    public static final double kLvlOnePos = 90.0;
+    public static final double kLvlTwoPos = 180.0;
+    public static final double kLvlThreePos = 270.0;
+    public static final double kLvlFourPos = 359.0;
 
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
@@ -220,8 +301,8 @@ public final class Constants {
   }
 
   public static class AlgaeConstants {
-    public static final int kLeftCanId = 51;
-    public static final int kRightCanId = 52;
+    public static final int kLeftCanId = 48;
+    public static final int kRightCanId = 49;
 
     public static final int kMaxAmps = 140;
     public static final double kPower = .5;

@@ -6,13 +6,11 @@ import frc.robot.util.LimelightHelpers;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -85,9 +83,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
         false,
         () -> false,
         () -> false,
-        () -> -1d,
-        () -> 0d,
-        () -> 0d);
+        () -> -1d);
 
     m_controller = controller;
 
@@ -103,9 +99,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
 
     m_tab = Shuffleboard.getTab("Limelight");
 
-    m_tab.addDouble("Current Displacement X", () -> swerveSubsystem.getPose().getX());
-    m_tab.addDouble("Current Displacement Y", () -> swerveSubsystem.getPose().getY());
-    m_tab.addDouble("Current Displacement Rotation", () -> swerveSubsystem.getPose().getRotation().getDegrees());
+    m_tab.addDouble("Current Displacement X", () -> swerveSubsystem.getGruPose().getX());
+    m_tab.addDouble("Current Displacement Y", () -> swerveSubsystem.getGruPose().getY());
+    m_tab.addDouble("Current Displacement Rotation", () -> swerveSubsystem.getGruPose().getRotation().getDegrees());
     m_tab.addString("Last Displacement", () -> lastDisplacement.toString());
     m_tab.addString("Limelight Previous", () -> lastPosLimelight.toString());
 
@@ -136,11 +132,9 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
 
-      // Returns the yaw even though it says pitch
-      double yaw = -lastPosLimelight.getRotation().getY();
-
-      // Computes what angle the robot has to be to face the april tag
-      targetTheta = new Rotation2d(currentTheta.getRadians() - yaw);
+      // Use known april tag orientations to know current angle in radians
+      double targetRadians = DriveConstants.aprilTagAngles.get(lastTag) * Math.PI / 180;
+      //targetTheta = aprilTagAngles.get(lastTag)*Math.PI/180;
 
       // Run PID to compute speed
       swerveSubsystem.thetaHelper.calculate(currentTheta, targetTheta);
