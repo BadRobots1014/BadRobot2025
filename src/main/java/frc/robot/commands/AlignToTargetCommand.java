@@ -146,7 +146,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       // Z in 3d space corrosponds to the Y for the motor
       double y = lastPosLimelight.getZ();
       // driveYd = 0;
-      driveYd = drivePID.calculate(ElevatorConstants.kAutoTargetDistance, y);
+      driveYd = drivePID.calculate(DriveConstants.kAutoTargetDistance, y);
     } else {
       // get current rotation for turning
       Rotation2d currentTheta = swerveSubsystem.getRotation2d();
@@ -163,7 +163,7 @@ public class AlignToTargetCommand extends SwerveDriveCommand {
       driveXd = drivePID.calculate(0d, -remainingXDistance);
       // driveYd = 0;
 
-      driveYd = drivePID.calculate(ElevatorConstants.kAutoTargetDistance, remainingYDistance);
+      driveYd = drivePID.calculate(DriveConstants.kAutoTargetDistance, remainingYDistance);
     }
 
     /*
