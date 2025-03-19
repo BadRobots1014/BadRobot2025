@@ -297,6 +297,15 @@ public final class Constants {
     public static final double kElevatorD = 0.0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
+
+    // Map of elevator buttons to specific heights
+    // TODO: set heights from encoder
+    public static final HashMap<Integer, Double> kElevatorPresets = new HashMap<>(
+        Map.ofEntries(
+            Map.entry(0, 0d),
+            Map.entry(1, 0d),
+            Map.entry(2, 0d),
+            Map.entry(3, 0d)));
   }
 
   public static final class CoralConstants {
