@@ -13,6 +13,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.CoralConstants.CoralMode;
 
 public class CoralSubsystem extends SubsystemBase {
 
@@ -58,5 +59,4 @@ public class CoralSubsystem extends SubsystemBase {
     coralMotor1.stopMotor();
     coralMotor2.stopMotor();
   }
-
 }
