@@ -34,10 +34,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -101,6 +103,8 @@ public class RobotContainer {
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
+    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
 
     configureBindings();
   }
@@ -133,8 +137,7 @@ public class RobotContainer {
       )
     );
     m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds are determined
-    // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // false));
+    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
   }
 
   boolean getFastMode() {

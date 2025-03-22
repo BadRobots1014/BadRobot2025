@@ -214,6 +214,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the pose
     m_currentDisplacement = updateOdometry();
+    SmartDashboard.putData("Gru", gru);
   }
 
   // Gru data shenanigans
