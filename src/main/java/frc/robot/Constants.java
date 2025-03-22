@@ -187,15 +187,16 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 58;
     public static final int kRightElevatorCanId = 59;
+    public static final int kEncoderCanId = 60;
 
     public static final double kElevatorUpPower = .2;
     public static final double kElevatorDownPower = -.2;
     public static final int kElevatorMaxAmps = 140;
 
-    // public static final double kLvlOnePos = 90.0;
-    // public static final double kLvlTwoPos = 180.0;
-    // public static final double kLvlThreePos = 270.0;
-    // public static final double kLvlFourPos = 359.0;
+    public static final double kLvlOnePos = 90.0;
+    public static final double kLvlTwoPos = 180.0;
+    public static final double kLvlThreePos = 270.0;
+    public static final double kLvlFourPos = 359.0;
 
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
@@ -215,8 +216,8 @@ public final class Constants {
   }
 
   public static class AlgaeConstants {
-    public static final int kLeftCanId = 58;
-    public static final int kRightCanId = 59;
+    public static final int kLeftCanId = 51;
+    public static final int kRightCanId = 52;
 
     public static final int kMaxAmps = 140;
     public static final double kPower = .5;
