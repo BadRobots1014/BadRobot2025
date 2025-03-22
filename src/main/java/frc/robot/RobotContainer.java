@@ -111,7 +111,18 @@ public class RobotContainer {
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
+    m_driverController.L2().whileTrue(
+      new TurnToThetaCommand(
+        m_swerveSubsystem,
+        () -> this.getRightAngle(),
+        () -> getLeftX(),
+        () -> getLeftY(),
+        true,
+        () -> this.angleRelevant()
+      )
+    );
+    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds are determined
+    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
   }
 
   boolean getFastMode() {
