@@ -28,6 +28,11 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public final class BlinkinConstants {
+    public final static int kBlinkinPort = 0;
+    public final static double kBlinkinDefaultColorCode = .57;
+  } 
+
   public static final class ModuleConstants {
 
     public static final double kWheelDiameterMeters = 0.102;

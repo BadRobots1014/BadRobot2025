@@ -44,6 +44,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.BlinkinCommand;
+import frc.robot.subsystems.BlinkinSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -56,6 +58,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private BlinkinSubsystem blinkinSubsystem;
+  private BlinkinCommand redBlinkinCommand;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandPS4Controller m_driverController = new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
@@ -74,6 +80,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    this.blinkinSubsystem = new BlinkinSubsystem();
+
+    this.redBlinkinCommand  = new BlinkinCommand(blinkinSubsystem, .61);
+
+    // Configure the trigger bindings
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
     () -> getLeftY(),
     () -> getLeftX(),
