@@ -223,7 +223,7 @@ public final class Constants {
     public enum CoralMode {
       UP,
       DOWN,
-      STEEP_DOWN
+      UP_OVERRIDE
     }
   }
 

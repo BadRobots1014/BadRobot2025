@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class CoralCommand extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final CoralSubsystem m_subsystem;
-  private CoralMode mode = CoralMode.UP;
+  private CoralMode mode;
 
   private long startTime;
 

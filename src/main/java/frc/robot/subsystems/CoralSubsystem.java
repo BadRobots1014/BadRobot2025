@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.LimitSwitchConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -18,15 +19,23 @@ import frc.robot.Constants.CoralConstants.CoralMode;
 public class CoralSubsystem extends SubsystemBase {
 
   private final SparkMax coralMotor;
+  private final SparkMaxConfig limitedConfig;
+  private final SparkMaxConfig unlimitedConfig;
 
   // Creates motor object and configures them
   public CoralSubsystem() {
     coralMotor = new SparkMax(CoralConstants.kCoralCanID, MotorType.kBrushed);
-    SparkMaxConfig config = new SparkMaxConfig();
 
-    config.idleMode(IdleMode.kBrake);
+    // Default configuration for limits. Used during matches.
+    limitedConfig = new SparkMaxConfig();
+    limitedConfig.idleMode(IdleMode.kBrake);
+    limitedConfig.limitSwitch.forwardLimitSwitchEnabled(true);
 
-    coralMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // Configuration without the reverse (up) limit. Used in prematch setup.
+    unlimitedConfig = limitedConfig;
+    unlimitedConfig.limitSwitch.forwardLimitSwitchEnabled(false);
+
+    coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
 
   // Retrieves the amount of AMPs in the motor
@@ -37,10 +46,24 @@ public class CoralSubsystem extends SubsystemBase {
   public void setMotorMode(CoralMode mode) {
     if (mode == CoralMode.UP) {
       // Up
+      if (coralMotor.getReverseLimitSwitch() == null) {
+        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+      }
       coralMotor.set(CoralConstants.kCoralUpSpeed);
-    } else {
-      // Down will be same speeds, just different times
+    }
+    else if (mode == CoralMode.DOWN) {
+      // Down
+      if (coralMotor.getReverseLimitSwitch() == null) {
+        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+      }
       coralMotor.set(CoralConstants.kCoralDownSpeed);
+    }
+    else {
+      // Up without limit
+      if (coralMotor.getReverseLimitSwitch() != null) {
+        coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+      }
+      coralMotor.set(CoralConstants.kCoralUpSpeed);
     }
   }
 
