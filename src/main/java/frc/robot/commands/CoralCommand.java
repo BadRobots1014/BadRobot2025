@@ -9,7 +9,6 @@ import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.subsystems.CoralSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** An example command that uses an example subsystem. */
 public class CoralCommand extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final CoralSubsystem m_subsystem;
@@ -43,7 +42,7 @@ public class CoralCommand extends Command {
   public boolean isFinished() {
     // End if over kCoralDurationSeconds
     // Nanosecond percision as it is theoretically better than milliseconds
-    if (System.nanoTime() - startTime > CoralConstants.kCoralDurationNano) {
+    if (System.nanoTime() - startTime > CoralConstants.kCoralDurationNano && mode != CoralConstants.CoralMode.UP_OVERRIDE) {
       return true;
     } else {
       return false;
