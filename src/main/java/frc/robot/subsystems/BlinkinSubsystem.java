@@ -38,6 +38,10 @@ public class BlinkinSubsystem extends SubsystemBase {
     blinkin.set(pattern);
   }
 
+  public void setBlinkin(String pattern) {
+    setBlinkin(BlinkinConstants.colorCode.get(pattern));
+  }
+
   public void setDefault(){
     setBlinkin(BlinkinConstants.kBlinkinDefaultColorCode);
   }
