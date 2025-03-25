@@ -30,7 +30,6 @@ public final class Constants {
 
   public final class BlinkinConstants {
     public final static int kBlinkinPort = 0;
-    public final static double kBlinkinDefaultColorCode = .57;
     public static final HashMap<String, Double> colorCode = new HashMap<>(
       Map.ofEntries(
         Map.entry("rainbow-rainbow", -0.99d),
@@ -135,6 +134,7 @@ public final class Constants {
         Map.entry("solid-black", 0.99d)
       )
     );
+    public final static double kBlinkinDefaultColorCode = colorCode.get("scanner-color1");
   } 
 
   public static final class ModuleConstants {
