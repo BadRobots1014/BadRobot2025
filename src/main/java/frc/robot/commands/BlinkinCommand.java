@@ -28,6 +28,10 @@ public class BlinkinCommand extends Command {
     addRequirements(blinkinSubsystem);
   }
 
+  public BlinkinCommand(BlinkinSubsystem blinkinSubsystem, String pattern) {
+    this(blinkinSubsystem, BlinkinConstants.colorCode.get(pattern));
+  }
+
   @Override
   public void initialize() {}
 
