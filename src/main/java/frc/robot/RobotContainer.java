@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -45,7 +46,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.BlinkinCommand;
+import frc.robot.commands.CoralCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -69,6 +72,7 @@ public class RobotContainer {
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+  private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
 
   private final SendableChooser<Command> autoChooser;
 
@@ -149,6 +153,8 @@ public class RobotContainer {
     );
     m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds are determined
     m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    m_driverController.circle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
+    m_driverController.triangle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
   }
 
   boolean getFastMode() {
