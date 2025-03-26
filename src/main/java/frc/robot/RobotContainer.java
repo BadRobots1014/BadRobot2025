@@ -222,6 +222,15 @@ public class RobotContainer {
     level4Left.onTrue(m_leftLevel4Command);
     level4Right.onTrue(m_rightLevel4Command);
 
+    // Coral
+    AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, false));
+    AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, true));
+    // Alage
+    AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+    AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    // Climb
+    AuxLeftLowerMid.whileTrue();
+    AuxRightLowerMid.whileTrue();
   }
 
   boolean getFastMode() {
