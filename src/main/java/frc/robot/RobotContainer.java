@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -36,14 +37,20 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.BlinkinCommand;
+import frc.robot.commands.CoralCommand;
+import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.CoralSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -56,18 +63,22 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
+  private BlinkinSubsystem blinkinSubsystem;
+  private BlinkinCommand redBlinkinCommand;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandPS4Controller m_driverController = new CommandPS4Controller(
-      OperatorConstants.kDriverControllerPort);
+  private final CommandPS4Controller m_driverController = new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
   private final PS4Controller m_auxController = new PS4Controller(OperatorConstants.kDriverControllerPort);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
   private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+  private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
 
-  // private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
-  private final ElevatorSubsystem m_ElevatorSubsystem = new ElevatorSubsystem();
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 
   boolean fastMode = false, fasterMode = false;
 
@@ -75,6 +86,11 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    this.blinkinSubsystem = new BlinkinSubsystem();
+
+    this.redBlinkinCommand  = new BlinkinCommand(blinkinSubsystem, .61);
+
+    // Configure the trigger bindings
     m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
     () -> getLeftY(),
     () -> getLeftX(),
@@ -92,8 +108,10 @@ public class RobotContainer {
     //   new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
 
+    m_elevatorSubsystem.setDefaultCommand(new ElevatorCommand(m_elevatorSubsystem, this::getRightY, true));
+
     // Build an auto chooser. This will use Commands.none() as the default option.
-    // autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
 
     // Start Elastic Server
     WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
@@ -101,7 +119,9 @@ public class RobotContainer {
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-    // SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
+    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
 
     configureBindings();
   }
@@ -125,22 +145,10 @@ public class RobotContainer {
     m_driverController.R2().whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
     m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant()));
     m_driverController.L1().whileTrue(new SnapToThetaCommand(m_swerveSubsystem, () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () -> this.angleRelevant(), 60));
-
-    //m_driverController.L1().whileTrue(new TestOdometry(m_swerveSubsystem, 1, 0));
-    m_driverController.triangle().onTrue(new LimelightPathCommand(m_swerveSubsystem, () -> 2d, () -> 0d, () -> Rotation2d.fromDegrees(90)));
-    m_driverController.square().onTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
-    // m_driverController.options().whileTrue(new
-    // ZeroHeadingCommand(m_swerveSubsystem));
-    // m_driverController.R2().whileTrue(new
-    // AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem,
-    // m_driverController.getHID()));
-    // m_driverController.L2().whileTrue(new TurnToThetaCommand(m_swerveSubsystem,
-    // () -> this.getRightAngle(), () -> getLeftX(), () -> getLeftY(), true, () ->
-    // this.angleRelevant()));
-    // m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // true)); // Uncomment when set algae speeds are determined
-    // m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem,
-    // false));
+    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds are determined
+    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    m_driverController.circle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
+    m_driverController.triangle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
   }
 
   boolean getFastMode() {
@@ -189,6 +197,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }

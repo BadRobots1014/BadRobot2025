@@ -31,7 +31,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     topMotorConfig.inverted(false);
 
     bottomMotorConfig.idleMode(IdleMode.kBrake);
-    bottomMotorConfig.inverted(false);
+    bottomMotorConfig.inverted(true);
 
     topMotor.configure(topMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     bottomMotor.configure(bottomMotorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -53,11 +53,11 @@ public class AlgaeSubsystem extends SubsystemBase {
   }
 
   private void SpinTop(double power) {
-    topMotor.set(power * AlgaeConstants.kTopMaxSpeed);
+    topMotor.set(power);
   }
 
   private void SpinBottom(double power) {
-    bottomMotor.set(power * AlgaeConstants.kBottomMaxSpeed);
+    bottomMotor.set(power);
   }
 
   public void Stop() {

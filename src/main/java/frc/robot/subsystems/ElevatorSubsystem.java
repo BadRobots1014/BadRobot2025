@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -11,18 +12,28 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
+import frc.robot.util.Elastic;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
   private final SparkMax leftElevator;
   private final SparkMax rightElevator;
+  private final SparkMax fakeMotor;
+  private final AbsoluteEncoder encoder;
+
+  private ShuffleboardTab m_tab;
 
   // Creates Left/Right climber objects and configures them
   public ElevatorSubsystem() {
     leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
+    fakeMotor = new SparkMax(ElevatorConstants.kEncoderCanId, MotorType.kBrushless);
+    encoder = fakeMotor.getAbsoluteEncoder();
 
     SparkMaxConfig rightElevatorConfig = new SparkMaxConfig();
     SparkMaxConfig leftElevatorConfig = new SparkMaxConfig();
@@ -35,6 +46,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     leftElevator.configure(leftElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightElevator.configure(rightElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    m_tab = Shuffleboard.getTab("Elevator");
+    m_tab.addNumber("Encoder", this::getElevatorEncoder);
   }
 
   // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope
@@ -46,7 +60,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double getElevatorEncoder()
   {
-    return leftElevator.getAbsoluteEncoder().getPosition();
+    return encoder.getPosition();
   }
 
   /**
