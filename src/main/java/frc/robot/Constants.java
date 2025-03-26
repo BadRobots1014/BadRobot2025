@@ -322,7 +322,7 @@ public final class Constants {
     public static final double kCoralDurationSeconds = 1;
     public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout
 
-    public static final int kCoralCanID = -1;
+    public static final int kCoralCanID = 54;
 
     public enum CoralMode {
       UP,
