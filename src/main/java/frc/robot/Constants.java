@@ -354,6 +354,9 @@ public final class Constants {
     public static final double kLvlThreePos = 270.0;
     public static final double kLvlFourPos = 359.0;
 
+    public static final double kLvlAlgaeOnePos = 359.0;
+    public static final double kLvlAlgaeTwoPos = 359.0;
+
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
@@ -386,5 +389,14 @@ public final class Constants {
 
     public static final int kMaxAmps = 140;
     public static final double kPower = 1;
+  }
+
+  public static final class ClimberConstants {
+    //public static final int kLeftClimberCanId = 0;
+    //public static final int kRightClimberCanId = 0;
+    public static final int kClimberCanId = 53;
+    public static final int kClimberUpPower = -1;
+    public static final int kClimberDownPower = 1;
+    public static final int kClimberMaxAmps = 200000;
   }
 }

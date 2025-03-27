@@ -9,6 +9,7 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.Constants.CoralControllerConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
@@ -32,6 +33,7 @@ import frc.robot.util.Elastic;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
+import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -52,8 +54,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.BlinkinCommand;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.CoralCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 
 /**
@@ -114,21 +118,21 @@ private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
 
 private final Command m_leftLevel1Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
 private final Command m_rightLevel1Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 1));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
 private final Command m_leftLevel2Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
 private final Command m_rightLevel2Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 2));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
 private final Command m_leftLevel3Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
 private final Command m_rightLevel3Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 3));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
 private final Command m_leftLevel4Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
 private final Command m_rightLevel4Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> 4));
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
 
 /*
  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
@@ -211,28 +215,16 @@ private final Command m_rightLevel4Command = Commands.parallel(
    */
   private void configureBindings() {
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-    m_driverController.R2()
-        .whileTrue(new AlignToTargetCommand(m_limelightSubsystem, m_swerveSubsystem, m_driverController.getHID()));
-    m_driverController.L2().whileTrue(
-        new TurnToThetaCommand(
-            m_swerveSubsystem,
-            () -> this.getRightAngle(),
-            () -> getLeftX(),
-            () -> getLeftY(),
-            true,
-            () -> this.angleRelevant()));
-    m_driverController.cross().whileTrue(new AlgaeCommand(m_algaeSubsystem, true)); // Uncomment when set algae speeds
-                                                                                    // are determined
-    m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
-    m_driverController.circle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
-    m_driverController.triangle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
-
-    // Coral
-    AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
-    AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
-    // Alage
-    AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-    AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
+    level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
+    level2Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
+    level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
+    level3Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
+    level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
+    level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+    level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+    AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
+    AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
   }
 
   boolean getFastMode() {
