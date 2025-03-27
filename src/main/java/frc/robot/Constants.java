@@ -251,7 +251,7 @@ public final class Constants {
         new Translation2d(-kWheelBase / 2, kTrackWidth / 2) // Back right
     );
 
-    // TODO Using tall bot?
+    // TODO Which bot?
     public static final boolean tallBot = false;
     public static final boolean steve = true;
 
@@ -289,40 +289,45 @@ public final class Constants {
                                                                                 // kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
-    public static final int kFrontRightDrivingCanId = 11;
+    public static final int kFrontRightDrivingCanId = steve ? 11 : 31;
+    public static final int kFrontRightTurningCanId = steve ? 12 : 32;
+    public static final int kFrontRightEncoderCanId = steve ? 13 : 33;
+
     public static final int kFrontLeftDrivingCanId = 21;
-    public static final int kRearLeftDrivingCanId = 31;
-    public static final int kRearRightDrivingCanId = 41;
-
-    public static final int kFrontRightTurningCanId = 12;
     public static final int kFrontLeftTurningCanId = 22;
-    public static final int kRearLeftTurningCanId = 32;
-    public static final int kRearRightTurningCanId = 42;
-
-    public static final int kFrontRightEncoderCanId = 13;
     public static final int kFrontLeftEncoderCanId = 23;
-    public static final int kRearLeftEncoderCanId = 33;
+
+    public static final int kRearLeftDrivingCanId = steve ? 31 : 11;
+    public static final int kRearLeftTurningCanId = steve ? 32 : 12;
+    public static final int kRearLeftEncoderCanId = steve ? 33 : 13;
+
+    public static final int kRearRightDrivingCanId = 41;
+    public static final int kRearRightTurningCanId = 42;
     public static final int kRearRightEncoderCanId = 43;
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean kGruReversed = false;
 
     // Reverse encoders if needed; note that this will break everything if you don't
     // go through and fix everything afterward
     public static final boolean kFrontLeftDriveEncoderReversed = false;
     public static final boolean kFrontLeftTurningEncoderReversed = false;
     public static final boolean kFrontLeftAbsoluteEncoderReversed = true;
+    public static final boolean kFrontLeftDrivingReversed = false;
 
-    public static final boolean kFrontRightDriveEncoderReversed = true;
+    public static final boolean kFrontRightDriveEncoderReversed = !steve; // This encoder is reversed only on the steve bot.
     public static final boolean kFrontRightTurningEncoderReversed = false;
     public static final boolean kFrontRightAbsoluteEncoderReversed = true;
+    public static final boolean kFrontRightDrivingReversed = true;
 
     public static final boolean kBackLeftDriveEncoderReversed = false;
     public static final boolean kBackLeftTurningEncoderReversed = false;
     public static final boolean kBackLeftAbsoluteEncoderReversed = true;
+    public static final boolean kBackLeftDrivingReversed = false;
 
     public static final boolean kBackRightDriveEncoderReversed = false;
     public static final boolean kBackRightTurningEncoderReversed = false;
     public static final boolean kBackRightAbsoluteEncoderReversed = true;
+    public static final boolean kBackRightDrivingReversed = false;
 
     public static final long kBootupDelay = 1000; // milliseconds of delay to allow the navx to start up
 
@@ -338,6 +343,16 @@ public final class Constants {
     public static final double kFastTeleMaxMetersPerSec = 1.0;
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.8;
+
+    // Limelight Automation
+    public static final double kAutoSpeedLimit = 2;
+    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+    public static final double kAutoTranslationalP = 3;
+    public static final double kAutoTranslationalI = 0;
+    public static final double kAutoTranslationalD = 0;
+    public static final double kAutoRotationalP = 1;
+    public static final double kAutoRotationalI = 0;
+    public static final double kAutoRotationalD = 0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
@@ -362,9 +377,6 @@ public final class Constants {
     public static final double kElevatorP = 1.0;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
-    // Limelight Automation
-    public static final double kAutoSpeedLimit = 2;
-    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }

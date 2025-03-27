@@ -18,11 +18,13 @@ import frc.robot.commands.AlgaeCommand;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LimelightPathCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TestModuleCommand;
 import frc.robot.commands.TestOdometry;
-import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.commands.TurnToThetaCommand;
+import frc.robot.commands.ZeroHeadingCommand;
+import frc.robot.commands.SnapToThetaCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -226,8 +228,6 @@ private final Command m_rightLevel4Command = Commands.parallel(
     level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
     AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
     AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
-
-
 
     m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
     m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));

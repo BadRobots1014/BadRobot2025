@@ -14,5 +14,6 @@ public class ZeroHeadingCommand extends Command {
   @Override
   public void execute() {
     m_subsystem.resetPose();
+    m_subsystem.resetOdometry();
   }
 }
