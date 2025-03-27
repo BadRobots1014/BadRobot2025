@@ -31,111 +31,109 @@ public final class Constants {
   public final class BlinkinConstants {
     public final static int kBlinkinPort = 0;
     public static final HashMap<String, Double> colorCode = new HashMap<>(
-      Map.ofEntries(
-        Map.entry("rainbow-rainbow", -0.99d),
-        Map.entry("rainbow-party", -0.97d),
-        Map.entry("rainbow-ocean", -0.95d),
-        Map.entry("rainbow-lava", -0.93d),
-        Map.entry("rainbow-forest", -0.91d),
-        Map.entry("rainbow-glitter", -0.89d),
-        Map.entry("confetti", -0.87d),
-        Map.entry("shot-red", -0.85d),
-        Map.entry("shot-blue", -0.83d),
-        Map.entry("shot-white", -0.81d),
-        Map.entry("sinelon-rainbow", -0.79d),
-        Map.entry("sinelon-party", -0.77d),
-        Map.entry("sinelon-ocean", -0.75d),
-        Map.entry("sinelon-lava", -0.73d),
-        Map.entry("sinelon-forest", -0.71d),
-        Map.entry("bpm-rainbow", -0.69d),
-        Map.entry("bpm-party", -0.67d),
-        Map.entry("bpm-ocean", -0.65d),
-        Map.entry("bpm-lava", -0.63d),
-        Map.entry("bpm-forest", -0.61d),
-        Map.entry("fire-medium", -0.59d),
-        Map.entry("fire-large", -0.57d),
-        Map.entry("twinkles-rainbow", -0.55d),
-        Map.entry("twinkles-party", -0.53d),
-        Map.entry("twinkles-ocean", -0.51d),
-        Map.entry("twinkles-lava", -0.49d),
-        Map.entry("twinkles-forest", -0.47d),
-        Map.entry("waves-rainbow", -0.45d),
-        Map.entry("waves-party", -0.43d),
-        Map.entry("waves-ocean", -0.41d),
-        Map.entry("waves-lava", -0.39d),
-        Map.entry("waves-forest", -0.37d),
-        Map.entry("scanner-red", -0.35d),
-        Map.entry("scanner-gray", -0.33d),
-        Map.entry("chase-red", -0.31d),
-        Map.entry("chase-blue", -0.29d),
-        Map.entry("chase-gray", -0.27d),
-        Map.entry("heartbeat-red", -0.25d),
-        Map.entry("heartbeat-blue", -0.23d),
-        Map.entry("heartbeat-white", -0.21d),
-        Map.entry("heartbeat-gray", -0.19d),
-        Map.entry("breath-red", -0.17d),
-        Map.entry("breath-blue", -0.15d),
-        Map.entry("breath-gray", -0.13d),
-        Map.entry("strobe-red", -0.11d),
-        Map.entry("strobe-blue", -0.09d),
-        Map.entry("strobe-gold", -0.07d),
-        Map.entry("strobe-white", -0.05d),
-        Map.entry("blend-color1", -0.03d),
-        Map.entry("scanner-color1", -0.01d),
-        Map.entry("chase-color1", 0.01d),
-        Map.entry("heartbeat-color1-slow", 0.03d),
-        Map.entry("heartbeat-color1-medium", 0.05d),
-        Map.entry("heartbeat-color1-fast", 0.07d),
-        Map.entry("breath-color1-slow", 0.09d),
-        Map.entry("breath-color1-fast", 0.11d),
-        Map.entry("shot-color1", 0.13d),
-        Map.entry("strobe-color1", 0.15d),
-        Map.entry("blend-color2", 0.17d),
-        Map.entry("scanner-color2", 0.19d),
-        Map.entry("chase-color2", 0.21d),
-        Map.entry("heartbeat-color2-slow", 0.23d),
-        Map.entry("heartbeat-color2-medium", 0.25d),
-        Map.entry("heartbeat-color2-fast", 0.27d),
-        Map.entry("breath-color2-slow", 0.29d),
-        Map.entry("breath-color2-fast", 0.31d),
-        Map.entry("shot-color2", 0.33d),
-        Map.entry("strobe-color2", 0.35d),
-        Map.entry("sparkle-1on2", 0.37d),
-        Map.entry("sparkle-2on1", 0.39d),
-        Map.entry("gradient-1on2", 0.41d),
-        Map.entry("bpm-1and2", 0.43d),
-        Map.entry("blend-1to2", 0.45d),
-        Map.entry("blend-2to1", 0.47d),
-        Map.entry("setup-1and2", 0.49d),
-        Map.entry("twinkles-1and2", 0.51d),
-        Map.entry("waves-1and2", 0.53d),
-        Map.entry("sinelon-1and2", 0.55d),
-        Map.entry("solid-hotpink", 0.57d),
-        Map.entry("solid-darkred", 0.59d),
-        Map.entry("solid-red", 0.61d),
-        Map.entry("solid-redorange", 0.63d),
-        Map.entry("solid-orange", 0.65d),
-        Map.entry("solid-gold", 0.67d),
-        Map.entry("solid-yellow", 0.69d),
-        Map.entry("solid-lawngreen", 0.71d),
-        Map.entry("solid-lime", 0.73d),
-        Map.entry("solid-darkgreen", 0.75d),
-        Map.entry("solid-green", 0.77d),
-        Map.entry("solid-bluegreen", 0.79d),
-        Map.entry("solid-aqua", 0.81d),
-        Map.entry("solid-skyblue", 0.83d),
-        Map.entry("solid-darkblue", 0.85d),
-        Map.entry("solid-blue", 0.87d),
-        Map.entry("solid-blueviolet", 0.89d),
-        Map.entry("solid-violet", 0.91d),
-        Map.entry("solid-white", 0.93d),
-        Map.entry("solid-gray", 0.95d),
-        Map.entry("solid-darkgray", 0.97d),
-        Map.entry("solid-black", 0.99d)
-      )
-    );
+        Map.ofEntries(
+            Map.entry("rainbow-rainbow", -0.99d),
+            Map.entry("rainbow-party", -0.97d),
+            Map.entry("rainbow-ocean", -0.95d),
+            Map.entry("rainbow-lava", -0.93d),
+            Map.entry("rainbow-forest", -0.91d),
+            Map.entry("rainbow-glitter", -0.89d),
+            Map.entry("confetti", -0.87d),
+            Map.entry("shot-red", -0.85d),
+            Map.entry("shot-blue", -0.83d),
+            Map.entry("shot-white", -0.81d),
+            Map.entry("sinelon-rainbow", -0.79d),
+            Map.entry("sinelon-party", -0.77d),
+            Map.entry("sinelon-ocean", -0.75d),
+            Map.entry("sinelon-lava", -0.73d),
+            Map.entry("sinelon-forest", -0.71d),
+            Map.entry("bpm-rainbow", -0.69d),
+            Map.entry("bpm-party", -0.67d),
+            Map.entry("bpm-ocean", -0.65d),
+            Map.entry("bpm-lava", -0.63d),
+            Map.entry("bpm-forest", -0.61d),
+            Map.entry("fire-medium", -0.59d),
+            Map.entry("fire-large", -0.57d),
+            Map.entry("twinkles-rainbow", -0.55d),
+            Map.entry("twinkles-party", -0.53d),
+            Map.entry("twinkles-ocean", -0.51d),
+            Map.entry("twinkles-lava", -0.49d),
+            Map.entry("twinkles-forest", -0.47d),
+            Map.entry("waves-rainbow", -0.45d),
+            Map.entry("waves-party", -0.43d),
+            Map.entry("waves-ocean", -0.41d),
+            Map.entry("waves-lava", -0.39d),
+            Map.entry("waves-forest", -0.37d),
+            Map.entry("scanner-red", -0.35d),
+            Map.entry("scanner-gray", -0.33d),
+            Map.entry("chase-red", -0.31d),
+            Map.entry("chase-blue", -0.29d),
+            Map.entry("chase-gray", -0.27d),
+            Map.entry("heartbeat-red", -0.25d),
+            Map.entry("heartbeat-blue", -0.23d),
+            Map.entry("heartbeat-white", -0.21d),
+            Map.entry("heartbeat-gray", -0.19d),
+            Map.entry("breath-red", -0.17d),
+            Map.entry("breath-blue", -0.15d),
+            Map.entry("breath-gray", -0.13d),
+            Map.entry("strobe-red", -0.11d),
+            Map.entry("strobe-blue", -0.09d),
+            Map.entry("strobe-gold", -0.07d),
+            Map.entry("strobe-white", -0.05d),
+            Map.entry("blend-color1", -0.03d),
+            Map.entry("scanner-color1", -0.01d),
+            Map.entry("chase-color1", 0.01d),
+            Map.entry("heartbeat-color1-slow", 0.03d),
+            Map.entry("heartbeat-color1-medium", 0.05d),
+            Map.entry("heartbeat-color1-fast", 0.07d),
+            Map.entry("breath-color1-slow", 0.09d),
+            Map.entry("breath-color1-fast", 0.11d),
+            Map.entry("shot-color1", 0.13d),
+            Map.entry("strobe-color1", 0.15d),
+            Map.entry("blend-color2", 0.17d),
+            Map.entry("scanner-color2", 0.19d),
+            Map.entry("chase-color2", 0.21d),
+            Map.entry("heartbeat-color2-slow", 0.23d),
+            Map.entry("heartbeat-color2-medium", 0.25d),
+            Map.entry("heartbeat-color2-fast", 0.27d),
+            Map.entry("breath-color2-slow", 0.29d),
+            Map.entry("breath-color2-fast", 0.31d),
+            Map.entry("shot-color2", 0.33d),
+            Map.entry("strobe-color2", 0.35d),
+            Map.entry("sparkle-1on2", 0.37d),
+            Map.entry("sparkle-2on1", 0.39d),
+            Map.entry("gradient-1on2", 0.41d),
+            Map.entry("bpm-1and2", 0.43d),
+            Map.entry("blend-1to2", 0.45d),
+            Map.entry("blend-2to1", 0.47d),
+            Map.entry("setup-1and2", 0.49d),
+            Map.entry("twinkles-1and2", 0.51d),
+            Map.entry("waves-1and2", 0.53d),
+            Map.entry("sinelon-1and2", 0.55d),
+            Map.entry("solid-hotpink", 0.57d),
+            Map.entry("solid-darkred", 0.59d),
+            Map.entry("solid-red", 0.61d),
+            Map.entry("solid-redorange", 0.63d),
+            Map.entry("solid-orange", 0.65d),
+            Map.entry("solid-gold", 0.67d),
+            Map.entry("solid-yellow", 0.69d),
+            Map.entry("solid-lawngreen", 0.71d),
+            Map.entry("solid-lime", 0.73d),
+            Map.entry("solid-darkgreen", 0.75d),
+            Map.entry("solid-green", 0.77d),
+            Map.entry("solid-bluegreen", 0.79d),
+            Map.entry("solid-aqua", 0.81d),
+            Map.entry("solid-skyblue", 0.83d),
+            Map.entry("solid-darkblue", 0.85d),
+            Map.entry("solid-blue", 0.87d),
+            Map.entry("solid-blueviolet", 0.89d),
+            Map.entry("solid-violet", 0.91d),
+            Map.entry("solid-white", 0.93d),
+            Map.entry("solid-gray", 0.95d),
+            Map.entry("solid-darkgray", 0.97d),
+            Map.entry("solid-black", 0.99d)));
     public final static double kBlinkinDefaultColorCode = colorCode.get("scanner-color1");
-  } 
+  }
 
   public static final class ModuleConstants {
 
@@ -158,6 +156,53 @@ public final class Constants {
     public static final int kSecondControllerPort = 1;
     public static final double kDriveDeadband = 0.02;
     public static final double kTriggerDeadband = 0.75;
+  }
+
+  public final class ControllerConstants {
+    public final static int kSecondControllerPortOne = 0;
+    public final static int kSecondControllerPortTwo = 1;
+
+    public final static int kSecondControllerOne = 0;
+    public final static int kSecondControllerTwo = 1;
+  }
+
+  public static final class CoralControllerConstants {
+    // Coral Levels
+    public final static int kLeftLevel1 = 1;
+    public final static int kRightLevel1 = 2;
+    public final static int kLeftLevel2 = 3;
+    public final static int kRightLevel2 = 4;
+    public final static int kLeftLevel3 = 5;
+    public final static int kRightLevel3 = 6;
+    public final static int kLeftLevel4 = 7;
+    public final static int kRightLevel4 = 8;
+
+    // Coral Side
+    public static final int directionLeft = -1;
+    public static final int directionRight = 1;
+  }
+
+  public static final class AuxControllerConstants {
+    // Uses Controller secondaryControllerOne
+    public final static int kLeftBottom = 1;
+    public final static int kRightBottom = 2;
+    public final static int kLeftLowerMid = 3;
+    public final static int kRightLowerMid = 4;
+    public final static int kLeftUpperMid = 5;
+    public final static int kRightUpperMid = 6;
+    public final static int kLeftTop = 7;
+    public final static int kRightTop = 8;
+  }
+
+  public static final class HexControllerConstants {
+    // Uses Controller 1
+    public final static int kTopLeft = 9;
+    public final static int kTop = 10;
+    public final static int kTopRight = 11;
+    // Uses controller 2
+    public final static int kBottomLeft = 9;
+    public final static int kBottom = 10;
+    public final static int kBottomRight = 11;
   }
 
   public static final class DriveConstants {
@@ -232,10 +277,14 @@ public final class Constants {
 
     // Angular offsets of the modules relative to the chassis in radians
 
-    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; //(steve ? kSteveFROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackRightChassisAngularOffset = kSteveBROffset; //(steve ? kSteveBROffset : tallBot ? kTallBROffset : kBROffset);
-    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ? kTallBLOffset : kBLOffset);
-    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ? kTallFLOffset : kFLOffset);
+    public static final double kFrontRightChassisAngularOffset = kSteveFROffset; // (steve ? kSteveFROffset : tallBot ?
+                                                                                 // kTallBROffset : kBROffset);
+    public static final double kBackRightChassisAngularOffset = kSteveBROffset; // (steve ? kSteveBROffset : tallBot ?
+                                                                                // kTallBROffset : kBROffset);
+    public static final double kBackLeftChassisAngularOffset = kSteveBLOffset; // (steve ? kSteveBLOffset : tallBot ?
+                                                                               // kTallBLOffset : kBLOffset);
+    public static final double kFrontLeftChassisAngularOffset = kSteveFLOffset; // (steve ? kSteveFLOffset : tallBot ?
+                                                                                // kTallFLOffset : kFLOffset);
 
     // SPARK MAX CAN IDs
     public static final int kFrontRightDrivingCanId = 11;
