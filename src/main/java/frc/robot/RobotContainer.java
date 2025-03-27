@@ -245,6 +245,13 @@ private final Command m_rightLevel4Command = Commands.parallel(
     AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
     AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
 
+    //Reef angle presets
+    HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexTop.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(180), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexTopRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(120), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
   }
 
   boolean getFastMode() {
