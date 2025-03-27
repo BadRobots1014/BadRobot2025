@@ -43,28 +43,76 @@ public class CoralSubsystem extends SubsystemBase {
     return coralMotor.getOutputCurrent();
   }
 
-  public void setMotorMode(CoralMode mode) {
-    if (mode == CoralMode.UP) {
-      // Up
-      if (coralMotor.getReverseLimitSwitch() == null) {
+  public void setMotor(Double speed, boolean limited) {
+    if (limited) {
+      if (coralMotor.getReverseLimitSwitch() != null) {
+        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+      }
+      coralMotor.set(speed);
+    }
+    else {
+      if (coralMotor.getReverseLimitSwitch() != null) {
+        coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+      }
+      coralMotor.set(speed);
+    }
+    // if (mode == CoralMode.UP) {
+    //   // Up
+    //   if (coralMotor.getReverseLimitSwitch() == null) {
+    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
+    // }
+    // else if (mode == CoralMode.DOWN) {
+    //   // Down
+    //   if (coralMotor.getReverseLimitSwitch() == null) {
+    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralDownSpeed);
+    // }
+    // else {
+    //   // Up without limit
+    //   if (coralMotor.getReverseLimitSwitch() != null) {
+    //     coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
+    // }
+  }
+
+  public void setMotorWithLimit(boolean up){
+    if (up) {
+      if (coralMotor.getReverseLimitSwitch() != null) {
         coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
       }
       coralMotor.set(CoralConstants.kCoralUpSpeed);
     }
-    else if (mode == CoralMode.DOWN) {
-      // Down
-      if (coralMotor.getReverseLimitSwitch() == null) {
+    else {
+      if (coralMotor.getReverseLimitSwitch() != null) {
         coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
       }
       coralMotor.set(CoralConstants.kCoralDownSpeed);
     }
-    else {
-      // Up without limit
-      if (coralMotor.getReverseLimitSwitch() != null) {
-        coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-      }
-      coralMotor.set(CoralConstants.kCoralUpSpeed);
-    }
+    // if (mode == CoralMode.UP) {
+    //   // Up
+    //   if (coralMotor.getReverseLimitSwitch() == null) {
+    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
+    // }
+    // else if (mode == CoralMode.DOWN) {
+    //   // Down
+    //   if (coralMotor.getReverseLimitSwitch() == null) {
+    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralDownSpeed);
+    // }
+    // else {
+    //   // Up without limit
+    //   if (coralMotor.getReverseLimitSwitch() != null) {
+    //     coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
+    //   }
+    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
+    // }
   }
 
   // Stops the motor

@@ -159,11 +159,8 @@ public final class Constants {
   }
 
   public final class ControllerConstants {
-    public final static int kSecondControllerPortOne = 0;
-    public final static int kSecondControllerPortTwo = 1;
-
-    public final static int kSecondControllerOne = 0;
-    public final static int kSecondControllerTwo = 1;
+    public final static int kSecondControllerPortOne = 1;
+    public final static int kSecondControllerPortTwo = 2;
   }
 
   public static final class CoralControllerConstants {
@@ -275,6 +272,11 @@ public final class Constants {
     public static final double kSteveFROffset = .480713 * Math.PI * 2;
     public static final double kSteveBROffset = -.250997 * Math.PI * 2;
 
+    // public static final double kSteveBLOffset = .017822 * Math.PI * 2;
+    // public static final double kSteveFLOffset = .072998 * Math.PI * 2;
+    // public static final double kSteveFROffset = -.004639 * Math.PI * 2;
+    // public static final double kSteveBROffset = .242188 * Math.PI * 2;
+
     // Angular offsets of the modules relative to the chassis in radians
 
     public static final double kFrontRightChassisAngularOffset = kSteveFROffset; // (steve ? kSteveFROffset : tallBot ?
@@ -345,7 +347,7 @@ public final class Constants {
     public static final int kRightElevatorCanId = 59;
     public static final int kEncoderCanId = 60;
 
-    public static final double kElevatorUpPower = .2;
+    public static final double kElevatorUpPower = .3;
     public static final double kElevatorDownPower = -.2;
     public static final int kElevatorMaxAmps = 140;
 
@@ -368,8 +370,8 @@ public final class Constants {
   }
 
   public static final class CoralConstants {
-    public static final double kCoralUpSpeed = .2;
-    public static final double kCoralDownSpeed = -.2;
+    public static final double kCoralUpSpeed = .3;
+    public static final double kCoralDownSpeed = -.3;
 
     public static final double kCoralDurationSeconds = 1;
     public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout

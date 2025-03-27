@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -12,6 +13,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +25,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final SparkMax leftElevator;
   private final SparkMax rightElevator;
-  private final SparkMax fakeMotor;
+  private final SparkMax throughBore;
   private final AbsoluteEncoder encoder;
 
   private ShuffleboardTab m_tab;
@@ -32,8 +34,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   public ElevatorSubsystem() {
     leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
-    fakeMotor = new SparkMax(ElevatorConstants.kEncoderCanId, MotorType.kBrushless);
-    encoder = fakeMotor.getAbsoluteEncoder();
+    throughBore = new SparkMax(ElevatorConstants.kEncoderCanId, MotorType.kBrushless);
+    encoder = throughBore.getAbsoluteEncoder();
 
     SparkMaxConfig rightElevatorConfig = new SparkMaxConfig();
     SparkMaxConfig leftElevatorConfig = new SparkMaxConfig();
@@ -60,7 +62,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double getElevatorEncoder()
   {
-    return encoder.getPosition();
+    double pos = encoder.getPosition();
+    // System.out.println("Elevator pos: "+ pos);
+    return pos;
   }
 
   /**

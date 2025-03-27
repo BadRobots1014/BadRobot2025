@@ -68,7 +68,13 @@ public class ElevatorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalLevelSupplier.get()));
+    if (goalLevelSupplier != null)
+      m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalLevelSupplier.get()));
+    else
+    {
+      m_subsystem.runElevator(goalSpeedSupplier.get());
+
+    }
   }
 
   // Called once the command ends or is interrupted.

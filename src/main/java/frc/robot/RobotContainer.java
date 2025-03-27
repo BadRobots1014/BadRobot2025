@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.AuxControllerConstants;
 import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.Constants.CoralControllerConstants;
 import frc.robot.Constants.DriveConstants;
@@ -116,6 +117,8 @@ private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem()
 private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
+private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+
 
 private final Command m_leftLevel1Command = Commands.parallel(
     new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
@@ -181,8 +184,6 @@ private final Command m_rightLevel4Command = Commands.parallel(
     // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
     // }));
 
-    m_elevatorSubsystem.setDefaultCommand(new ElevatorCommand(m_elevatorSubsystem, this::getRightY, true));
-
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -225,21 +226,40 @@ private final Command m_rightLevel4Command = Commands.parallel(
     level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
     AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
     AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
+
+
+
+    m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+
+    new Trigger(() -> m_driverController.getL2Axis() > OIConstants.kTriggerDeadband)
+      .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> m_driverController.getHID().getSquareButton()));
+    new Trigger(() -> m_driverController.getR2Axis() > OIConstants.kTriggerDeadband)
+      .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> m_driverController.getHID().getSquareButton()));
+
+    AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
+    AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
+
+    m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
+    m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+    AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
+    AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+
   }
 
   boolean getFastMode() {
-    if (m_driverController.getHID().getL1Button()) {
-      fastMode = !fastMode;
-    }
-    return fastMode;
+    // if (m_driverController.getHID().getL1Button()) {
+    //   fastMode = !fastMode;
+    // }
+    return true;
   }
 
   boolean getFasterMode() {
-    if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
-      fasterMode = true;
-    } else
-      fasterMode = false;
-    return fasterMode;
+    // if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
+    //   fasterMode = true;
+    // } else
+    //   fasterMode = false;
+    return true;
   }
 
   double getRightX() {

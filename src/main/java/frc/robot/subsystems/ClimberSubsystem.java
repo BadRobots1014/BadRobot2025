@@ -29,6 +29,7 @@ public class ClimberSubsystem extends SubsystemBase {
     SparkMaxConfig config = new SparkMaxConfig();
 
     config.idleMode(IdleMode.kBrake);
+    config.smartCurrentLimit(40);
 
     //leftClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     //rightClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
