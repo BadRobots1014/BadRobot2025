@@ -25,8 +25,6 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private final SparkMax leftElevator;
   private final SparkMax rightElevator;
-  private final SparkMax throughBore;
-  private final AbsoluteEncoder encoder;
 
   private ShuffleboardTab m_tab;
 
@@ -34,8 +32,6 @@ public class ElevatorSubsystem extends SubsystemBase {
   public ElevatorSubsystem() {
     leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
-    throughBore = new SparkMax(ElevatorConstants.kEncoderCanId, MotorType.kBrushless);
-    encoder = throughBore.getAbsoluteEncoder();
 
     SparkMaxConfig rightElevatorConfig = new SparkMaxConfig();
     SparkMaxConfig leftElevatorConfig = new SparkMaxConfig();
@@ -62,9 +58,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public double getElevatorEncoder()
   {
-    double pos = encoder.getPosition();
+    //double pos = encoder.getPosition();
     // System.out.println("Elevator pos: "+ pos);
-    return pos;
+    return 0d;
   }
 
   /**

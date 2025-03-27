@@ -360,7 +360,6 @@ public final class Constants {
   public static final class ElevatorConstants {
     public static final int kLeftElevatorCanId = 58;
     public static final int kRightElevatorCanId = 59;
-    public static final int kEncoderCanId = 60;
 
     public static final double kElevatorUpPower = .3;
     public static final double kElevatorDownPower = -.2;
