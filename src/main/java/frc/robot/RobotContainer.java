@@ -196,6 +196,13 @@ public class RobotContainer {
     m_driverController.square().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
     m_driverController.circle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
     m_driverController.triangle().whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
+
+    // Coral
+    AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.UP));
+    AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralMode.DOWN));
+    // Alage
+    AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+    AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
   }
 
   boolean getFastMode() {
