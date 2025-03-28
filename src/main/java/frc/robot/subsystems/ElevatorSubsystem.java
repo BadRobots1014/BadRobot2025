@@ -50,6 +50,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     m_tab = Shuffleboard.getTab("Elevator");
     m_tab.addNumber("Encoder", this::getElevatorEncoder);
+    m_tab.addBoolean("Bottom limit", this::getReverseLimitSwitch);
+    m_tab.addBoolean("Top Limit", this::getForwardLimitSwitch);
   }
 
   // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope
@@ -80,6 +82,14 @@ public class ElevatorSubsystem extends SubsystemBase {
   // Stops the climber motors
   public void stopElevator() {
     leftElevator.stopMotor();
+  }
+
+  public boolean getReverseLimitSwitch() {
+    return leftElevator.getReverseLimitSwitch().isPressed();
+  }
+
+  public boolean getForwardLimitSwitch() {
+    return leftElevator.getForwardLimitSwitch().isPressed();
   }
 
   /*

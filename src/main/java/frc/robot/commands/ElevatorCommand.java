@@ -53,7 +53,6 @@ public class ElevatorCommand extends Command {
     m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
 
     // Ensures that the runElevator and stopElevator functions are present
-    addRequirements(elevatorsubsystem);
 
     System.out.println("Elevator Command configured (womp womp)");
 
@@ -74,7 +73,7 @@ public class ElevatorCommand extends Command {
       }
     else {
       m_subsystem.runElevator(goalSpeedSupplier.get());
-
+      System.out.print("aaaaaaaaaaaaaaa");
     }
   }
 

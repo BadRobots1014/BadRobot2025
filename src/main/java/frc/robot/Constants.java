@@ -374,7 +374,7 @@ public final class Constants {
     public static final double kLvlAlgaeOnePos = 359.0;
     public static final double kLvlAlgaeTwoPos = 359.0;
 
-    public static final double kElevatorP = 0.02;
+    public static final double kElevatorP = 0.005;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
 
