@@ -69,9 +69,10 @@ public class ElevatorCommand extends Command {
   @Override
   public void execute() {
     if (goalLevelSupplier != null)
-      m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalLevelSupplier.get()));
-    else
-    {
+      if (Math.abs(goalLevelSupplier.get() - m_subsystem.getElevatorEncoder()) >= 0.1) {
+        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalLevelSupplier.get()));
+      }
+    else {
       m_subsystem.runElevator(goalSpeedSupplier.get());
 
     }

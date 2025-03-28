@@ -157,115 +157,117 @@ private final Command m_rightLevel4Command = Commands.parallel(
 
   private final SendableChooser<Command> autoChooser;
 
-  boolean fastMode = false, fasterMode = false;
-
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
-  public RobotContainer() {
-    this.blinkinSubsystem = new BlinkinSubsystem();
-
-    this.redBlinkinCommand = new BlinkinCommand(blinkinSubsystem, .61);
-
-    // Configure the trigger bindings
-    m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> getLeftY(),
-        () -> getLeftX(),
-        () -> getRightX(),
-        DriveConstants.kFieldOriented,
-        this::getFastMode,
-        this::getFasterMode,
-        this::getPOV,
-        () -> 0d,
-        () -> 0d));
-    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
-    // new SwerveModuleState[] {
-    // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
-    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
-    // }));
-
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    // Start Elastic Server
-    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
-
-    // Another option that allows you to specify the default auto by its name
-    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
-    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
-
-    configureBindings();
-  }
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be
-   * created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-   * an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-   * {@link
-   * CommandXboxController
-   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or
-   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-    level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-    level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-    level2Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-    level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-    level3Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-    level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-    level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-    level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-    AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
-    AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
-
-    m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
-    m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-
-    new Trigger(() -> m_driverController.getL2Axis() > OIConstants.kTriggerDeadband)
-      .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> m_driverController.getHID().getSquareButton()));
-    new Trigger(() -> m_driverController.getR2Axis() > OIConstants.kTriggerDeadband)
-      .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> m_driverController.getHID().getSquareButton()));
-
-    AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
-    AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
-
-    m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-    m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
-    AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-    AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
-
-    //Reef angle presets
-    HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    HexTop.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(180), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    HexTopRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(120), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-  }
-
-  boolean getFastMode() {
-    // if (m_driverController.getHID().getL1Button()) {
-    //   fastMode = !fastMode;
-    // }
-    return true;
+  boolean fastMode = true, fasterMode = false, toggled = false;
+  
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
+    public RobotContainer() {
+      this.blinkinSubsystem = new BlinkinSubsystem();
+  
+      this.redBlinkinCommand = new BlinkinCommand(blinkinSubsystem, .61);
+  
+      // Configure the trigger bindings
+      m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+          () -> getLeftY(),
+          () -> getLeftX(),
+          () -> getRightX(),
+          DriveConstants.kFieldOriented,
+          this::getFastMode,
+          this::getFasterMode,
+          this::getPOV,
+          () -> 0d,
+          () -> 0d));
+      // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
+      // new SwerveModuleState[] {
+      // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+      // }));
+  
+      // Build an auto chooser. This will use Commands.none() as the default option.
+      autoChooser = AutoBuilder.buildAutoChooser();
+  
+      // Start Elastic Server
+      WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+  
+      // Another option that allows you to specify the default auto by its name
+      // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+  
+      SmartDashboard.putData("Auto Chooser", autoChooser);
+      SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
+      SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
+  
+      configureBindings();
+    }
+  
+    /**
+     * Use this method to define your trigger->command mappings. Triggers can be
+     * created via the
+     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+     * an arbitrary
+     * predicate, or via the named factories in {@link
+     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+     * {@link
+     * CommandXboxController
+     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+     * PS4} controllers or
+     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+     * joysticks}.
+     */
+    private void configureBindings() {
+      m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+      level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
+      level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
+      level2Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
+      level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
+      level3Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
+      level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
+      level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+      level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+      AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
+      AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
+  
+      m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+      m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+  
+      new Trigger(() -> m_driverController.getL2Axis() > OIConstants.kTriggerDeadband)
+        .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> m_driverController.getHID().getSquareButton()));
+      new Trigger(() -> m_driverController.getR2Axis() > OIConstants.kTriggerDeadband)
+        .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> m_driverController.getHID().getSquareButton()));
+  
+      AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
+      AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
+  
+      m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
+      m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+      AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
+      AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+  
+      //Reef angle presets
+      HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+      HexTop.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(180), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+      HexTopRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(120), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+      HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+      HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+      HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    }
+  
+    boolean getFastMode() {
+      if (m_driverController.share().getAsBoolean() && !toggled) {
+        toggled = true;
+      fastMode = !fastMode;
+    }
+    else if (!m_driverController.share().getAsBoolean() && toggled) {
+      toggled = false;
+    }
+    return fastMode;
   }
 
   boolean getFasterMode() {
-    // if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) {
-    //   fasterMode = true;
-    // } else
-    //   fasterMode = false;
+    if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) fasterMode = true;
+    else fasterMode = false;
     return true;
   }
 
