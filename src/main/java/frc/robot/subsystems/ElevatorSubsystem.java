@@ -29,7 +29,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax rightElevator;
   private final AbsoluteEncoder encoder;
 
-  private double goalpos = 1;
+  private double goalpos = 0;
 
   private ShuffleboardTab m_tab;
 
