@@ -281,11 +281,11 @@ private final Command m_rightLevel4Command = Commands.parallel(
   }
 
   double getLeftX() {
-    return m_driverController.getLeftX();
+    return Math.cbrt(m_driverController.getLeftX());
   }
 
   double getLeftY() {
-    return -m_driverController.getLeftY();
+    return -Math.cbrt(m_driverController.getLeftY());
   }
 
   double getPOV() {
