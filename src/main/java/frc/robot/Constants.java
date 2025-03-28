@@ -366,10 +366,10 @@ public final class Constants {
     public static final double kElevatorDownPower = -.2;
     public static final int kElevatorMaxAmps = 140;
 
-    public static final double kLvlOnePos = 90.0;
-    public static final double kLvlTwoPos = 180.0;
-    public static final double kLvlThreePos = 270.0;
-    public static final double kLvlFourPos = 359.0;
+    public static final double kLvlOnePos = 0;
+    public static final double kLvlTwoPos = 1;
+    public static final double kLvlThreePos = 2;
+    public static final double kLvlFourPos = 3;
 
     public static final double kLvlAlgaeOnePos = 359.0;
     public static final double kLvlAlgaeTwoPos = 359.0;

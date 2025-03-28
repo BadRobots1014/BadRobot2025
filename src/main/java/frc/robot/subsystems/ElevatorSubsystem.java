@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkMaxAlternateEncoder;
@@ -27,6 +28,7 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax leftElevator;
   private final SparkMax rightElevator;
   private final AbsoluteEncoder encoder;
+  private final RelativeEncoder relativeEncoder;
 
   private ShuffleboardTab m_tab;
 
@@ -35,6 +37,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevator = new SparkMax(ElevatorConstants.kLeftElevatorCanId, MotorType.kBrushless);
     rightElevator = new SparkMax(ElevatorConstants.kRightElevatorCanId, MotorType.kBrushless);
     encoder = leftElevator.getAbsoluteEncoder();
+    relativeEncoder = leftElevator.getEncoder();
 
     SparkMaxConfig rightElevatorConfig = new SparkMaxConfig();
     SparkMaxConfig leftElevatorConfig = new SparkMaxConfig();
@@ -66,6 +69,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     double pos = encoder.getPosition();
     // System.out.println("Elevator pos: "+ pos);
     return pos;
+  }
+
+  public double getRelativeEncoder() {
+    return relativeEncoder.getPosition();
   }
 
   /**
