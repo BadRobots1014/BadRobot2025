@@ -241,10 +241,10 @@ private final Command m_rightLevel4Command = Commands.parallel(
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
   
-      m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-      m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
-      AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-      AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+      m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower));
+      m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower));
+      AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower));
+      AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower));
   
       //Reef angle presets
       HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
@@ -281,11 +281,11 @@ private final Command m_rightLevel4Command = Commands.parallel(
   }
 
   double getLeftX() {
-    return m_driverController.getLeftX();
+    return Math.cbrt(m_driverController.getLeftX());
   }
 
   double getLeftY() {
-    return -m_driverController.getLeftY();
+    return -Math.cbrt(m_driverController.getLeftY());
   }
 
   double getPOV() {

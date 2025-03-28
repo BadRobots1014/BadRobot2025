@@ -378,6 +378,10 @@ public final class Constants {
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
 
+    public static final double kControllerMultiplier = .01;
+    public static final int kMaxEncoderBeforeReset = 1;
+    public static final double kMaxThresholdForResetPercent = .99;
+
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
 

@@ -18,8 +18,7 @@ public class ElevatorCommand extends Command {
 
   private final ElevatorSubsystem m_subsystem;
   private final Supplier<Double> goalLevelSupplier;
-  private final Supplier<Double> goalSpeedSupplier;
-  private PIDController m_pidController;
+  private final Supplier<Integer> controllerSupplier;
   
   /**
    * @param elevatorsubsystem The subsystem referenced in this command
@@ -29,12 +28,7 @@ public class ElevatorCommand extends Command {
   public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, Supplier<Double> targetLevel) {
     m_subsystem = elevatorsubsystem;
     goalLevelSupplier = targetLevel;
-    goalSpeedSupplier = null;
-
-    // Uses the same PID controller so they should be synched. Change variables in
-    // Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI,
-        ElevatorConstants.kElevatorP);
+    controllerSupplier = null;
 
     // Ensures that the runElevator and stopElevator functions are present
     addRequirements(elevatorsubsystem);
@@ -43,19 +37,12 @@ public class ElevatorCommand extends Command {
 
   }
 
-  public ElevatorCommand(ElevatorSubsystem elevatorsubsystem, Supplier<Double> speed, boolean eh) {
-    m_subsystem = elevatorsubsystem;
-    goalSpeedSupplier = speed;
+  public ElevatorCommand(ElevatorSubsystem elevatorSubsystem, Supplier<Integer> move, boolean bruh) {
+    m_subsystem = elevatorSubsystem;
     goalLevelSupplier = null;
+    controllerSupplier = move;
 
-    // Uses the same PID controller so they should be synched. Change variables in
-    // Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
-
-    // Ensures that the runElevator and stopElevator functions are present
-
-    System.out.println("Elevator Command configured (womp womp)");
-
+    addRequirements(elevatorSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -67,14 +54,11 @@ public class ElevatorCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (goalLevelSupplier != null) {
-      if (Math.abs(goalLevelSupplier.get() - m_subsystem.getElevatorEncoder()) >= 0.1) {
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getElevatorEncoder(), goalLevelSupplier.get()));
-      }
+    if (goalLevelSupplier == null) {
+      m_subsystem.moveElevator(controllerSupplier.get());
     }
     else {
-      m_subsystem.runElevator(goalSpeedSupplier.get());
-      System.out.print("aaaaaaaaaaaaaaa");
+      m_subsystem.moveElevator(goalLevelSupplier.get());
     }
   }
 
