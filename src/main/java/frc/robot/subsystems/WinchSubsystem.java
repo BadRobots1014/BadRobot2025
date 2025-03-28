@@ -42,7 +42,7 @@ public class WinchSubsystem extends SubsystemBase {
    * @param power The power in AMPs to run the climber at
    */
   public void runWinch(double power) {
-    winch.set(power);
+    winch.set(-power);
   }
 
   // Stops the climber motors

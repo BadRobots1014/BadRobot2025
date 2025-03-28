@@ -236,7 +236,7 @@ private final Command m_rightLevel4Command = Commands.parallel(
   
       m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
       AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       
       m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
