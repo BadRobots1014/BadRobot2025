@@ -14,6 +14,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.WinchConstants;
 import frc.robot.commands.AlgaeCommand;
 import frc.robot.commands.AlignToTargetCommand;
 import frc.robot.commands.Autos;
@@ -23,12 +24,14 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TestModuleCommand;
 import frc.robot.commands.TestOdometry;
 import frc.robot.commands.TurnToThetaCommand;
+import frc.robot.commands.WinchCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.commands.SnapToThetaCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ElevatorCommand;
 import frc.robot.util.Elastic;
@@ -120,6 +123,8 @@ private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
 private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
 private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
 private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
+
 
 
 private final Command m_leftLevel1Command = Commands.parallel(
@@ -228,8 +233,9 @@ private final Command m_rightLevel4Command = Commands.parallel(
     level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
     level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
     level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-    AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos));
-    AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos));
+    
+    AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+    AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
 
     m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
     m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
