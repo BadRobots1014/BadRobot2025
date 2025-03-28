@@ -232,7 +232,7 @@ private final Command m_rightLevel4Command = Commands.parallel(
       level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
       level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
       AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
-      AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
+      AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
   
       m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));

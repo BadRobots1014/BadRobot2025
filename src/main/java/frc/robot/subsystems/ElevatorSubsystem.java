@@ -55,6 +55,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_tab.addNumber("Encoder", this::getElevatorEncoder);
     m_tab.addBoolean("Bottom limit", this::getReverseLimitSwitch);
     m_tab.addBoolean("Top Limit", this::getForwardLimitSwitch);
+    m_tab.addNumber("Relative Encoder", this::getRelativeEncoder);
   }
 
   // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope

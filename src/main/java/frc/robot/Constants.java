@@ -417,6 +417,6 @@ public final class Constants {
   public static final class WinchConstants {
     public static final int kWinchCanId = 55;
     public static final double kWinchUpPower = 1;
-    public static final double kWinchDownPower = 1;
+    public static final double kWinchDownPower = -1;
   }
 }
