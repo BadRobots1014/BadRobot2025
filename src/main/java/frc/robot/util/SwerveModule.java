@@ -80,6 +80,8 @@ public class SwerveModule {
     turningConfig.idleMode(IdleMode.kBrake);
     turningConfig.smartCurrentLimit(40);
 
+    driveConfig.openLoopRampRate(ModuleConstants.kRampRate);
+
 
     // relative encoder setup
     driveConfig.encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
