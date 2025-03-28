@@ -30,6 +30,9 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final AbsoluteEncoder encoder;
   private final RelativeEncoder relativeEncoder;
 
+  private int rollover = 0;
+  private double lastPos;
+
   private ShuffleboardTab m_tab;
 
   // Creates Left/Right climber objects and configures them
@@ -56,6 +59,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     m_tab.addBoolean("Bottom limit", this::getReverseLimitSwitch);
     m_tab.addBoolean("Top Limit", this::getForwardLimitSwitch);
     m_tab.addNumber("Relative Encoder", this::getRelativeEncoder);
+
+    resetRollover();
   }
 
   // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope
@@ -68,12 +73,26 @@ public class ElevatorSubsystem extends SubsystemBase {
   public double getElevatorEncoder()
   {
     double pos = encoder.getPosition();
-    // System.out.println("Elevator pos: "+ pos);
+    if (pos > 0.75 && lastPos < 0.25) {
+      rollover++;
+    }
+    else if (pos < 0.25 && lastPos > 0.75) {
+      rollover--;
+    }
+    lastPos = pos;
     return pos;
+  }
+
+  public double getRolloverAbsoluteEncoder() {
+    return getElevatorEncoder() + rollover;
   }
 
   public double getRelativeEncoder() {
     return relativeEncoder.getPosition();
+  }
+
+  public void resetRollover() {
+    rollover = 0;
   }
 
   /**
