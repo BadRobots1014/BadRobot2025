@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -28,7 +29,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax rightElevator;
   private final AbsoluteEncoder encoder;
 
+  private double goalpos = 1;
+
   private ShuffleboardTab m_tab;
+
+  private PIDController m_pidController;
 
   // Creates Left/Right climber objects and configures them
   public ElevatorSubsystem() {
@@ -50,6 +55,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     m_tab = Shuffleboard.getTab("Elevator");
     m_tab.addNumber("Encoder", this::getElevatorEncoder);
+    // m_tab.addBoolean("Fwd Limit", this::getElevatorEncoder);
+    // m_tab.addNumber("Rev Limit", this::getElevatorEncoder);
+
+        // Uses the same PID controller so they should be synched. Change variables in
+    // Constants file
+    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI,
+        ElevatorConstants.kElevatorP);
+
   }
 
   // Throughout the code we use left to get the values as the right is following the left so it should be the same.. I hope
@@ -75,6 +88,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   public void runElevator(double power) {
     System.out.println("Setting power to " + power);
     leftElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
+  }
+
+  public void moveElevator(double target)
+  {
+    goalpos = target;
+    leftElevator.set(m_pidController.calculate(getElevatorEncoder(), goalpos));
+  }
+
+  public void moveElevator(int move)
+  {
+    goalpos += move * ElevatorConstants.kControllerMultiplier;
+    leftElevator.set(m_pidController.calculate(getElevatorEncoder(), goalpos));
   }
 
   // Stops the climber motors
