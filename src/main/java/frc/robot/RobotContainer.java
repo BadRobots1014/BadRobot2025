@@ -217,6 +217,8 @@ private final Command m_rightLevel4Command = Commands.parallel(
    * joysticks}.
    */
   private void configureBindings() {
+    m_elevatorSubsystem.setDefaultCommand(new ElevatorCommand(m_elevatorSubsystem, () -> 0, true));
+
     m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
     level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
     level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
@@ -240,10 +242,11 @@ private final Command m_rightLevel4Command = Commands.parallel(
     AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
     AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
 
-    m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-    m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
-    AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-    AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+    m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> 1, true));
+    m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> -1, false));
+
+    AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> 1, false));
+    AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> -1, true));
 
     //Reef angle presets
     HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
