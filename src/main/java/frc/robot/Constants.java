@@ -378,6 +378,8 @@ public final class Constants {
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
 
+    public static final double kControllerMultiplier = .1;
+
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
 
