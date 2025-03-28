@@ -149,6 +149,7 @@ public final class Constants {
     public static final double kTurningI = 0.01;
     public static final double kTurningD = 0.0;
     public static final double kTurningPeriod = .005;
+    public static final double kRampRate = 0.5;
   }
 
   public static final class OIConstants {
