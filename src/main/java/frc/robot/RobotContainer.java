@@ -231,11 +231,12 @@ private final Command m_rightLevel4Command = Commands.parallel(
   
       m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-  
-      new Trigger(() -> m_driverController.getL2Axis() > OIConstants.kTriggerDeadband)
-        .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> m_driverController.getHID().getSquareButton()));
-      new Trigger(() -> m_driverController.getR2Axis() > OIConstants.kTriggerDeadband)
-        .whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> m_driverController.getHID().getSquareButton()));
+      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+      
+      m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
+      m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true));
+      // TODO add override up mode
   
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
