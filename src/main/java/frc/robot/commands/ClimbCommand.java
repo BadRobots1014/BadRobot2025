@@ -5,17 +5,17 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimberSubsystem;
 
-public class ClimberCommand extends Command {
+public class ClimbCommand extends Command {
   private final ClimberSubsystem m_subsystem;
   private final Supplier<Double> m_power;
 
-  public ClimberCommand(ClimberSubsystem subsystem, double power) {
+  public ClimbCommand(ClimberSubsystem subsystem, double power) {
     m_subsystem = subsystem;
     m_power = () -> power;
     addRequirements(subsystem);
   }
 
-  public ClimberCommand(ClimberSubsystem subsystem, Supplier<Double> power) {
+  public ClimbCommand(ClimberSubsystem subsystem, Supplier<Double> power) {
     m_subsystem = subsystem;
     m_power = power;
     addRequirements(subsystem);
