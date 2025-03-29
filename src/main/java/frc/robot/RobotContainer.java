@@ -133,13 +133,15 @@ private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem,
 private final Command m_level3Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
 private final Command m_level4Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-// public final Command m_level1CommandTimeOut = m_level1Command.withTimeout(2);
-// public final Command m_level2CommandTimeOut = m_level2Command.withTimeout(2);
-// public final Command m_level3CommandTimeOut = m_level3Command.withTimeout(2);
-// public final Command m_level4CommandTimeOut = m_level4Command.withTimeout(2);
+public final Command m_level1CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos).withTimeout(3);
+public final Command m_level2CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos).withTimeout(3);
+public final Command m_level3CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos).withTimeout(3);
+public final Command m_level4CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos).withTimeout(3);
 
 public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true);
+public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true);
 public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(1);
+public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTimeout(1);
 
 /*
  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
@@ -189,11 +191,12 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
       // }));
 
       // Add named commands to pathplanner
-      // NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
-      // NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
-      // NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
-      // NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
+      NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
+      NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
+      NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
+      NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
       NamedCommands.registerCommand("Dump Coral", m_coralDumpCommandTimeOut);
+      NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommandTimeOut);
   
       // Build an auto chooser. This will use Commands.none() as the default option.
       autoChooser = AutoBuilder.buildAutoChooser();
@@ -231,8 +234,8 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
       level2Left.whileTrue(m_level2Command);
       level3Left.whileTrue(m_level3Command);
       level4Left.whileTrue(m_level4Command);
-      AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
-      AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
+      // AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+      // AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
 
       level4Right.whileTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
   
@@ -243,6 +246,9 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
       
       m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
       m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true));
+      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true));
+      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
+
       // TODO add override up mode
   
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
@@ -250,8 +256,8 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
   
       m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
       m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
-      AuxLeftTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-      AuxRightTop.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
+      AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
+      AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
   
       //Reef angle presets
       HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));

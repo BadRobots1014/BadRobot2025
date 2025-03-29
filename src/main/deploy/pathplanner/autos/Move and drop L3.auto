@@ -13,13 +13,31 @@
         {
           "type": "named",
           "data": {
-            "name": "Move to L4"
+            "name": "Move to L3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Dump Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Undump Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Move to L1"
           }
         }
       ]

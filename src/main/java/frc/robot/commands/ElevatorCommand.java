@@ -68,7 +68,8 @@ public class ElevatorCommand extends Command {
   public void execute() {
     if (goalLevelSupplier != null) {
       if (Math.abs(goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder()) >= ElevatorConstants.kElevatorDeadband) {
-        var ff = Math.copySign(ElevatorConstants.kElevatorFF, goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder());
+        // var ff = Math.copySign(ElevatorConstants.kElevatorFF, goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder());
+        var ff = goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder() > 0 ? ElevatorConstants.kElevatorUpPower : ElevatorConstants.kElevatorDownPower;
         m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getRolloverAbsoluteEncoder(), goalLevelSupplier.get()) + ff);
       }
       else {
