@@ -41,6 +41,7 @@ import java.util.function.Supplier;
 
 import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -132,10 +133,10 @@ private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem,
 private final Command m_level3Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
 private final Command m_level4Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-public final Command m_level1CommandTimeOut = m_level1Command.withTimeout(2);
-public final Command m_level2CommandTimeOut = m_level2Command.withTimeout(2);
-public final Command m_level3CommandTimeOut = m_level3Command.withTimeout(2);
-public final Command m_level4CommandTimeOut = m_level4Command.withTimeout(2);
+// public final Command m_level1CommandTimeOut = m_level1Command.withTimeout(2);
+// public final Command m_level2CommandTimeOut = m_level2Command.withTimeout(2);
+// public final Command m_level3CommandTimeOut = m_level3Command.withTimeout(2);
+// public final Command m_level4CommandTimeOut = m_level4Command.withTimeout(2);
 
 public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true);
 public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(1);
@@ -186,6 +187,13 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
       // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
       // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
       // }));
+
+      // Add named commands to pathplanner
+      // NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
+      // NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
+      // NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
+      // NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
+      NamedCommands.registerCommand("Dump Coral", m_coralDumpCommandTimeOut);
   
       // Build an auto chooser. This will use Commands.none() as the default option.
       autoChooser = AutoBuilder.buildAutoChooser();
@@ -225,6 +233,8 @@ public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(
       level4Left.whileTrue(m_level4Command);
       AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
       AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
+
+      level4Right.whileTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
   
       m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));

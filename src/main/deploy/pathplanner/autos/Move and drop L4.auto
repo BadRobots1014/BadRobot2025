@@ -13,13 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "m_level4CommandTimeOut"
+            "name": "Move to L4"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "m_coralDumpCommandTimeOut"
+            "name": "Dump Coral"
           }
         }
       ]
