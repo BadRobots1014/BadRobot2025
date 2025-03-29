@@ -224,13 +224,13 @@ private final Command m_rightLevel4Command = Commands.parallel(
     private void configureBindings() {
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
       level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-      level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
+      // level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
       level2Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-      level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
+      // level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
       level3Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-      level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
+      // level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
       level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-      level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+      // level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
       AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
       AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
   

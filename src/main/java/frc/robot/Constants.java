@@ -367,16 +367,17 @@ public final class Constants {
     public static final int kElevatorMaxAmps = 140;
 
     public static final double kLvlOnePos = 0;
-    public static final double kLvlTwoPos = 1;
-    public static final double kLvlThreePos = 2;
-    public static final double kLvlFourPos = 3;
+    public static final double kLvlTwoPos = 0.8;
+    public static final double kLvlThreePos = 2.3;
+    public static final double kLvlFourPos = 2.8;
 
     public static final double kLvlAlgaeOnePos = 359.0;
     public static final double kLvlAlgaeTwoPos = 359.0;
 
-    public static final double kElevatorP = 0.005;
+    public static final double kElevatorP = 0.3;
     public static final double kElevatorI = 0.0;
     public static final double kElevatorD = 0.0;
+    public static final double kElevatorFF = 0.0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
