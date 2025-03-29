@@ -374,10 +374,13 @@ public final class Constants {
     public static final double kLvlAlgaeOnePos = 359.0;
     public static final double kLvlAlgaeTwoPos = 359.0;
 
-    public static final double kElevatorP = 0.3;
-    public static final double kElevatorI = 0.0;
+    public static final double kElevatorP = 0.0;
+    public static final double kElevatorI = 0.2;
     public static final double kElevatorD = 0.0;
-    public static final double kElevatorFF = 0.0;
+    public static final double kElevatorFF = 0.15;
+
+    public static final double kElevatorDeadband = 0.0;
+    public static final double kElevatorDutyPower = 0.0;
 
     // public static final Button kTestMotorButton = Button.kLeftBumper;
   }
@@ -404,6 +407,7 @@ public final class Constants {
 
     public static final int kMaxAmps = 140;
     public static final double kPower = 1;
+    public static final double kOutPower = 0.5;
   }
 
   public static final class ClimberConstants {

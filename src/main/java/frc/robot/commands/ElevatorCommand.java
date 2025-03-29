@@ -33,8 +33,7 @@ public class ElevatorCommand extends Command {
 
     // Uses the same PID controller so they should be synched. Change variables in
     // Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI,
-        ElevatorConstants.kElevatorP);
+    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
 
     // Ensures that the runElevator and stopElevator functions are present
     addRequirements(elevatorsubsystem);
@@ -68,8 +67,12 @@ public class ElevatorCommand extends Command {
   @Override
   public void execute() {
     if (goalLevelSupplier != null) {
-      if (Math.abs(goalLevelSupplier.get() - m_subsystem.getElevatorEncoder()) >= 0.1) {
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getRolloverAbsoluteEncoder(), goalLevelSupplier.get()));
+      if (Math.abs(goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder()) >= ElevatorConstants.kElevatorDeadband) {
+        var ff = Math.copySign(ElevatorConstants.kElevatorFF, goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder());
+        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getRolloverAbsoluteEncoder(), goalLevelSupplier.get()) + ff);
+      }
+      else {
+        m_subsystem.runElevator(ElevatorConstants.kElevatorDutyPower);
       }
     }
     else {

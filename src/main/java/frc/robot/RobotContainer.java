@@ -127,22 +127,18 @@ private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
 
 
 
-private final Command m_leftLevel1Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-private final Command m_rightLevel1Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-private final Command m_leftLevel2Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-private final Command m_rightLevel2Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-private final Command m_leftLevel3Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-private final Command m_rightLevel3Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-private final Command m_leftLevel4Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-private final Command m_rightLevel4Command = Commands.parallel(
-    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+private final Command m_level1Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
+private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
+private final Command m_level3Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
+private final Command m_level4Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
+
+public final Command m_level1CommandTimeOut = m_level1Command.withTimeout(2);
+public final Command m_level2CommandTimeOut = m_level2Command.withTimeout(2);
+public final Command m_level3CommandTimeOut = m_level3Command.withTimeout(2);
+public final Command m_level4CommandTimeOut = m_level4Command.withTimeout(2);
+
+public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true);
+public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(1);
 
 /*
  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
@@ -223,14 +219,10 @@ private final Command m_rightLevel4Command = Commands.parallel(
      */
     private void configureBindings() {
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-      level1Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-      // level1Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos));
-      level2Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-      // level2Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos));
-      level3Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-      // level3Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos));
-      level4Left.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
-      // level4Right.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos));
+      level1Left.whileTrue(m_level1Command);
+      level2Left.whileTrue(m_level2Command);
+      level3Left.whileTrue(m_level3Command);
+      level4Left.whileTrue(m_level4Command);
       AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
       AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
   
