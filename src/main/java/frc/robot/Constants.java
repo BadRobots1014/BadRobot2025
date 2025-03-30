@@ -146,7 +146,7 @@ public final class Constants {
     public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
     public static final double kModuleDeadband = 0.005;
     public static final double kTurningP = 1.0;
-    public static final double kTurningI = 0.01;
+    public static final double kTurningI = 0.3;
     public static final double kTurningD = 0.0;
     public static final double kTurningPeriod = .005;
     public static final double kRampRate = 0.5;
