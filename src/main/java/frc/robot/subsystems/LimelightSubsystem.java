@@ -23,7 +23,7 @@
                  height, // Height offset (meters)
                  90.0, // Roll (degrees)
                  0.0, // Pitch (degrees)
-                 90.0 // Yaw (degrees)
+                 0.0 // Yaw (degrees)
          );
  
          // Crop window for performance
