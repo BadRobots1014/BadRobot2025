@@ -24,6 +24,6 @@ public class ElevatorCommandWithEnd extends ElevatorCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(super.goalLevelSupplier.get() - super.m_subsystem.getRolloverAbsoluteEncoder()) >= ElevatorConstants.kElevatorDeadband;
+    return Math.abs(super.goalLevelSupplier.get() - super.m_subsystem.getRolloverAbsoluteEncoder()) <= ElevatorConstants.kElevatorDeadband;
   }
 }

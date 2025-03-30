@@ -7,55 +7,35 @@ package frc.robot;
 import frc.robot.Constants.AuxControllerConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.Constants.CoralControllerConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.WinchConstants;
 import frc.robot.commands.AlgaeCommand;
-import frc.robot.commands.AlignToTargetCommand;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LimelightPathCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.TestModuleCommand;
-import frc.robot.commands.TestOdometry;
 import frc.robot.commands.TurnToThetaCommand;
-import frc.robot.commands.WinchCommand;
 import frc.robot.commands.ZeroHeadingCommand;
-import frc.robot.commands.SnapToThetaCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ElevatorCommand;
-import frc.robot.util.Elastic;
+import frc.robot.commands.ElevatorCommandWithEnd;
 
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
-
-import com.ctre.phoenix6.signals.ExternalFeedbackSensorSourceValue;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -133,10 +113,10 @@ private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem,
 private final Command m_level3Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
 private final Command m_level4Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-public final Command m_level1CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos).withTimeout(3);
-public final Command m_level2CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos).withTimeout(3);
-public final Command m_level3CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos).withTimeout(3);
-public final Command m_level4CommandTimeOut = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos).withTimeout(3);
+public final Command m_level1CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
+public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
+public final Command m_level3CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
+public final Command m_level4CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
 public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true);
 public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true);
@@ -195,6 +175,10 @@ public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTime
       NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
       NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
       NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
+      NamedCommands.registerCommand("Stay at L1", m_level1Command);
+      NamedCommands.registerCommand("Stay at L2", m_level2Command);
+      NamedCommands.registerCommand("Stay at L3", m_level3Command);
+      NamedCommands.registerCommand("Stay at L4", m_level4Command);
       NamedCommands.registerCommand("Dump Coral", m_coralDumpCommandTimeOut);
       NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommandTimeOut);
   
