@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "Approach th e tingy"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Move to L4"
+            "name": "Move to L2"
           }
         },
         {
@@ -23,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Stay at L4"
+                  "name": "Stay at L2"
                 }
               },
               {
