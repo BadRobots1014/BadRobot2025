@@ -7,7 +7,6 @@ package frc.robot.commands;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
 import java.util.function.Supplier;
 
@@ -16,8 +15,8 @@ import edu.wpi.first.math.controller.PIDController;
 /** An example command that uses an example subsystem. */
 public class ElevatorCommand extends Command {
 
-  private final ElevatorSubsystem m_subsystem;
-  private final Supplier<Double> goalLevelSupplier;
+  public final ElevatorSubsystem m_subsystem;
+  public final Supplier<Double> goalLevelSupplier;
   private final Supplier<Double> goalSpeedSupplier;
   private PIDController m_pidController;
   
