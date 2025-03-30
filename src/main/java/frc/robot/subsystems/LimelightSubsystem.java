@@ -21,9 +21,9 @@
                  forward, // Forward offset (meters)
                  side, // Side offset (meters)
                  height, // Height offset (meters)
-                 0.0, // Roll (degrees)
+                 90.0, // Roll (degrees)
                  0.0, // Pitch (degrees)
-                 0.0 // Yaw (degrees)
+                 90.0 // Yaw (degrees)
          );
  
          // Crop window for performance
@@ -40,17 +40,13 @@
                  0, // Forward offset (meters)
                  0, // Side offset (meters)
                  0, // Height offset (meters)
-                 0.0, // Roll (degrees)
+                 90.0, // Roll (degrees)
                  0.0, // Pitch (degrees)
                  0.0 // Yaw (degrees)
          );
  
          // Crop window for performance
          //LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
-     }
- 
-     @Override
-     public void periodic() {
      }
  }
  

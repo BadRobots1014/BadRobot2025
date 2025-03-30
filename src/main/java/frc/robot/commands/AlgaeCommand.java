@@ -32,7 +32,7 @@ public class AlgaeCommand extends Command {
     if (spinIn) {
       m_subsystem.SpinIn(AlgaeConstants.kPower);
     } else {
-      m_subsystem.SpinOut(AlgaeConstants.kPower);
+      m_subsystem.SpinOut(AlgaeConstants.kOutPower);
     }
   }
 

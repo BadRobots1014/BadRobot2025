@@ -4,18 +4,28 @@
 
 package frc.robot.commands;
 
+import frc.robot.Constants.CoralConstants;
+import frc.robot.Constants.CoralConstants.CoralMode;
 import frc.robot.subsystems.CoralSubsystem;
+
+import java.util.concurrent.BlockingDeque;
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** An example command that uses an example subsystem. */
 public class CoralCommand extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final CoralSubsystem m_subsystem;
-  private boolean dump = false;
+  private Supplier<Double> speed;
+  private Supplier<Boolean> enableLimit;
 
-  public CoralCommand(CoralSubsystem subsystem, boolean dump) {
+
+  private long startTime;
+
+  public CoralCommand(CoralSubsystem subsystem, Supplier<Double> speed, Supplier<Boolean> enableLimit) {
     m_subsystem = subsystem;
-    this.dump = dump;
+    this.speed = speed;
+    this.enableLimit = enableLimit;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -23,12 +33,27 @@ public class CoralCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.setMotorMode(dump);
+    boolean limited = enableLimit.get();
+    m_subsystem.setMotor(speed.get(), limited);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_subsystem.stopMotor();
+  }
+
+  // Returns true when the command should end.
+  // Calls end()
+  @Override
+  public boolean isFinished() {
+    // End if over kCoralDurationSeconds
+    // Nanosecond percision as it is theoretically better than milliseconds
+    // if (System.nanoTime() - startTime > CoralConstants.kCoralDurationNano && mode != CoralConstants.CoralMode.UP_OVERRIDE) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return false;
   }
 }

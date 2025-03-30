@@ -2,19 +2,31 @@ package frc.robot.subsystems;
 
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
+
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.IdealStartingState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
+import com.pathplanner.lib.util.DriveFeedforwards;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -23,6 +35,8 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
@@ -118,15 +132,15 @@ public class SwerveSubsystem extends SubsystemBase {
                                                               // module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic
                                         // drive trains
-            new PIDConstants(3.5, 1, 0.0), // Translation PID constants
-            new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(DriveConstants.kAutoTranslationalP, DriveConstants.kAutoTranslationalI, DriveConstants.kAutoTranslationalD), // Translation PID constants
+            new PIDConstants(DriveConstants.kAutoRotationalP, DriveConstants.kAutoRotationalI, DriveConstants.kAutoRotationalD) // Rotation PID constants
         ),
         config, // The robot configuration
         () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
           // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE"
+
 
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
@@ -136,6 +150,65 @@ public class SwerveSubsystem extends SubsystemBase {
         },
         this // Reference to this subsystem to set requirements
     );
+  }
+
+  public Command PathToLimelight(Supplier<Double> endX, Supplier<Double> endY, Supplier<Rotation2d> endRotation)
+  {
+
+    // Reset everything to zero to start
+    resetPose();
+    resetOdometry(new Pose2d(3, 3, new Rotation2d()));
+
+    // Create a list of waypoints from poses. Each pose represents one waypoint.
+    // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
+    List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
+      getOdomentryPose(),
+      getOdomentryPose().transformBy(new Transform2d(endX.get(), endY.get(), new Rotation2d()))
+    );
+    
+    System.out.println("Pre-flip" + waypoints);
+
+    // Invert the controls on the waypoints
+    waypoints.set(0,
+      new Waypoint(
+        waypoints.get(0).prevControl(),
+        waypoints.get(0).anchor(),
+        waypoints.get(0).nextControl()
+          .plus(waypoints.get(0).anchor()
+            .minus(waypoints.get(0).nextControl()).times(2))
+      )
+    );
+    waypoints.set(1,
+      new Waypoint(
+        waypoints.get(1).prevControl()
+        .plus(waypoints.get(1).anchor()
+          .minus(waypoints.get(1).prevControl()).times(2)),
+        waypoints.get(1).anchor(),
+        waypoints.get(1).nextControl()
+      )
+    );
+
+    System.out.println("Post-flip" + waypoints);
+
+    PathConstraints constraints = new PathConstraints(1.0, 1.0, Math.PI, 4 * Math.PI); // The constraints for this path.
+    // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); // You can also use unlimited constraints, only limited by motor torque and nominal battery voltage
+
+    // Create the path using the waypoints created above
+    PathPlannerPath path = new PathPlannerPath(
+      waypoints,
+      constraints,
+      null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
+      new GoalEndState(0.0, endRotation.get()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
+    );
+
+    // Prevent the path from being flipped if the coordinates are already correct
+    path.preventFlipping = true;
+
+    return AutoBuilder.followPath(path);
+  }
+
+  public Command PathToLimelight(Supplier<Double> endX, Supplier<Double> endY) {
+    return PathToLimelight(endX, endY, () -> getRotation2d());
   }
 
   // Modules
@@ -192,7 +265,7 @@ public class SwerveSubsystem extends SubsystemBase {
       frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
       backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
     },
-    new Pose2d(13.5, 5.0, this.getRotation2d())
+    new Pose2d(0, 0, this.getRotation2d())
   );
 
   public void resetOdometry(Pose2d newPose) {
@@ -204,6 +277,18 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
       },
       newPose
+    );
+  }
+
+  public void resetOdometry() {
+    m_odometry = new SwerveDriveOdometry(
+      DriveConstants.kDriveKinematics,
+      this.getRotation2d(),
+      new SwerveModulePosition[] {
+        frontLeft.getDrivePositionModule(), frontRight.getDrivePositionModule(),
+        backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
+      },
+      new Pose2d()
     );
   }
 
@@ -278,7 +363,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return gru.getRate() / 180 * Math.PI;
   }
 
-  public Pose2d getPose() {
+  public Pose2d getGruPose() {
     return new Pose2d(getX(), getY(), getRotation2d());
   }
 
@@ -293,8 +378,8 @@ public class SwerveSubsystem extends SubsystemBase {
         backLeft.getDrivePositionModule(), backRight.getDrivePositionModule()
       }
     );
-    m_field.setRobotPose(m_odometry.getPoseMeters());
-    return m_odometry.getPoseMeters();
+    m_field.setRobotPose(getOdomentryPose());
+    return getOdomentryPose();
   }
 
   public Pose2d getOdomentryPose() {
@@ -306,6 +391,10 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void driveAutoRobotRelative(ChassisSpeeds speeds) {
+    setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond)));
+  }
+
+  public void driveAutoRobotRelative(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
     setModuleStates(DriveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(-speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond)));
   }
 
