@@ -29,9 +29,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.net.WebServer;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -106,7 +109,9 @@ private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
 private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
 
-
+GenericEntry ep;
+GenericEntry ei;
+GenericEntry ed;
 
 private final Command m_level1Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
 private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
@@ -194,7 +199,13 @@ public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTime
       SmartDashboard.putData("Auto Chooser", autoChooser);
       SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
       SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
-  
+
+      ShuffleboardTab m_tab = Shuffleboard.getTab("elevatorpid");
+
+      ep = m_tab.add("ep", ElevatorConstants.kElevatorP).getEntry();
+      ei = m_tab.add("ei", ElevatorConstants.kElevatorI).getEntry();
+      ed = m_tab.add("ed", ElevatorConstants.kElevatorD).getEntry();
+
       configureBindings();
     }
   
@@ -250,6 +261,11 @@ public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTime
       HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+
+      level1Right.onTrue(m_elevatorSubsystem.runOnce(() -> m_elevatorSubsystem.updatePID(
+        ep.getDouble(ElevatorConstants.kElevatorP), 
+        ei.getDouble(ElevatorConstants.kElevatorI), 
+        ed.getDouble(ElevatorConstants.kElevatorD))));
     }
   
     boolean getFastMode() {

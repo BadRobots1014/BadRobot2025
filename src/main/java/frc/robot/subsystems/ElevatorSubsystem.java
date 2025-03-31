@@ -16,6 +16,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLimitSwitch;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -37,6 +38,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   private ShuffleboardTab m_tab;
   private double offset;
+
+  private PIDController m_pidController;
   
     // Creates Left/Right climber objects and configures them
     public ElevatorSubsystem() {
@@ -66,6 +69,8 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_tab.addBoolean("Top Limit", this::getForwardLimitSwitch);
       m_tab.addNumber("Relative Encoder", this::getRelativeEncoder);
       m_tab.addNumber("Rollover Encoder", this::getRolloverAbsoluteEncoder);
+
+      m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
   
       resetRollover();
     }
@@ -121,6 +126,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
   }
 
+  public void runElevatorWithPid(double current, double target)
+  {
+    runElevator(m_pidController.calculate(current, target));
+  }
+
   // Stops the climber motors
   public void stopElevator() {
     leftElevator.stopMotor();
@@ -132,6 +142,12 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public boolean getForwardLimitSwitch() {
     return leftElevator.getForwardLimitSwitch().isPressed();
+  }
+
+  public void updatePID(double p, double i, double d)
+  {
+    System.out.println(p + " " + i + " " + d);
+    m_pidController = new PIDController(p, i, d);
   }
 
   /*

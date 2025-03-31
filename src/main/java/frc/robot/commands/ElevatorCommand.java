@@ -18,8 +18,7 @@ public class ElevatorCommand extends Command {
   public final ElevatorSubsystem m_subsystem;
   public final Supplier<Double> goalLevelSupplier;
   private final Supplier<Double> goalSpeedSupplier;
-  private PIDController m_pidController;
-  
+
   /**
    * @param elevatorsubsystem The subsystem referenced in this command
    * @param targetLevel       A number 1-4 in which you want to set the height of
@@ -29,10 +28,6 @@ public class ElevatorCommand extends Command {
     m_subsystem = elevatorsubsystem;
     goalLevelSupplier = targetLevel;
     goalSpeedSupplier = null;
-
-    // Uses the same PID controller so they should be synched. Change variables in
-    // Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
 
     // Ensures that the runElevator and stopElevator functions are present
     addRequirements(elevatorsubsystem);
@@ -45,10 +40,6 @@ public class ElevatorCommand extends Command {
     m_subsystem = elevatorsubsystem;
     goalSpeedSupplier = speed;
     goalLevelSupplier = null;
-
-    // Uses the same PID controller so they should be synched. Change variables in
-    // Constants file
-    m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
 
     // Ensures that the runElevator and stopElevator functions are present
 
@@ -69,7 +60,7 @@ public class ElevatorCommand extends Command {
       if (Math.abs(goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder()) >= ElevatorConstants.kElevatorDeadband) {
         // var ff = Math.copySign(ElevatorConstants.kElevatorFF, goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder());
         var ff = goalLevelSupplier.get() - m_subsystem.getRolloverAbsoluteEncoder() > 0 ? ElevatorConstants.kElevatorUpPower : ElevatorConstants.kElevatorDownPower;
-        m_subsystem.runElevator(m_pidController.calculate(m_subsystem.getRolloverAbsoluteEncoder(), goalLevelSupplier.get()) + ff);
+        m_subsystem.runElevatorWithPid(m_subsystem.getRolloverAbsoluteEncoder(), goalLevelSupplier.get() + ff);
       }
       else {
         m_subsystem.runElevator(ElevatorConstants.kElevatorDutyPower);
