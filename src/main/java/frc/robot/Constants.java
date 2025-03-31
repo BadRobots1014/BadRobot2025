@@ -348,6 +348,8 @@ public final class Constants {
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
     public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+    public static final double kAutoLeftTarget = 0.01905;
+    public static final double kAutoRightTarget = kAutoLeftTarget - 0.29;
     public static final double kAutoTranslationalP = 3;
     public static final double kAutoTranslationalI = 0;
     public static final double kAutoTranslationalD = 0;

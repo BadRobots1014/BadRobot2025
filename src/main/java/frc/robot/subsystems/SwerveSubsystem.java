@@ -20,6 +20,7 @@ import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -163,26 +164,65 @@ public class SwerveSubsystem extends SubsystemBase {
     // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
     List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
       getOdomentryPose(),
-      getOdomentryPose().transformBy(new Transform2d(endX.get(), endY.get(), new Rotation2d()))
+      getOdomentryPose().transformBy(new Transform2d(-endX.get(), endY.get(), /*endRotation.get())*/ new Rotation2d()))
     );
     
     System.out.println("Pre-flip" + waypoints);
 
-    // Invert the controls on the waypoints
+    // Invert and rotate the controls on the waypoints
+    //
+    // new Translation2d(
+    //   waypoints.get(0).nextControl()
+    //     .plus(waypoints.get(0).anchor()
+    //       .minus(waypoints.get(0).nextControl())
+    //         .times(2)).getY(),
+    //   waypoints.get(0).nextControl()
+    //     .plus(waypoints.get(0).anchor()
+    //       .minus(waypoints.get(0).nextControl())
+    //         .times(2)).getX()
+    //.plus(waypoints.get(1).anchor())
+    // new Translation2d(
+    //       waypoints.get(1).nextControl()
+    //       .plus(waypoints.get(1).anchor()
+    //         .minus(waypoints.get(1).nextControl())
+    //           .times(2)).getY(),
+    //       waypoints.get(1).nextControl()
+    //         .plus(waypoints.get(1).anchor()
+    //           .minus(waypoints.get(1).nextControl())
+    //             .times(2)).getX()
+    //     )
+    //  .minus(waypoints.get(1).prevControl()).times(2))
+
     waypoints.set(0,
       new Waypoint(
         waypoints.get(0).prevControl(),
         waypoints.get(0).anchor(),
-        waypoints.get(0).nextControl()
-          .plus(waypoints.get(0).anchor()
-            .minus(waypoints.get(0).nextControl()).times(2))
+        new Translation2d(
+          waypoints.get(0).nextControl()
+            .plus(waypoints.get(0).anchor()
+              .minus(waypoints.get(0).nextControl())
+                .times(2)).getY(),
+          waypoints.get(0).nextControl()
+            .plus(waypoints.get(0).anchor()
+              .minus(waypoints.get(0).nextControl())
+                .times(2)).getX()
+        )
+        // waypoints.get(0).nextControl().rotateAround(waypoints.get(0).anchor(), Rotation2d.fromDegrees(90))
       )
     );
     waypoints.set(1,
       new Waypoint(
-        waypoints.get(1).prevControl()
-        .plus(waypoints.get(1).anchor()
-          .minus(waypoints.get(1).prevControl()).times(2)),
+        // new Translation2d(
+        //   waypoints.get(1).prevControl()
+        //   .plus(waypoints.get(1).anchor()
+        //     .minus(waypoints.get(1).prevControl())
+        //       .times(2)).getX(),
+        //   waypoints.get(1).prevControl()
+        //     .plus(waypoints.get(1).anchor()
+        //       .minus(waypoints.get(1).prevControl())
+        //         .times(2)).getY()
+        // ),
+        waypoints.get(1).prevControl().rotateAround(waypoints.get(1).anchor(), Rotation2d.fromDegrees(-90)),
         waypoints.get(1).anchor(),
         waypoints.get(1).nextControl()
       )

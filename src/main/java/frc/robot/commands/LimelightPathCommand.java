@@ -48,7 +48,7 @@ public class LimelightPathCommand extends Command {
     }
     else if (LimelightHelpers.getFiducialID("") != -1){
       var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
-      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getY(), () -> lastPosLimelight.getZ() + DriveConstants.kAutoTargetDistance, () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getX()));
+      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getY() + DriveConstants.kAutoRightTarget, () -> lastPosLimelight.getZ() + DriveConstants.kAutoTargetDistance, () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getY()));
       currentCommand.initialize();
     }
   }
