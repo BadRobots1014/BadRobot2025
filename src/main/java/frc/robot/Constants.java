@@ -28,8 +28,12 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public final class UltraSonicConstants {
+    public final static int kUltraSonicPort = 3;
+  } 
+
   public final class BlinkinConstants {
-    public final static int kBlinkinPort = 0;
+    public final static int kBlinkinPort = 9;
     public static final HashMap<String, Double> colorCode = new HashMap<>(
         Map.ofEntries(
             Map.entry("rainbow-rainbow", -0.99d),
