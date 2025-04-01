@@ -29,8 +29,8 @@ public final class Constants {
   }
 
   public final class UltraSonicConstants {
-    public final static int kUltraSonicPort = 8;
-  }
+    public final static int kUltraSonicPort = 3;
+  } 
 
   public final class BlinkinConstants {
     public final static int kBlinkinPort = 9;
