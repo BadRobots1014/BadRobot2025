@@ -388,11 +388,14 @@ public final class Constants {
   }
 
   public static final class CoralConstants {
-    public static final double kCoralUpSpeed = .3;
-    public static final double kCoralDownSpeed = -.3;
+    public static final double kCoralSpeed = .3;
 
     public static final double kCoralDurationSeconds = 1;
     public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout
+
+    public static final double kCoralDumpPreset = 0;
+    public static final double kCoralUpPreset = 0;
+    public static final double kCoralIntakePreset = 0;
 
     public static final int kCoralCanID = 54;
 
@@ -401,6 +404,8 @@ public final class Constants {
       DOWN,
       UP_OVERRIDE
     }
+
+    public static double kCoralDeadband = .01;
   }
 
   public static class AlgaeConstants {

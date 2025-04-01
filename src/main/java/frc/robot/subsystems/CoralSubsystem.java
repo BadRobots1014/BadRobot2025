@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.LimitSwitchConfig;
@@ -19,100 +22,35 @@ import frc.robot.Constants.CoralConstants.CoralMode;
 public class CoralSubsystem extends SubsystemBase {
 
   private final SparkMax coralMotor;
-  private final SparkMaxConfig limitedConfig;
-  private final SparkMaxConfig unlimitedConfig;
-
+  private final SparkMaxConfig coralConfig;
+  private final AbsoluteEncoder encoder;
   // Creates motor object and configures them
   public CoralSubsystem() {
     coralMotor = new SparkMax(CoralConstants.kCoralCanID, MotorType.kBrushed);
 
     // Default configuration for limits. Used during matches.
-    limitedConfig = new SparkMaxConfig();
-    limitedConfig.idleMode(IdleMode.kBrake);
-    limitedConfig.limitSwitch.forwardLimitSwitchEnabled(true);
-
-    // Configuration without the reverse (up) limit. Used in prematch setup.
-    unlimitedConfig = limitedConfig;
-    unlimitedConfig.limitSwitch.forwardLimitSwitchEnabled(false);
-
-    coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  }
+    coralConfig = new SparkMaxConfig();
+    coralConfig.idleMode(IdleMode.kBrake);
+    coralMotor.configure(coralConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    encoder = coralMotor.getAbsoluteEncoder();
+    }
 
   // Retrieves the amount of AMPs in the motor
   public double getMotorCurrent() {
     return coralMotor.getOutputCurrent();
   }
 
-  public void setMotor(Double speed, boolean limited) {
-    if (limited) {
-      if (coralMotor.getReverseLimitSwitch() != null) {
-        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-      }
-      coralMotor.set(speed);
-    }
-    else {
-      if (coralMotor.getReverseLimitSwitch() != null) {
-        coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-      }
-      coralMotor.set(speed);
-    }
-    // if (mode == CoralMode.UP) {
-    //   // Up
-    //   if (coralMotor.getReverseLimitSwitch() == null) {
-    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
-    // }
-    // else if (mode == CoralMode.DOWN) {
-    //   // Down
-    //   if (coralMotor.getReverseLimitSwitch() == null) {
-    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralDownSpeed);
-    // }
-    // else {
-    //   // Up without limit
-    //   if (coralMotor.getReverseLimitSwitch() != null) {
-    //     coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
-    // }
+  public void setMotorPreset(double target) {
+    double currentPos = encoder.getPosition();
+    double displacement = target - currentPos;
+
+    double speed = Math.abs(displacement) > CoralConstants.kCoralDeadband ? Math.copySign(CoralConstants.kCoralSpeed, displacement) : 0;
+
+    coralMotor.set(speed);
   }
 
-  public void setMotorWithLimit(boolean up){
-    if (up) {
-      if (coralMotor.getReverseLimitSwitch() != null) {
-        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-      }
-      coralMotor.set(CoralConstants.kCoralUpSpeed);
-    }
-    else {
-      if (coralMotor.getReverseLimitSwitch() != null) {
-        coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-      }
-      coralMotor.set(CoralConstants.kCoralDownSpeed);
-    }
-    // if (mode == CoralMode.UP) {
-    //   // Up
-    //   if (coralMotor.getReverseLimitSwitch() == null) {
-    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
-    // }
-    // else if (mode == CoralMode.DOWN) {
-    //   // Down
-    //   if (coralMotor.getReverseLimitSwitch() == null) {
-    //     coralMotor.configure(limitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralDownSpeed);
-    // }
-    // else {
-    //   // Up without limit
-    //   if (coralMotor.getReverseLimitSwitch() != null) {
-    //     coralMotor.configure(unlimitedConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters); // These changes are for mid match only and shouldn't persist
-    //   }
-    //   coralMotor.set(CoralConstants.kCoralUpSpeed);
-    // }
+  public void setMotor(double speed) {
+    coralMotor.set(speed);
   }
 
   // Stops the motor

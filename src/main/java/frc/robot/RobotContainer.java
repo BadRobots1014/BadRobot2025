@@ -123,10 +123,10 @@ public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_eleva
 public final Command m_level3CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
 public final Command m_level4CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true);
-public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true);
+public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset);
+public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset);
 public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(1);
-public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTimeout(1);
+public final Command m_coralUndumpCommandTimeOut = m_coralIntakeCommand.withTimeout(1);
 
 /*
  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
@@ -239,10 +239,10 @@ public final Command m_coralUndumpCommandTimeOut = m_coralUndumpCommand.withTime
       AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
       AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       
-      m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
-      m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true));
-      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpSpeed, () -> true));
-      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDownSpeed, () -> true));
+      m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, CoralConstants.kCoralSpeed));
+      m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, -CoralConstants.kCoralSpeed));
+      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, -CoralConstants.kCoralSpeed));
+      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralConstants.kCoralSpeed));
 
       // TODO add override up mode
   

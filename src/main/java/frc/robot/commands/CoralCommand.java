@@ -16,25 +16,32 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class CoralCommand extends Command {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final CoralSubsystem m_subsystem;
-  private Supplier<Double> speed;
-  private Supplier<Boolean> enableLimit;
+  private Supplier<Double> target;
+  private double speed;
 
-
-  private long startTime;
-
-  public CoralCommand(CoralSubsystem subsystem, Supplier<Double> speed, Supplier<Boolean> enableLimit) {
+  public CoralCommand(CoralSubsystem subsystem, Supplier<Double> target) {
     m_subsystem = subsystem;
-    this.speed = speed;
-    this.enableLimit = enableLimit;
+    this.target = target;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
+  }
+
+  public CoralCommand(CoralSubsystem subsystem, double speed) {
+    this.speed = speed;
+    m_subsystem = subsystem;
+    target = null;
     addRequirements(subsystem);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    boolean limited = enableLimit.get();
-    m_subsystem.setMotor(speed.get(), limited);
+    if (target != null) {
+      m_subsystem.setMotorPreset(target.get());
+    }
+    else {
+      m_subsystem.setMotor(speed);
+    }
   }
 
   // Called once the command ends or is interrupted.
