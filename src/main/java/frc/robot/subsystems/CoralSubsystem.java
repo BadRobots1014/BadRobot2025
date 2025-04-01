@@ -40,13 +40,16 @@ public class CoralSubsystem extends SubsystemBase {
     return coralMotor.getOutputCurrent();
   }
 
-  public void setMotorPreset(double target) {
+  public boolean setMotorPreset(double target) {
     double currentPos = encoder.getPosition();
     double displacement = target - currentPos;
 
     double speed = Math.abs(displacement) > CoralConstants.kCoralDeadband ? Math.copySign(CoralConstants.kCoralSpeed, displacement) : 0;
 
     coralMotor.set(speed);
+
+    // Returns true if the position is within deadband
+    return Math.abs(displacement) < CoralConstants.kCoralDeadband;
   }
 
   public void setMotor(double speed) {

@@ -18,6 +18,7 @@ public class CoralCommand extends Command {
   private final CoralSubsystem m_subsystem;
   private Supplier<Double> target;
   private double speed;
+  private boolean withinDeadband = false;
 
   public CoralCommand(CoralSubsystem subsystem, Supplier<Double> target) {
     m_subsystem = subsystem;
@@ -37,7 +38,7 @@ public class CoralCommand extends Command {
   @Override
   public void execute() {
     if (target != null) {
-      m_subsystem.setMotorPreset(target.get());
+      withinDeadband = m_subsystem.setMotorPreset(target.get());
     }
     else {
       m_subsystem.setMotor(speed);
@@ -54,13 +55,6 @@ public class CoralCommand extends Command {
   // Calls end()
   @Override
   public boolean isFinished() {
-    // End if over kCoralDurationSeconds
-    // Nanosecond percision as it is theoretically better than milliseconds
-    // if (System.nanoTime() - startTime > CoralConstants.kCoralDurationNano && mode != CoralConstants.CoralMode.UP_OVERRIDE) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-    return false;
+    return withinDeadband;
   }
 }
