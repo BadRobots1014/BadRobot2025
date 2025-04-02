@@ -19,10 +19,12 @@ public class CoralCommand extends Command {
   private Supplier<Double> target;
   private double speed;
   private boolean withinDeadband = false;
+  private boolean end;
 
-  public CoralCommand(CoralSubsystem subsystem, Supplier<Double> target) {
+  public CoralCommand(CoralSubsystem subsystem, Supplier<Double> target, boolean end) {
     m_subsystem = subsystem;
     this.target = target;
+    this.end = end;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -55,6 +57,6 @@ public class CoralCommand extends Command {
   // Calls end()
   @Override
   public boolean isFinished() {
-    return withinDeadband;
+    return withinDeadband && end;
   }
 }

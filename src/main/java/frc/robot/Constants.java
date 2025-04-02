@@ -351,7 +351,7 @@ public final class Constants {
 
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
-    public static final double kAutoTargetDistance = 0.1524; // How far away it aims to be from april tag
+    public static final double kAutoTargetDistance = 0.4; // How far away it aims to be from april tag
     public static final double kAutoLeftTarget = 0.01905;
     public static final double kAutoRightTarget = kAutoLeftTarget - 0.29;
     public static final double kAutoTranslationalP = 3;
@@ -383,7 +383,7 @@ public final class Constants {
     public static final double kElevatorP = 0.0;
     public static final double kElevatorI = 0.0; // Was 0.2
     public static final double kElevatorD = 0.0;
-    public static final double kElevatorFF = 0.2;
+    public static final double kElevatorFF = 1;
 
     public static final double kElevatorDeadband = 0.05;
     public static final double kElevatorDutyPower = 0.02;
@@ -397,9 +397,9 @@ public final class Constants {
     public static final double kCoralDurationSeconds = 1;
     public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout
 
-    public static final double kCoralDumpPreset = 0;
-    public static final double kCoralUpPreset = 0;
-    public static final double kCoralIntakePreset = 0;
+    public static final double kCoralDumpPreset = 0.8;
+    public static final double kCoralUpPreset = 0.388;
+    public static final double kCoralIntakePreset = 0.63;
 
     public static final int kCoralCanID = 54;
 
@@ -409,7 +409,7 @@ public final class Constants {
       UP_OVERRIDE
     }
 
-    public static double kCoralDeadband = .01;
+    public static double kCoralDeadband = .05;
   }
 
   public static class AlgaeConstants {
