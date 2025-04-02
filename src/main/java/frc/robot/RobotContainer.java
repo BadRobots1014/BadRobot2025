@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -113,10 +114,22 @@ GenericEntry ep;
 GenericEntry ei;
 GenericEntry ed;
 
-private final Command m_level1Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
-private final Command m_level2Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
-private final Command m_level3Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
-private final Command m_level4Command = new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
+private final Command m_level1Command = new ParallelCommandGroup(
+  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos),
+  new BlinkinCommand(blinkinSubsystem, "solid-red")
+);
+private final Command m_level2Command = new ParallelCommandGroup(
+  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos),
+  new BlinkinCommand(blinkinSubsystem, "solid-green")
+);
+private final Command m_level3Command = new ParallelCommandGroup(
+  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos),
+  new BlinkinCommand(blinkinSubsystem, "solid-blue")
+);
+private final Command m_level4Command = new ParallelCommandGroup(
+  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos),
+  new BlinkinCommand(blinkinSubsystem, "solid-yellow")
+);
 
 public final Command m_level1CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
 public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
