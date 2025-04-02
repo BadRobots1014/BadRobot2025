@@ -63,102 +63,100 @@ import frc.robot.subsystems.CoralSubsystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private BlinkinSubsystem blinkinSubsystem;
-  private BlinkinCommand redBlinkinCommand;
-
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private Joystick[] auxJoysticks = {
     new Joystick(ControllerConstants.kSecondControllerPortOne),
     new Joystick(ControllerConstants.kSecondControllerPortTwo)
-};
+  };
 
-CommandPS4Controller m_driverController = new CommandPS4Controller(OIConstants.kDriverControllerPort);
+  CommandPS4Controller m_driverController = new CommandPS4Controller(OIConstants.kDriverControllerPort);
 
-// Coral Buttons On AUX controller
-JoystickButton level1Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel1);
-JoystickButton level1Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel1);
-JoystickButton level2Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel2);
-JoystickButton level2Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel2);
-JoystickButton level3Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel3);
-JoystickButton level3Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel3);
-JoystickButton level4Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel4);
-JoystickButton level4Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel4);
+  // Coral Buttons On AUX controller
+  JoystickButton level1Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel1);
+  JoystickButton level1Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel1);
+  JoystickButton level2Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel2);
+  JoystickButton level2Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel2);
+  JoystickButton level3Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel3);
+  JoystickButton level3Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel3);
+  JoystickButton level4Left = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kLeftLevel4);
+  JoystickButton level4Right = new JoystickButton(auxJoysticks[1], CoralControllerConstants.kRightLevel4);
 
-// Other Buttons On AUX controller
-JoystickButton AuxLeftBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftBottom);
-JoystickButton AuxRightBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightBottom);
-JoystickButton AuxLeftLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftLowerMid);
-JoystickButton AuxRightLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightLowerMid);
-JoystickButton AuxLeftUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftUpperMid);
-JoystickButton AuxRightUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightUpperMid);
-JoystickButton AuxLeftTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftTop);
-JoystickButton AuxRightTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightTop);
+  // Other Buttons On AUX controller
+  JoystickButton AuxLeftBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftBottom);
+  JoystickButton AuxRightBottom = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightBottom);
+  JoystickButton AuxLeftLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftLowerMid);
+  JoystickButton AuxRightLowerMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightLowerMid);
+  JoystickButton AuxLeftUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftUpperMid);
+  JoystickButton AuxRightUpperMid = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightUpperMid);
+  JoystickButton AuxLeftTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kLeftTop);
+  JoystickButton AuxRightTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightTop);
 
-// Hex Buttons On AUX controller
-JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
-JoystickButton HexTop = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTop);
-JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
-JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
-JoystickButton HexBottom = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottom);
-JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
+  // Hex Buttons On AUX controller
+  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
+  JoystickButton HexTop = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTop);
+  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
+  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
+  JoystickButton HexBottom = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottom);
+  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
 
-private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
-private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
-private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
-private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
-private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
-private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
+  private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
+  private final AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+  private final ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+  private final CoralSubsystem m_coralSubsystem = new CoralSubsystem();
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
+  private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
 
-GenericEntry ep;
-GenericEntry ei;
-GenericEntry ed;
+  GenericEntry ep;
+  GenericEntry ei;
+  GenericEntry ed;
 
-private final Command m_level1Command = new ParallelCommandGroup(
-  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos),
-  new BlinkinCommand(blinkinSubsystem, "solid-red")
-);
-private final Command m_level2Command = new ParallelCommandGroup(
-  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos),
-  new BlinkinCommand(blinkinSubsystem, "solid-green")
-);
-private final Command m_level3Command = new ParallelCommandGroup(
-  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos),
-  new BlinkinCommand(blinkinSubsystem, "solid-blue")
-);
-private final Command m_level4Command = new ParallelCommandGroup(
-  new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos),
-  new BlinkinCommand(blinkinSubsystem, "solid-yellow")
-);
+  private final Command m_level1Command = new ParallelCommandGroup(
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos),
+    new BlinkinCommand(blinkinSubsystem, "solid-red")
+  );
+  private final Command m_level2Command = new ParallelCommandGroup(
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos),
+    new BlinkinCommand(blinkinSubsystem, "solid-green")
+  );
+  private final Command m_level3Command = new ParallelCommandGroup(
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos),
+    new BlinkinCommand(blinkinSubsystem, "solid-blue")
+  );
+  private final Command m_level4Command = new ParallelCommandGroup(
+    new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos),
+    new BlinkinCommand(blinkinSubsystem, "solid-yellow")
+  );
 
-public final Command m_level1CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
-public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
-public final Command m_level3CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
-public final Command m_level4CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
+  public final Command m_level1CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
+  public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
+  public final Command m_level3CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
+  public final Command m_level4CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
-public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, true);
-public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, true);
-public final Command m_coralDumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false);
-public final Command m_coralIntakeCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false);
-public final Command m_coralUndumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, false);
+  public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
+  public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, true);
+  public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, true);
+  public final Command m_coralDumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false);
+  public final Command m_coralIntakeCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false);
+  public final Command m_coralUndumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, false);
 
 
-/*
- * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
- * AlignToCoralCommand(m_swerveSubsystem, -1);
- * private final AlignToCoralCommand m_rightAlignToCoralCommand = new
- * AlignToCoralCommand(m_swerveSubsystem, 1);
- * 
- * private final ElevatorCommand m_level1ElevatorCommand = new
- * ElevatorCommand(m_elevatorSubsystem, () -> 1);
- * private final ElevatorCommand m_level2ElevatorCommand = new
- * ElevatorCommand(m_elevatorSubsystem, () -> 2);
- * private final ElevatorCommand m_level3ElevatorCommand = new
- * ElevatorCommand(m_elevatorSubsystem, () -> 3);
- * private final ElevatorCommand m_level4ElevatorCommand = new
- * ElevatorCommand(m_elevatorSubsystem, () -> 4);
- */
+  /*
+  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
+  * AlignToCoralCommand(m_swerveSubsystem, -1);
+  * private final AlignToCoralCommand m_rightAlignToCoralCommand = new
+  * AlignToCoralCommand(m_swerveSubsystem, 1);
+  * 
+  * private final ElevatorCommand m_level1ElevatorCommand = new
+  * ElevatorCommand(m_elevatorSubsystem, () -> 1);
+  * private final ElevatorCommand m_level2ElevatorCommand = new
+  * ElevatorCommand(m_elevatorSubsystem, () -> 2);
+  * private final ElevatorCommand m_level3ElevatorCommand = new
+  * ElevatorCommand(m_elevatorSubsystem, () -> 3);
+  * private final ElevatorCommand m_level4ElevatorCommand = new
+  * ElevatorCommand(m_elevatorSubsystem, () -> 4);
+  */
 
   private final SendableChooser<Command> autoChooser;
 
@@ -168,9 +166,6 @@ public final Command m_coralUndumpCommandEndless = new CoralCommand(m_coralSubsy
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-      this.blinkinSubsystem = new BlinkinSubsystem();
-  
-      this.redBlinkinCommand = new BlinkinCommand(blinkinSubsystem, .61);
   
       // Configure the trigger bindings
       m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,

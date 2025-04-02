@@ -26,7 +26,7 @@ public class LimelightPathCommand extends Command {
     limelightSubsystem = null;
     X = endX;
     Y = endY;
-    Rot = endRot;
+    Rot = () -> new Rotation2d();
     addRequirements(swerveSubsystem);
   }
 
