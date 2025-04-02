@@ -237,7 +237,7 @@ public class SwerveSubsystem extends SubsystemBase {
     PathPlannerPath path = new PathPlannerPath(
       waypoints,
       constraints,
-      null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
+      new IdealStartingState(Math.sqrt((getXSpeed() * getXSpeed()) + (getYSpeed() * getYSpeed())), getRotation2d()), // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
       new GoalEndState(0.0, endRotation.get()) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
     );
 
