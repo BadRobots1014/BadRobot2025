@@ -48,10 +48,11 @@ public class LimelightPathCommand extends Command {
 
   @Override
   public void execute() {
-    count--;
+    count -= 1;
 
     if (count < 0)
     {
+      System.out.println("running limelight path");
       count = 10;
       if (limelightSubsystem == null) {
         currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
