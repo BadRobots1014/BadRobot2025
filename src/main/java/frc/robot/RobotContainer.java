@@ -141,23 +141,6 @@ public class RobotContainer {
   public final Command m_coralIntakeCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false);
   public final Command m_coralUndumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, false);
 
-
-  /*
-  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
-  * AlignToCoralCommand(m_swerveSubsystem, -1);
-  * private final AlignToCoralCommand m_rightAlignToCoralCommand = new
-  * AlignToCoralCommand(m_swerveSubsystem, 1);
-  * 
-  * private final ElevatorCommand m_level1ElevatorCommand = new
-  * ElevatorCommand(m_elevatorSubsystem, () -> 1);
-  * private final ElevatorCommand m_level2ElevatorCommand = new
-  * ElevatorCommand(m_elevatorSubsystem, () -> 2);
-  * private final ElevatorCommand m_level3ElevatorCommand = new
-  * ElevatorCommand(m_elevatorSubsystem, () -> 3);
-  * private final ElevatorCommand m_level4ElevatorCommand = new
-  * ElevatorCommand(m_elevatorSubsystem, () -> 4);
-  */
-
   private final SendableChooser<Command> autoChooser;
 
   boolean fastMode = true, fasterMode = false, toggled = false;
