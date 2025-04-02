@@ -30,6 +30,8 @@ public final class Constants {
 
   public final class UltraSonicConstants {
     public final static int kUltraSonicPort = 3;
+    public final static int kVoltsToDistance = 1;
+    public final static double kDistanceThreshold = 0.5; // meters
   } 
 
   public final class BlinkinConstants {
