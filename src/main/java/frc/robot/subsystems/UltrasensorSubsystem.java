@@ -7,13 +7,20 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.UltraSonicConstants;
 
 public class UltrasensorSubsystem extends SubsystemBase {
 
   private static final AnalogInput sensor = new AnalogInput(UltraSonicConstants.kUltraSonicPort);
+  private ShuffleboardTab m_tab;
 
-  public UltrasensorSubsystem() {}
+  public UltrasensorSubsystem() {
+    m_tab = Shuffleboard.getTab("Ultrasonic Sensor");
+    m_tab.add(sensor);
+  }
+
   public static double getVoltage() {
     return sensor.getVoltage();
   }

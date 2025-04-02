@@ -20,6 +20,7 @@ import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.UltrasensorSubsystem;
 import frc.robot.subsystems.WinchSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.commands.ElevatorCommand;
@@ -107,6 +108,7 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
   private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
+  private final UltrasensorSubsystem ultrasensorSubsystem = new UltrasensorSubsystem();
 
   GenericEntry ep;
   GenericEntry ei;

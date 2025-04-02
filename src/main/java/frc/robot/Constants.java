@@ -349,7 +349,7 @@ public final class Constants {
     public static final double kTeleMaxMetersPerSec = 0.3;
     public static final double kFastTeleMaxMetersPerSec = 1.0;
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
-    public static final double kNudgeSpeed = 0.8;
+    public static final double kNudgeSpeed = 0.2;
 
     // Limelight Automation
     public static final double kAutoSpeedLimit = 2;
@@ -419,8 +419,8 @@ public final class Constants {
     public static final int kRightCanId = 52;
 
     public static final int kMaxAmps = 140;
-    public static final double kPower = 1;
-    public static final double kOutPower = 0.5;
+    public static final double kPower = 0.15;
+    public static final double kOutPower = 0.15;
   }
 
   public static final class ClimberConstants {
