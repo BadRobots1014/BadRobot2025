@@ -126,9 +126,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     leftElevator.set(getElevatorCurrent() < ElevatorConstants.kElevatorMaxAmps ? power : 0);
   }
 
-  public void runElevatorWithPid(double current, double target)
+  public void runElevatorWithPid(double current, double target, double ff)
   {
-    runElevator(m_pidController.calculate(current, target));
+    runElevator(m_pidController.calculate(current, target) + ff);
   }
 
   // Stops the climber motors

@@ -123,10 +123,13 @@ public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_eleva
 public final Command m_level3CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlThreePos);
 public final Command m_level4CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos);
 
-public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset);
-public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset);
-public final Command m_coralDumpCommandTimeOut = m_coralDumpCommand.withTimeout(1);
-public final Command m_coralUndumpCommandTimeOut = m_coralIntakeCommand.withTimeout(1);
+public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
+public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, true);
+public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, true);
+public final Command m_coralDumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false);
+public final Command m_coralIntakeCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false);
+public final Command m_coralUndumpCommandEndless = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, false);
+
 
 /*
  * private final AlignToCoralCommand m_leftAlignToCoralCommand = new
@@ -174,6 +177,7 @@ public final Command m_coralUndumpCommandTimeOut = m_coralIntakeCommand.withTime
       // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
       // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
       // }));
+      m_coralSubsystem.setDefaultCommand(m_coralUndumpCommand);
 
       // Add named commands to pathplanner
       NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
@@ -184,8 +188,12 @@ public final Command m_coralUndumpCommandTimeOut = m_coralIntakeCommand.withTime
       NamedCommands.registerCommand("Stay at L2", m_level2Command);
       NamedCommands.registerCommand("Stay at L3", m_level3Command);
       NamedCommands.registerCommand("Stay at L4", m_level4Command);
-      NamedCommands.registerCommand("Dump Coral", m_coralDumpCommandTimeOut);
-      NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommandTimeOut);
+      NamedCommands.registerCommand("Dump Coral", m_coralDumpCommand);
+      NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommand);
+      NamedCommands.registerCommand("Intake Coral", m_coralIntakeCommand);
+      NamedCommands.registerCommand("Dump Coral Endless", m_coralDumpCommandEndless);
+      NamedCommands.registerCommand("Undump Coral Endless", m_coralUndumpCommandEndless);
+      NamedCommands.registerCommand("Intake Coral Endless", m_coralIntakeCommandEndless);
   
       // Build an auto chooser. This will use Commands.none() as the default option.
       autoChooser = AutoBuilder.buildAutoChooser();
@@ -241,8 +249,8 @@ public final Command m_coralUndumpCommandTimeOut = m_coralIntakeCommand.withTime
       
       m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, CoralConstants.kCoralSpeed));
       m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, -CoralConstants.kCoralSpeed));
-      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, -CoralConstants.kCoralSpeed));
-      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, CoralConstants.kCoralSpeed));
+      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false));
+      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
       // TODO add override up mode
   
