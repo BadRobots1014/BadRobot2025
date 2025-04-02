@@ -20,7 +20,7 @@ public class LimelightPathCommand extends Command {
   private final Supplier<Double> Y;
   private final Supplier<Rotation2d> Rot;
   private Command currentCommand;
-  private int count = 10;
+  private int count = 0;
 
   public LimelightPathCommand(SwerveSubsystem subsystem, Supplier<Double> endX, Supplier<Double> endY, Supplier<Rotation2d> endRot) {
     swerveSubsystem = subsystem;
