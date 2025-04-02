@@ -20,6 +20,7 @@ public class LimelightPathCommand extends Command {
   private final Supplier<Double> Y;
   private final Supplier<Rotation2d> Rot;
   private Command currentCommand;
+  private int count = 10;
 
   public LimelightPathCommand(SwerveSubsystem subsystem, Supplier<Double> endX, Supplier<Double> endY, Supplier<Rotation2d> endRot) {
     swerveSubsystem = subsystem;
@@ -42,19 +43,26 @@ public class LimelightPathCommand extends Command {
 
   @Override
   public void initialize() {
-    if (limelightSubsystem == null) {
-      currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
-      currentCommand.initialize();
-    }
-    else if (LimelightHelpers.getFiducialID("") != -1){
-      var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
-      currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getY() + DriveConstants.kAutoRightTarget, () -> lastPosLimelight.getZ() + DriveConstants.kAutoTargetDistance, () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getY()));
-      currentCommand.initialize();
-    }
+    
   }
 
   @Override
   public void execute() {
+    count--;
+
+    if (count < 0)
+    {
+      count = 10;
+      if (limelightSubsystem == null) {
+        currentCommand = swerveSubsystem.PathToLimelight(X, Y, Rot);
+        currentCommand.initialize();
+      }
+      else if (LimelightHelpers.getFiducialID("") != -1){
+        var lastPosLimelight = LimelightHelpers.getBotPose3d_TargetSpace("");
+        currentCommand = swerveSubsystem.PathToLimelight(() -> lastPosLimelight.getY() + DriveConstants.kAutoRightTarget, () -> lastPosLimelight.getZ() + DriveConstants.kAutoTargetDistance, () -> Rotation2d.fromRadians(lastPosLimelight.getRotation().getY()));
+        currentCommand.initialize();
+      }
+    }
     if (currentCommand != null) {
       currentCommand.execute();
     }
