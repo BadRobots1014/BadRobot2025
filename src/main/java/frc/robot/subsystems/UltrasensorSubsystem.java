@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Constants.UltraSonicConstants;
@@ -22,7 +23,8 @@ public class UltrasensorSubsystem extends SubsystemBase {
   }
 
   public static double getVoltage() {
-    return sensor.getVoltage();
+    double voltageScaleFactor = 5/RobotController.getVoltage5V();
+    return sensor.getVoltage() * voltageScaleFactor;
   }
   
   public static double getDistance() {
