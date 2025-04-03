@@ -243,7 +243,16 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
+
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+      m_driverController.R2().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+        () -> 0.75d,
+      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+      m_driverController.R1().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+        () -> -0.75d,
+      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+
+
       level1Left.whileTrue(m_level1Command);
       level2Left.whileTrue(m_level2Command);
       level3Left.whileTrue(m_level3Command);
