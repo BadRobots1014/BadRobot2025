@@ -10,6 +10,7 @@ import java.util.Map;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.I2C.Port;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -35,6 +36,7 @@ public final class Constants {
   }
 
   public final class DistanceSensorConstants {
+    public final static Port kDistancePort = Port.kMXP;
     public final static double kReefRange = 1;
   }
 
@@ -423,8 +425,8 @@ public final class Constants {
     public static final int kRightCanId = 52;
 
     public static final int kMaxAmps = 140;
-    public static final double kPower = 0.15;
-    public static final double kOutPower = 0.15;
+    public static final double kPower = 0.4;
+    public static final double kOutPower = 0.5;
   }
 
   public static final class ClimberConstants {
