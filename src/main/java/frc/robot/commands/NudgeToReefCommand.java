@@ -39,6 +39,6 @@ public class NudgeToReefCommand extends SwerveDriveCommand {
 
   @Override
   public boolean isFinished() {
-    return subsystem.getRange() < range;
+    return subsystem.getRange() < range && subsystem.getRange() != -1;
   }
 }
