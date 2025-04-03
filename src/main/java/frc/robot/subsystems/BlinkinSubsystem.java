@@ -17,6 +17,8 @@ public class BlinkinSubsystem extends SubsystemBase {
 
   private final Spark blinkin;
 
+  public boolean party = false;
+
   public BlinkinSubsystem() {
     blinkin = new Spark(BlinkinConstants.kBlinkinPort);
     m_tab.add(blinkin.toString(), blinkin);
@@ -35,6 +37,9 @@ public class BlinkinSubsystem extends SubsystemBase {
    *
    */
   public void setBlinkin(double pattern) {
+    if (party) {
+      blinkin.set(BlinkinConstants.colorCode.get("rainbow-rainbow"));
+    }
     blinkin.set(pattern);
   }
 

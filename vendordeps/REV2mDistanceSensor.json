@@ -46,7 +46,7 @@
             "version": "2025.0.0",
             "libName": "libDistanceSensorDriver",
             "headerClassifier": "headers",
-            "sharedLibrary": false,
+            "sharedLibrary": true,
             "skipInvalidPlatforms": true,
             "binaryPlatforms": [
                 "linuxathena"

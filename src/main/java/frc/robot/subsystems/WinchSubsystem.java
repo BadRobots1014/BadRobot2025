@@ -26,11 +26,11 @@ public class WinchSubsystem extends SubsystemBase {
   public WinchSubsystem() {
     //leftClimber = new SparkMax(ClimberConstants.kLeftClimberCanId, MotorType.kBrushless);
     //rightClimber = new SparkMax(ClimberConstants.kRightClimberCanId, MotorType.kBrushless);
-    winch = new SparkMax(WinchConstants.kWinchCanId, MotorType.kBrushed);
+    winch = new SparkMax(WinchConstants.kWinchCanId, MotorType.kBrushless);
     SparkMaxConfig config = new SparkMaxConfig();
 
     config.idleMode(IdleMode.kBrake);
-    config.smartCurrentLimit(80);
+    config.smartCurrentLimit(10);
 
     //leftClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     //rightClimber.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -47,7 +47,6 @@ public class WinchSubsystem extends SubsystemBase {
 
   // Stops the climber motors
   public void stopWinch() {
-
     winch.stopMotor();
   }
 

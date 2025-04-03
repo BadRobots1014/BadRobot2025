@@ -13,11 +13,13 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.WinchConstants;
 import frc.robot.commands.AlgaeCommand;
 import frc.robot.commands.LimelightPathCommand;
 import frc.robot.commands.NudgeToReefCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TurnToThetaCommand;
+import frc.robot.commands.WinchCommand;
 import frc.robot.commands.ZeroHeadingCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -52,6 +54,7 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.CoralCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
 import frc.robot.subsystems.DistanceSensorSubsystem;
 
@@ -111,8 +114,9 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
   private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
-  private final UltrasensorSubsystem ultrasensorSubsystem = new UltrasensorSubsystem();
-  private final DistanceSensorSubsystem m_distanceSensorSubsystem = new DistanceSensorSubsystem();
+  // private final UltrasensorSubsystem ultrasensorSubsystem = new UltrasensorSubsystem();
+  // private final DistanceSensorSubsystem m_distanceSensorSubsystem = new DistanceSensorSubsystem();
+  // private final ColorSensorSubsystem m_colorSensorSubsystem = new ColorSensorSubsystem();
 
   GenericEntry ep;
   GenericEntry ei;
@@ -157,7 +161,8 @@ public class RobotContainer {
     public RobotContainer() {
   
       // Configure the trigger bindings
-      m_swerveSubsystem.setDefaultCommand(new SwerveDriveCommand(m_swerveSubsystem,
+      m_swerveSubsystem.setDefaultCommand(
+        new SwerveDriveCommand(m_swerveSubsystem,
           () -> getLeftY(),
           () -> getLeftX(),
           () -> getRightX(),
@@ -230,22 +235,16 @@ public class RobotContainer {
      */
     private void configureBindings() {
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-      // level1Left.whileTrue(m_level1Command);
+      level1Left.whileTrue(m_level1Command);
       level2Left.whileTrue(m_level2Command);
       level3Left.whileTrue(m_level3Command);
       level4Left.whileTrue(m_level4Command);
-      // AuxLeftBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
-      // AuxRightBottom.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
 
-      level4Right.whileTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
+      // level4Right.whileTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
   
-      m_driverController.R1().whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
-      m_driverController.L1().whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
       AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
       AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
       
-      m_driverController.L2().whileTrue(new CoralCommand(m_coralSubsystem, CoralConstants.kCoralSpeed));
-      m_driverController.R2().whileTrue(new CoralCommand(m_coralSubsystem, -CoralConstants.kCoralSpeed));
       AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false));
       AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
@@ -254,11 +253,11 @@ public class RobotContainer {
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
 
-      level1Left.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
-      level1Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
+      // level2Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
+      // level1Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
+      level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+      level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
   
-      m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
-      m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
       AuxLeftBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
       AuxRightBottom.whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
   
@@ -276,21 +275,12 @@ public class RobotContainer {
       //   ed.getDouble(ElevatorConstants.kElevatorD))));
     }
   
-    boolean getFastMode() {
-      if (m_driverController.share().getAsBoolean() && !toggled) {
-        toggled = true;
-      fastMode = !fastMode;
-    }
-    else if (!m_driverController.share().getAsBoolean() && toggled) {
-      toggled = false;
-    }
-    return fastMode;
+  boolean getFastMode() {
+    return !(m_driverController.getL2Axis() > OIConstants.kTriggerDeadband);
   }
 
   boolean getFasterMode() {
-    if (m_driverController.getL2Axis() > OIConstants.kTriggerDeadband) fasterMode = true;
-    else fasterMode = false;
-    return true;
+    return false;
   }
 
   double getRightX() {

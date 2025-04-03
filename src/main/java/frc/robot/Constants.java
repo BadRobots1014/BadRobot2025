@@ -352,8 +352,8 @@ public final class Constants {
     public static final double kFastTeleMaxRadiansPerSec = Math.PI;
     public static final double kFasterTeleMaxRadiansPerSec = Math.PI;
 
-    public static final double kTeleMaxMetersPerSec = 0.3;
-    public static final double kFastTeleMaxMetersPerSec = 1.0;
+    public static final double kTeleMaxMetersPerSec = 0.9;
+    public static final double kFastTeleMaxMetersPerSec = 1.8;
     public static final double kFasterTeleMaxMetersPerSec = 1.8;
     public static final double kNudgeSpeed = 0.2;
 
@@ -362,7 +362,8 @@ public final class Constants {
     public static final double kAutoTargetDistance = 0.4; // How far away it aims to be from april tag
     public static final double kAutoLeftTarget = 0.01905;
     public static final double kAutoRightTarget = kAutoLeftTarget - 0.31;
-    public static final double kAutoTranslationalP = 3;
+    public static final double kAutoTranslationalP = 2;
+
     public static final double kAutoTranslationalI = 0;
     public static final double kAutoTranslationalD = 0;
     public static final double kAutoRotationalP = 1;
@@ -376,8 +377,8 @@ public final class Constants {
     public static final int kLeftElevatorCanId = 58;
     public static final int kRightElevatorCanId = 59;
 
-    public static final double kElevatorUpPower = .3;
-    public static final double kElevatorDownPower = -.2;
+    public static final double kElevatorUpPower = .4;
+    public static final double kElevatorDownPower = -.3;
     public static final int kElevatorMaxAmps = 140;
 
     public static final double kLvlOnePos = 0;
@@ -405,8 +406,10 @@ public final class Constants {
     public static final double kCoralDurationSeconds = 1;
     public static final double kCoralDurationNano = kCoralDurationSeconds * 1_000_000_000L; // For timeout
 
-    public static final double kCoralDumpPreset = 0.8;
-    public static final double kCoralUpPreset = 0.388;
+    public static final double kCoralDumpPreset = 0.825;
+    public static final double kCoralUpPreset = 0.375;
+
+    
     public static final double kCoralIntakePreset = 0.63;
 
     public static final int kCoralCanID = 54;
@@ -440,7 +443,7 @@ public final class Constants {
 
   public static final class WinchConstants {
     public static final int kWinchCanId = 55;
-    public static final double kWinchUpPower = 1;
-    public static final double kWinchDownPower = -1;
+    public static final double kWinchUpPower = 0.2;
+    public static final double kWinchDownPower = -0.2;
   }
 }

@@ -91,7 +91,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   
     public double getElevatorEncoder()
     {
-      double pos = encoder.getPosition();
+      double pos = encoder.getPosition() + offset;
+      pos -= Math.floor(pos);
       if (pos > 0.75 && lastPos < 0.25) {
         rollover--;
       }
@@ -103,7 +104,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
   
     public double getRolloverAbsoluteEncoder() {
-      return getElevatorEncoder() + rollover + offset;
+      var value = getElevatorEncoder();
+      return value + rollover;
     }
   
     public double getRelativeEncoder() {
