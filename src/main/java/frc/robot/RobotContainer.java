@@ -115,7 +115,7 @@ public class RobotContainer {
   private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
   private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
   // private final UltrasensorSubsystem ultrasensorSubsystem = new UltrasensorSubsystem();
-  // private final DistanceSensorSubsystem m_distanceSensorSubsystem = new DistanceSensorSubsystem();
+  private final DistanceSensorSubsystem m_distanceSensorSubsystem = new DistanceSensorSubsystem();
   // private final ColorSensorSubsystem m_colorSensorSubsystem = new ColorSensorSubsystem();
 
   GenericEntry ep;
@@ -244,6 +244,8 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
+      m_driverController.circle().whileTrue(blinkinSubsystem.runOnce(() -> {blinkinSubsystem.party = true; blinkinSubsystem.setBlinkin("rainbow-rainbow");}));
+
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
       m_driverController.R2().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
         () -> 0.75d,
@@ -253,31 +255,33 @@ public class RobotContainer {
       () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
 
 
+      // Preset levels for coral
       level1Left.whileTrue(m_level1Command);
       level2Left.whileTrue(m_level2Command);
       level3Left.whileTrue(m_level3Command);
       level4Left.whileTrue(m_level4Command);
-
-      // level4Right.whileTrue(new LimelightPathCommand(m_swerveSubsystem, m_limelightSubsystem));
   
-      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
-      
+      // Manual controls for elevator
+      level1Right.whileTrue(m_manualDownCommand);
+      level2Right.whileTrue(m_manualUpCommand);
+      // Winch for algae
+      level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+      level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
+
+      // Coral bucket presets
       AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false));
       AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
-      // TODO add override up mode
+      // Algae in/out
+      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
 
+      // Climber up/down
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
 
-      // level2Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
-      // level1Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
-      level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
-      level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
-  
-      level2Right.whileTrue(m_manualUpCommand);
-      level1Right.whileTrue(m_manualDownCommand);
+      AuxLeftBottom.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
+      AuxRightBottom.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
   
       //Reef angle presets
       HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
@@ -286,11 +290,6 @@ public class RobotContainer {
       HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-
-      // level1Right.onTrue(m_elevatorSubsystem.runOnce(() -> m_elevatorSubsystem.updatePID(
-      //   ep.getDouble(ElevatorConstants.kElevatorP), 
-      //   ei.getDouble(ElevatorConstants.kElevatorI), 
-      //   ed.getDouble(ElevatorConstants.kElevatorD))));
     }
   
   boolean getFastMode() {

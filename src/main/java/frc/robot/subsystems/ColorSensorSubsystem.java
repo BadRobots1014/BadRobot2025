@@ -26,23 +26,17 @@ public class ColorSensorSubsystem extends SubsystemBase {
     m_tab.addNumber("R", this::getRed);
     m_tab.addNumber("G", this::getGreen);
     m_tab.addNumber("B", this::getBlue);
+    m_tab.addBoolean("Is Connected", this::isConnected);
 
-    sensor = new ColorSensorV3(Port.kOnboard);
+    sensor = new ColorSensorV3(Port.kMXP);
   }
 
-  public Color getColor() {
-    return sensor.getColor();
-  }
+  public Color getColor() {return sensor.getColor();}
+  public double getRed() {return sensor.getRed();}
+  public double getGreen() {return sensor.getGreen();}
+  public double getBlue() {return sensor.getBlue();}
 
-  public double getRed() {
-    return sensor.getRed();
-  }
-
-  public double getGreen() {
-    return sensor.getGreen();
-  }
-
-  public double getBlue() {
-    return sensor.getBlue();
+  public boolean isConnected() {
+    return sensor.isConnected();
   }
 }

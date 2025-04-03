@@ -33,7 +33,7 @@ public class DistanceSensorSubsystem extends SubsystemBase {
     m_tab.addBoolean("Is Range Valid", this::isRangeValid);
     m_tab.addBoolean("Is Enabled", this::isEnabled);
 
-    distSens = new Rev2mDistanceSensor(Port.kOnboard);
+    distSens = new Rev2mDistanceSensor(Port.kMXP);
     distSens.setAutomaticMode(true);
     distSens.setEnabled(true);
 

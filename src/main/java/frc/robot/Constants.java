@@ -37,7 +37,7 @@ public final class Constants {
 
   public final class DistanceSensorConstants {
     public final static Port kDistancePort = Port.kMXP;
-    public final static double kReefRange = 1;
+    public final static double kReefRange = 25;
   }
 
   public final class BlinkinConstants {
@@ -144,7 +144,7 @@ public final class Constants {
             Map.entry("solid-gray", 0.95d),
             Map.entry("solid-darkgray", 0.97d),
             Map.entry("solid-black", 0.99d)));
-    public final static double kBlinkinDefaultColorCode = colorCode.get("scanner-color1");
+    public final static double kBlinkinDefaultColorCode = colorCode.get("heartbeat-color1-medium");
   }
 
   public static final class ModuleConstants {
