@@ -8,12 +8,14 @@ import frc.robot.Constants.AuxControllerConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.CoralControllerConstants;
+import frc.robot.Constants.DistanceSensorConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.HexControllerConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.AlgaeCommand;
 import frc.robot.commands.LimelightPathCommand;
+import frc.robot.commands.NudgeToReefCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.TurnToThetaCommand;
 import frc.robot.commands.ZeroHeadingCommand;
@@ -51,6 +53,7 @@ import frc.robot.commands.CoralCommand;
 import frc.robot.subsystems.BlinkinSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.CoralSubsystem;
+import frc.robot.subsystems.DistanceSensorSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -109,6 +112,7 @@ public class RobotContainer {
   private final WinchSubsystem m_winchSubsystem = new WinchSubsystem();
   private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
   private final UltrasensorSubsystem ultrasensorSubsystem = new UltrasensorSubsystem();
+  private final DistanceSensorSubsystem m_distanceSensorSubsystem = new DistanceSensorSubsystem();
 
   GenericEntry ep;
   GenericEntry ei;
@@ -226,7 +230,7 @@ public class RobotContainer {
      */
     private void configureBindings() {
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
-      level1Left.whileTrue(m_level1Command);
+      // level1Left.whileTrue(m_level1Command);
       level2Left.whileTrue(m_level2Command);
       level3Left.whileTrue(m_level3Command);
       level4Left.whileTrue(m_level4Command);
@@ -246,9 +250,12 @@ public class RobotContainer {
       AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
       // TODO add override up mode
-  
+
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
+
+      level1Left.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
+      level1Right.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
   
       m_driverController.triangle().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true));
       m_driverController.cross().whileTrue(new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true));
@@ -263,10 +270,10 @@ public class RobotContainer {
       HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
 
-      level1Right.onTrue(m_elevatorSubsystem.runOnce(() -> m_elevatorSubsystem.updatePID(
-        ep.getDouble(ElevatorConstants.kElevatorP), 
-        ei.getDouble(ElevatorConstants.kElevatorI), 
-        ed.getDouble(ElevatorConstants.kElevatorD))));
+      // level1Right.onTrue(m_elevatorSubsystem.runOnce(() -> m_elevatorSubsystem.updatePID(
+      //   ep.getDouble(ElevatorConstants.kElevatorP), 
+      //   ei.getDouble(ElevatorConstants.kElevatorI), 
+      //   ed.getDouble(ElevatorConstants.kElevatorD))));
     }
   
     boolean getFastMode() {

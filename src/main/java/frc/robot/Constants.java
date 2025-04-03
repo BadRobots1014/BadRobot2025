@@ -32,7 +32,11 @@ public final class Constants {
     public final static int kUltraSonicPort = 3;
     public final static int kVoltsToDistance = 1;
     public final static double kDistanceThreshold = 0.5; // meters
-  } 
+  }
+
+  public final class DistanceSensorConstants {
+    public final static double kReefRange = 1;
+  }
 
   public final class BlinkinConstants {
     public final static int kBlinkinPort = 9;
