@@ -153,7 +153,7 @@ public class RobotContainer {
     new BlinkinCommand(blinkinSubsystem, "strobe-red")
   );
 
-  public final Command m_lefScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange);
+  public final Command m_leftScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange);
   public final Command m_rightScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange);
 
   public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
