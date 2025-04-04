@@ -65,6 +65,12 @@
           "data": {
             "name": "Move to L1"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Right"
+          }
         }
       ]
     }

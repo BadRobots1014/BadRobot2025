@@ -101,12 +101,12 @@ public class RobotContainer {
   JoystickButton AuxRightTop = new JoystickButton(auxJoysticks[0], AuxControllerConstants.kRightTop);
 
   // Hex Buttons On AUX controller
-  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
+  JoystickButton HexTopLeft = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
   JoystickButton HexTop = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTop);
-  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopRight);
-  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
+  JoystickButton HexTopRight = new JoystickButton(auxJoysticks[0], HexControllerConstants.kTopLeft);
+  JoystickButton HexBottomRight = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
   JoystickButton HexBottom = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottom);
-  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomLeft);
+  JoystickButton HexBottomLeft = new JoystickButton(auxJoysticks[1], HexControllerConstants.kBottomRight);
 
   private final SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(m_driverController.getHID());
   private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
@@ -277,7 +277,7 @@ public class RobotContainer {
       () -> 0.5d, // forward 50% speed
     () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
     m_driverController.circle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
-      () -> 0.5d, // right 50% speed
+      () -> 0.5d, // right 50% speed`
     () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
     m_driverController.square().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
       () -> -0.5d, // left 50% speed
@@ -286,6 +286,8 @@ public class RobotContainer {
       () -> -0.5d, // backward 50% speed
     () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
 
+    // Turn to processor
+    m_driverController.L1().whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(90), () -> getLeftX(), () -> getLeftY(), true, () -> true));
 
     // Preset levels for coral
     level1Left.whileTrue(m_level1Command);
