@@ -37,7 +37,7 @@ public final class Constants {
 
   public final class DistanceSensorConstants {
     public final static Port kDistancePort = Port.kMXP;
-    public final static double kReefRange = 25;
+    public final static double kReefRange = 20;
   }
 
   public final class BlinkinConstants {

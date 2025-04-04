@@ -146,7 +146,7 @@ public class RobotContainer {
 
   private final Command m_manualUpCommand = new ParallelCommandGroup(
     new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorUpPower, true),
-    new BlinkinCommand(blinkinSubsystem, "strobe-gold")
+    new BlinkinCommand(blinkinSubsystem, "strobe-blue")
   );
   private final Command m_manualDownCommand = new ParallelCommandGroup(
     new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kElevatorDownPower, true),
@@ -249,14 +249,30 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
-      m_driverController.circle().whileTrue(blinkinSubsystem.runOnce(() -> {blinkinSubsystem.party = true; blinkinSubsystem.setBlinkin("rainbow-rainbow");}));
+      // PAAAARRRRTTTTYYYYY MOOOOOOOOOOODDDE
+      m_driverController.share().whileTrue(blinkinSubsystem.runOnce(() -> {blinkinSubsystem.party = true; blinkinSubsystem.setBlinkin("rainbow-rainbow");}));
 
+      // Reset heading
       m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+
+      // Nudges but faster
       m_driverController.R2().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> 0.75d,
+        () -> 0.75d, // forward 75% speed
       () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
       m_driverController.R1().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> -0.75d,
+        () -> -0.75d, // backward 75% speed
+      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+      m_driverController.triangle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+        () -> 0.5d, // forward 50% speed
+      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+      m_driverController.circle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
+        () -> 0.5d, // right 50% speed
+      () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+      m_driverController.square().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
+        () -> -0.5d, // left 50% speed
+      () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+      m_driverController.cross().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+        () -> -0.5d, // backward 50% speed
       () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
 
 
@@ -278,15 +294,27 @@ public class RobotContainer {
       AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
       // Algae in/out
-      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+      AuxLeftUpperMid.whileTrue(new ParallelCommandGroup(
+        new AlgaeCommand(m_algaeSubsystem, true),
+        new BlinkinCommand(blinkinSubsystem, "solid-hotpink")
+      ));
+      AuxRightUpperMid.whileTrue(new ParallelCommandGroup(
+        new AlgaeCommand(m_algaeSubsystem, false),
+        new BlinkinCommand(blinkinSubsystem, "solid-hotpink")
+      ));
 
       // Climber up/down
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
 
-      AuxLeftBottom.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange));
-      AuxRightBottom.whileTrue(new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange));
+      AuxLeftBottom.whileTrue(new ParallelCommandGroup(
+        new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange),
+        new BlinkinCommand(blinkinSubsystem, "solid-blueviolet")
+      ));
+      AuxRightBottom.whileTrue(new ParallelCommandGroup(
+        new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange),
+        new BlinkinCommand(blinkinSubsystem, "solid-violet")
+      ));
   
       //Reef angle presets
       HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
