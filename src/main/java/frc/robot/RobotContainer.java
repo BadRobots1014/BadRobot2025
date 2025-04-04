@@ -153,6 +153,9 @@ public class RobotContainer {
     new BlinkinCommand(blinkinSubsystem, "strobe-red")
   );
 
+  public final Command m_lefScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange);
+  public final Command m_rightScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange);
+
   public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
   public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, true);
   public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, true);
@@ -205,6 +208,8 @@ public class RobotContainer {
       NamedCommands.registerCommand("Dump Coral Endless", m_coralDumpCommandEndless);
       NamedCommands.registerCommand("Undump Coral Endless", m_coralUndumpCommandEndless);
       NamedCommands.registerCommand("Intake Coral Endless", m_coralIntakeCommandEndless);
+      NamedCommands.registerCommand("Scan Right", m_rightScanCommand);
+      NamedCommands.registerCommand("Scan Left", m_leftScanCommand);
   
       // Build an auto chooser. This will use Commands.none() as the default option.
       autoChooser = AutoBuilder.buildAutoChooser();
