@@ -37,14 +37,20 @@ public class BlinkinSubsystem extends SubsystemBase {
    *
    */
   public void setBlinkin(double pattern) {
-    if (party) {
-      blinkin.set(BlinkinConstants.colorCode.get("rainbow-rainbow"));
-    }
     blinkin.set(pattern);
   }
 
   public void setBlinkin(String pattern) {
     setBlinkin(BlinkinConstants.colorCode.get(pattern));
+  }
+
+  public void flipPartyMode() {
+    party = !party;
+    if (party) {
+      setBlinkin("rainbow-rainbow");
+    } else {
+      setDefault();
+    }
   }
 
   public void setDefault(){

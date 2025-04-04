@@ -429,12 +429,10 @@ public final class Constants {
 
     public static final int kMaxAmps = 140;
     public static final double kPower = 0.4;
-    public static final double kOutPower = 0.5;
+    public static final double kOutPower = 0.4;
   }
 
   public static final class ClimberConstants {
-    //public static final int kLeftClimberCanId = 0;
-    //public static final int kRightClimberCanId = 0;
     public static final int kClimberCanId = 53;
     public static final int kClimberUpPower = -1;
     public static final int kClimberDownPower = 1;

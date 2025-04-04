@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.AuxControllerConstants;
+import frc.robot.Constants.BlinkinConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.CoralControllerConstants;
@@ -33,6 +34,7 @@ import frc.robot.commands.ElevatorCommandWithEnd;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -156,6 +158,11 @@ public class RobotContainer {
   public final Command m_leftScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange);
   public final Command m_rightScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange);
 
+  public final Command m_resetCommand = new ZeroHeadingCommand(m_swerveSubsystem);
+  public final Command m_resetLeftCommand = new ZeroHeadingCommand(m_swerveSubsystem, Rotation2d.fromDegrees(-90));
+  public final Command m_resetRightCommand = new ZeroHeadingCommand(m_swerveSubsystem, Rotation2d.fromDegrees(90));
+  public final Command m_resetReverseCommand = new ZeroHeadingCommand(m_swerveSubsystem, Rotation2d.fromDegrees(180));
+
   public final Command m_coralDumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, true);
   public final Command m_coralIntakeCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, true);
   public final Command m_coralUndumpCommand = new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralUpPreset, true);
@@ -167,158 +174,162 @@ public class RobotContainer {
 
   boolean fastMode = true, fasterMode = false, toggled = false;
   
-    /**
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     */
-    public RobotContainer() {
-  
-      // Configure the trigger bindings
-      m_swerveSubsystem.setDefaultCommand(
-        new SwerveDriveCommand(m_swerveSubsystem,
-          () -> getLeftY(),
-          () -> getLeftX(),
-          () -> getRightX(),
-          DriveConstants.kFieldOriented,
-          this::getFastMode,
-          this::getFasterMode,
-          this::getPOV,
-          () -> 0d,
-          () -> 0d));
-      // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
-      // new SwerveModuleState[] {
-      // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
-      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
-      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
-      // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
-      // }));
-      m_coralSubsystem.setDefaultCommand(m_coralUndumpCommand);
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer() {
 
-      // Add named commands to pathplanner
-      NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
-      NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
-      NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
-      NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
-      NamedCommands.registerCommand("Stay at L1", m_level1Command);
-      NamedCommands.registerCommand("Stay at L2", m_level2Command);
-      NamedCommands.registerCommand("Stay at L3", m_level3Command);
-      NamedCommands.registerCommand("Stay at L4", m_level4Command);
-      NamedCommands.registerCommand("Dump Coral", m_coralDumpCommand);
-      NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommand);
-      NamedCommands.registerCommand("Intake Coral", m_coralIntakeCommand);
-      NamedCommands.registerCommand("Dump Coral Endless", m_coralDumpCommandEndless);
-      NamedCommands.registerCommand("Undump Coral Endless", m_coralUndumpCommandEndless);
-      NamedCommands.registerCommand("Intake Coral Endless", m_coralIntakeCommandEndless);
-      NamedCommands.registerCommand("Scan Right", m_rightScanCommand);
-      NamedCommands.registerCommand("Scan Left", m_leftScanCommand);
-  
-      // Build an auto chooser. This will use Commands.none() as the default option.
-      autoChooser = AutoBuilder.buildAutoChooser();
-  
-      // Start Elastic Server
-      WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
-  
-      // Another option that allows you to specify the default auto by its name
-      // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-  
-      SmartDashboard.putData("Auto Chooser", autoChooser);
-      SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
-      SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
+    // Configure the trigger bindings
+    m_swerveSubsystem.setDefaultCommand(
+      new SwerveDriveCommand(m_swerveSubsystem,
+        () -> getLeftY(),
+        () -> getLeftX(),
+        () -> getRightX(),
+        DriveConstants.kFieldOriented,
+        this::getFastMode,
+        this::getFasterMode,
+        this::getPOV,
+        () -> 0d,
+        () -> 0d));
+    // m_swerveSubsystem.setDefaultCommand(new TestModuleCommand(m_swerveSubsystem,
+    // new SwerveModuleState[] {
+    // new SwerveModuleState(1, Rotation2d.fromDegrees(0)), // FL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // FR
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BL
+    // new SwerveModuleState(0, Rotation2d.fromDegrees(0)), // BR
+    // }));
+    m_coralSubsystem.setDefaultCommand(m_coralUndumpCommand);
 
-      ShuffleboardTab m_tab = Shuffleboard.getTab("elevatorpid");
+    // Add named commands to pathplanner
+    NamedCommands.registerCommand("Move to L1", m_level1CommandTimeOut);
+    NamedCommands.registerCommand("Move to L2", m_level2CommandTimeOut);
+    NamedCommands.registerCommand("Move to L3", m_level3CommandTimeOut);
+    NamedCommands.registerCommand("Move to L4", m_level4CommandTimeOut);
+    NamedCommands.registerCommand("Stay at L1", m_level1Command);
+    NamedCommands.registerCommand("Stay at L2", m_level2Command);
+    NamedCommands.registerCommand("Stay at L3", m_level3Command);
+    NamedCommands.registerCommand("Stay at L4", m_level4Command);
+    NamedCommands.registerCommand("Dump Coral", m_coralDumpCommand);
+    NamedCommands.registerCommand("Undump Coral", m_coralUndumpCommand);
+    NamedCommands.registerCommand("Intake Coral", m_coralIntakeCommand);
+    NamedCommands.registerCommand("Dump Coral Endless", m_coralDumpCommandEndless);
+    NamedCommands.registerCommand("Undump Coral Endless", m_coralUndumpCommandEndless);
+    NamedCommands.registerCommand("Intake Coral Endless", m_coralIntakeCommandEndless);
+    NamedCommands.registerCommand("Scan Right", m_rightScanCommand);
+    NamedCommands.registerCommand("Scan Left", m_leftScanCommand);
+    NamedCommands.registerCommand("Reset Straight", m_resetCommand);
+    NamedCommands.registerCommand("Reset Right", m_resetRightCommand);
+    NamedCommands.registerCommand("Reset Left", m_resetLeftCommand);
+    NamedCommands.registerCommand("Reset Reverse", m_resetReverseCommand);
 
-      ep = m_tab.add("ep", ElevatorConstants.kElevatorP).getEntry();
-      ei = m_tab.add("ei", ElevatorConstants.kElevatorI).getEntry();
-      ed = m_tab.add("ed", ElevatorConstants.kElevatorD).getEntry();
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    autoChooser = AutoBuilder.buildAutoChooser();
 
-      configureBindings();
-    }
-  
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be
-     * created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-     * an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-     * {@link
-     * CommandXboxController
-     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or
-     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
-    private void configureBindings() {
+    // Start Elastic Server
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
 
-      // PAAAARRRRTTTTYYYYY MOOOOOOOOOOODDDE
-      m_driverController.share().whileTrue(blinkinSubsystem.runOnce(() -> {blinkinSubsystem.party = true; blinkinSubsystem.setBlinkin("rainbow-rainbow");}));
+    // Another option that allows you to specify the default auto by its name
+    // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-      // Reset heading
-      m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Command Scheduler", CommandScheduler.getInstance());
+    SmartDashboard.putNumber("Battery Voltage", RobotController.getBatteryVoltage());
 
-      // Nudges but faster
-      m_driverController.R2().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> 0.75d, // forward 75% speed
-      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
-      m_driverController.R1().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> -0.75d, // backward 75% speed
-      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
-      m_driverController.triangle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> 0.5d, // forward 50% speed
-      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
-      m_driverController.circle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
-        () -> 0.5d, // right 50% speed
-      () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
-      m_driverController.square().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
-        () -> -0.5d, // left 50% speed
-      () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
-      m_driverController.cross().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
-        () -> -0.5d, // backward 50% speed
-      () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    ShuffleboardTab m_tab = Shuffleboard.getTab("elevatorpid");
+
+    ep = m_tab.add("ep", ElevatorConstants.kElevatorP).getEntry();
+    ei = m_tab.add("ei", ElevatorConstants.kElevatorI).getEntry();
+    ed = m_tab.add("ed", ElevatorConstants.kElevatorD).getEntry();
+
+    configureBindings();
+  }
+
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be
+   * created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
+   * an arbitrary
+   * predicate, or via the named factories in {@link
+   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link
+   * CommandXboxController
+   * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
+   * PS4} controllers or
+   * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
+   * joysticks}.
+   */
+  private void configureBindings() {
+
+    // PAAAARRRRTTTTYYYYY MOOOOOOOOOOODDDE
+    m_driverController.touchpad().whileTrue(blinkinSubsystem.runOnce(() -> {blinkinSubsystem.flipPartyMode();}));
+
+    // Reset heading
+    m_driverController.options().whileTrue(new ZeroHeadingCommand(m_swerveSubsystem));
+
+    // Nudges but faster
+    m_driverController.R2().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+      () -> 0.75d, // forward 75% speed
+    () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    m_driverController.R1().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+      () -> -0.75d, // backward 75% speed
+    () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    m_driverController.triangle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+      () -> 0.5d, // forward 50% speed
+    () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    m_driverController.circle().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
+      () -> 0.5d, // right 50% speed
+    () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    m_driverController.square().whileTrue(new SwerveDriveCommand(m_swerveSubsystem, () -> 0d,
+      () -> -0.5d, // left 50% speed
+    () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
+    m_driverController.cross().whileTrue(new SwerveDriveCommand(m_swerveSubsystem,
+      () -> -0.5d, // backward 50% speed
+    () -> 0d, () -> 0d, false, () -> false, () -> false, () -> -1d, () -> 0d, () -> 0d));
 
 
-      // Preset levels for coral
-      level1Left.whileTrue(m_level1Command);
-      level2Left.whileTrue(m_level2Command);
-      level3Left.whileTrue(m_level3Command);
-      level4Left.whileTrue(m_level4Command);
-  
-      // Manual controls for elevator
-      level1Right.whileTrue(m_manualDownCommand);
-      level2Right.whileTrue(m_manualUpCommand);
-      // Winch for algae
-      level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
-      level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
+    // Preset levels for coral
+    level1Left.whileTrue(m_level1Command);
+    level2Left.whileTrue(m_level2Command);
+    level3Left.whileTrue(m_level3Command);
+    level4Left.whileTrue(m_level4Command);
 
-      // Coral bucket presets
-      AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false));
-      AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
+    // Manual controls for elevator
+    level1Right.whileTrue(m_manualDownCommand);
+    level2Right.whileTrue(m_manualUpCommand);
+    // Winch for algae
+    level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+    level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
 
-      // Algae in/out
-      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
-      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
+    // Coral bucket presets
+    AuxLeftTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralIntakePreset, false));
+    AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
-      // Climber up/down
-      AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
-      AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
+    // Algae in/out
+    AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+    AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
 
-      // Nudge with scanner
-      AuxLeftBottom.whileTrue(new ParallelCommandGroup(
-        new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange),
-        new BlinkinCommand(blinkinSubsystem, "solid-blueviolet")
-      ));
-      AuxRightBottom.whileTrue(new ParallelCommandGroup(
-        new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange),
-        new BlinkinCommand(blinkinSubsystem, "solid-violet")
-      ));
-  
-      //Reef angle presets
-      HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-      HexTop.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(180), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-      HexTopRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(120), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-      HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-      HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-      HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
-    }
+    // Climber up/down
+    AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
+    AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
+
+    // Nudge with scanner
+    AuxLeftBottom.whileTrue(new ParallelCommandGroup(
+      new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange),
+      new BlinkinCommand(blinkinSubsystem, "solid-blueviolet")
+    ));
+    AuxRightBottom.whileTrue(new ParallelCommandGroup(
+      new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange),
+      new BlinkinCommand(blinkinSubsystem, "solid-violet")
+    ));
+
+    //Reef angle presets
+    HexTopLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(240), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexTop.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(180), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexTopRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(120), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottomLeft.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(300), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+    HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
+  }
 
   boolean getFastMode() {
     return !(m_driverController.getL2Axis() > OIConstants.kTriggerDeadband);
