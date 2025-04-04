@@ -294,19 +294,14 @@ public class RobotContainer {
       AuxRightTop.whileTrue(new CoralCommand(m_coralSubsystem, () -> CoralConstants.kCoralDumpPreset, false));
 
       // Algae in/out
-      AuxLeftUpperMid.whileTrue(new ParallelCommandGroup(
-        new AlgaeCommand(m_algaeSubsystem, true),
-        new BlinkinCommand(blinkinSubsystem, "solid-hotpink")
-      ));
-      AuxRightUpperMid.whileTrue(new ParallelCommandGroup(
-        new AlgaeCommand(m_algaeSubsystem, false),
-        new BlinkinCommand(blinkinSubsystem, "solid-hotpink")
-      ));
+      AuxLeftUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, true));
+      AuxRightUpperMid.whileTrue(new AlgaeCommand(m_algaeSubsystem, false));
 
       // Climber up/down
       AuxRightLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> 1d));
       AuxLeftLowerMid.whileTrue(new ClimbCommand(m_climberSubsystem, () -> -1d));
 
+      // Nudge with scanner
       AuxLeftBottom.whileTrue(new ParallelCommandGroup(
         new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange),
         new BlinkinCommand(blinkinSubsystem, "solid-blueviolet")
@@ -324,7 +319,7 @@ public class RobotContainer {
       HexBottom.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(0), () -> getLeftX(), () -> getLeftY(), true, () -> true));
       HexBottomRight.whileTrue(new TurnToThetaCommand(m_swerveSubsystem, () -> Math.toRadians(60), () -> getLeftX(), () -> getLeftY(), true, () -> true));
     }
-  
+
   boolean getFastMode() {
     return !(m_driverController.getL2Axis() > OIConstants.kTriggerDeadband);
   }

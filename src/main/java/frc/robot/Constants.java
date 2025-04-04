@@ -342,7 +342,7 @@ public final class Constants {
     public static final boolean kBackRightAbsoluteEncoderReversed = true;
     public static final boolean kBackRightDrivingReversed = false;
 
-    public static final long kBootupDelay = 1000; // milliseconds of delay to allow the navx to start up
+    public static final long kBootupDelay = 0; // milliseconds of delay to allow the navx to start up
 
     public static final double kXSlewRateLimit = 8; // TODO: adjust slew limits
     public static final double kYSlewRateLimit = 8;
