@@ -47,6 +47,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -140,6 +141,7 @@ public class RobotContainer {
     new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlFourPos),
     new BlinkinCommand(blinkinSubsystem, "solid-yellow")
   );
+  // public final Command m_algae1Command = 
 
   public final Command m_level1CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlOnePos);
   public final Command m_level2CommandTimeOut = new ElevatorCommandWithEnd(m_elevatorSubsystem, () -> ElevatorConstants.kLvlTwoPos);
@@ -155,8 +157,14 @@ public class RobotContainer {
     new BlinkinCommand(blinkinSubsystem, "strobe-red")
   );
 
-  public final Command m_leftScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange);
-  public final Command m_rightScanCommand = new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange);
+  public final Command m_leftScanCommand = new ParallelRaceGroup(
+    new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 270d, DistanceSensorConstants.kReefRange),
+    new BlinkinCommand(blinkinSubsystem, "solid-blueviolet")
+  );
+  public final Command m_rightScanCommand = new ParallelRaceGroup(
+    new NudgeToReefCommand(m_swerveSubsystem, m_distanceSensorSubsystem, () -> 90d, DistanceSensorConstants.kReefRange),
+    new BlinkinCommand(blinkinSubsystem, "solid-violet")
+  );
 
   public final Command m_resetCommand = new ZeroHeadingCommand(m_swerveSubsystem);
   public final Command m_resetLeftCommand = new ZeroHeadingCommand(m_swerveSubsystem, Rotation2d.fromDegrees(-90));
@@ -215,6 +223,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Dump Coral Endless", m_coralDumpCommandEndless);
     NamedCommands.registerCommand("Undump Coral Endless", m_coralUndumpCommandEndless);
     NamedCommands.registerCommand("Intake Coral Endless", m_coralIntakeCommandEndless);
+    NamedCommands.registerCommand("Algae In", new AlgaeCommand(m_algaeSubsystem, true));
+    NamedCommands.registerCommand("Algae Out", new AlgaeCommand(m_algaeSubsystem, false));
+    NamedCommands.registerCommand("Winch Down", new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
+    NamedCommands.registerCommand("Winch Up", new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));
     NamedCommands.registerCommand("Scan Right", m_rightScanCommand);
     NamedCommands.registerCommand("Scan Left", m_leftScanCommand);
     NamedCommands.registerCommand("Reset Straight", m_resetCommand);
@@ -295,9 +307,16 @@ public class RobotContainer {
     level3Left.whileTrue(m_level3Command);
     level4Left.whileTrue(m_level4Command);
 
-    // Manual controls for elevator
-    level1Right.whileTrue(m_manualDownCommand);
-    level2Right.whileTrue(m_manualUpCommand);
+    // Algae controls for elevator
+    level1Right.whileTrue(new ParallelRaceGroup(
+      new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeOnePos),
+      new BlinkinCommand(blinkinSubsystem, "solid-hotpink")
+    ));
+    level2Right.whileTrue(new ParallelRaceGroup(
+      new ElevatorCommand(m_elevatorSubsystem, () -> ElevatorConstants.kLvlAlgaeTwoPos),
+      new BlinkinCommand(blinkinSubsystem, "solid-lime")
+    ));
+
     // Winch for algae
     level3Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchDownPower));
     level4Right.whileTrue(new WinchCommand(m_winchSubsystem, WinchConstants.kWinchUpPower));

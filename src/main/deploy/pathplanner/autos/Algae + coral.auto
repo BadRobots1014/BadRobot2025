@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Approach th e tingy"
+            "pathName": "Approach th e tingy from front"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Scan Right"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Move to L3"
+            "name": "Move to L2"
           }
         },
         {
@@ -29,7 +23,69 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Stay at L3"
+                  "name": "Winch Down"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 1.4
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stay at L2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Algae In"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "nudge a bit"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "The rest"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Scan Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Move to L4"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stay at L4"
                 }
               },
               {

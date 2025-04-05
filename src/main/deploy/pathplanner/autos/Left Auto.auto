@@ -7,19 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Approach th e tingy"
+            "pathName": "from other side"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Scan Right"
+            "name": "Scan Left"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Move to L2"
+            "name": "Move to L4"
           }
         },
         {
@@ -29,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Stay at L2"
+                  "name": "Stay at L4"
                 }
               },
               {
@@ -64,6 +64,12 @@
           "type": "named",
           "data": {
             "name": "Move to L1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Right"
           }
         }
       ]

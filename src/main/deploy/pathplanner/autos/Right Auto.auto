@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "from side"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Move to L2"
+            "name": "Scan Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Move to L4"
           }
         },
         {
@@ -17,7 +29,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Stay at L2"
+                  "name": "Stay at L4"
                 }
               },
               {
@@ -53,11 +65,17 @@
           "data": {
             "name": "Move to L1"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset Right"
+          }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }
