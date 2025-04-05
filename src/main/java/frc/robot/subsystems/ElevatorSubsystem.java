@@ -53,9 +53,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   
       leftElevatorConfig.idleMode(IdleMode.kBrake);
       leftElevatorConfig.inverted(false);
+      leftElevatorConfig.openLoopRampRate(ElevatorConstants.kElevatorRampRate);
   
       rightElevatorConfig.idleMode(IdleMode.kBrake);
       rightElevatorConfig.follow(ElevatorConstants.kLeftElevatorCanId, true);
+      leftElevatorConfig.openLoopRampRate(ElevatorConstants.kElevatorRampRate);
   
       leftElevator.configure(leftElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
       rightElevator.configure(rightElevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -70,7 +72,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       m_tab.addNumber("Relative Encoder", this::getRelativeEncoder);
       m_tab.addNumber("Rollover Encoder", this::getRolloverAbsoluteEncoder);
 
-      m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorP);
+      m_pidController = new PIDController(ElevatorConstants.kElevatorP, ElevatorConstants.kElevatorI, ElevatorConstants.kElevatorD);
   
       resetRollover();
     }
